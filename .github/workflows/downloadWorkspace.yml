@@ -44,7 +44,7 @@ jobs:
           git config --local user.email "${{ env.USER_EMAIL }}"
           git config --local user.name "${{ env.USER_NAME }}"
           echo "Last run at $(date)" > last_run.txt
-          git add last_run.text tags/tags.json triggers/triggers.json variables/variables.json templates/templates.json workspaces/workspaces.json
+          git add last_run.txt tags/tags.json triggers/triggers.json variables/variables.json templates/templates.json workspaces/workspaces.json
           WORKSPACE_NAME=$(jq -r '.workspace[] | select(.workspaceId=="'"${WORKSPACE_ID}"'") | .name' workspaces/workspaces.json)
           git fetch origin
           git checkout update-$WORKSPACE_NAME || git checkout -b update-$WORKSPACE_NAME
