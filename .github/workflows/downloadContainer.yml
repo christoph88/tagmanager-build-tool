@@ -10,26 +10,30 @@ jobs:
       WORKSPACE_ID: ${{ secrets.WORKSPACE_ID }}
       USER_EMAIL: ${{ secrets.USER_EMAIL }}
       USER_NAME: ${{ secrets.USER_NAME }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Download container
-      run: node ./scripts/downloadContainer.js
+      - name: Set up Google Cloud credentials
+        run: echo "$GCP_SA_KEY" > ./gcp-sa-key.json
 
-    - name: Commit and push changes
-      run: |
-        git config --local user.email "${{ env.USER_EMAIL }}"
-        git config --local user.name "${{ env.USER_NAME }}"
-        git add tags.json triggers.json variables.json
-        git commit -m "Update container data" -a
-        git push
+      - name: Download container
+        run: node ./scripts/downloadContainer.js
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "${{ env.USER_EMAIL }}"
+          git config --local user.name "${{ env.USER_NAME }}"
+          git add tags.json triggers.json variables.json
+          git commit -m "Update container data" -a
+          git push
