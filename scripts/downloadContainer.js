@@ -37,10 +37,19 @@ async function downloadContainer() {
     parent: `accounts/${process.env.ACCOUNT_ID}/containers/${process.env.CONTAINER_ID}`,
   });
 
-  await writeFile("tags.json", JSON.stringify(tags.data, null, 2));
-  await writeFile("triggers.json", JSON.stringify(triggers.data, null, 2));
-  await writeFile("variables.json", JSON.stringify(variables.data, null, 2));
-  await writeFile("workspaces.json", JSON.stringify(workspaces.data, null, 2));
+  await writeFile("tags/tags.json", JSON.stringify(tags.data, null, 2));
+  await writeFile(
+    "triggers/triggers.json",
+    JSON.stringify(triggers.data, null, 2)
+  );
+  await writeFile(
+    "variables/variables.json",
+    JSON.stringify(variables.data, null, 2)
+  );
+  await writeFile(
+    "workspaces/workspaces.json",
+    JSON.stringify(workspaces.data, null, 2)
+  );
 }
 
 downloadContainer().catch(console.error);
