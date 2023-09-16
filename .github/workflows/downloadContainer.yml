@@ -1,3 +1,5 @@
+name: Download Container
+
 on:
   workflow_dispatch:
 
