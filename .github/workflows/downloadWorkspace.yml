@@ -52,9 +52,26 @@ jobs:
           git commit -m "Update container data for $WORKSPACE_NAME" -a
           git push origin update-$WORKSPACE_NAME
 
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+          sudo apt-add-repository https://cli.github.com/packages
+          sudo apt update
+          sudo apt install gh
+
+      - name: Check if Pull Request already exists
+        id: check_pr
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          PR_EXISTS=$(gh pr list --base main --search "Update container data for $WORKSPACE_NAME" | wc -l)
+          echo "PR_EXISTS=$PR_EXISTS" >> $GITHUB_ENV
+
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          title: ${{ env.WORKSPACE_NAME }}
-          commit-message: "Update container data for ${{ env.WORKSPACE_NAME }}"
-          branch: update-${{ env.WORKSPACE_NAME }}
+        run: |
+          if [[ $PR_EXISTS -eq 0 ]]; then
+            gh pr create --title "Update container data for $WORKSPACE_NAME" --body "Update container data for $WORKSPACE_NAME" --base main
+          else
+            echo "Pull request already exists. Skipping creation."
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
