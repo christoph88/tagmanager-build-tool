@@ -54,3 +54,4 @@ jobs:
           title: ${{ env.WORKSPACE_NAME }}
           commit-message: "Update container data for ${{ env.WORKSPACE_NAME }}"
           branch: update-${{ env.WORKSPACE_NAME }}
+          update-existing-pull-request: true
