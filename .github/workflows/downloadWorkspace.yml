@@ -1,8 +1,6 @@
 name: Download Workspace
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
     inputs:
       workspace_id:
@@ -49,3 +47,10 @@ jobs:
           WORKSPACE_NAME=$(jq -r '.[].name' workspaces/workspaces.json)
           git commit -m "Update container data for $WORKSPACE_NAME" -a
           git push
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: ${{ env.WORKSPACE_NAME }}
+          commit-message: "Update container data for ${{ env.WORKSPACE_NAME }}"
+          branch: update-${{ env.WORKSPACE_NAME }}
