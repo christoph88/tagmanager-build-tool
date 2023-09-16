@@ -1,10 +1,10 @@
 {
   "tag": [
     {
-      "path": "accounts/6000085367/containers/30089014/workspaces/4/tags/6",
+      "path": "accounts/6000085367/containers/30089014/workspaces/3/tags/6",
       "accountId": "6000085367",
       "containerId": "30089014",
-      "workspaceId": "4",
+      "workspaceId": "3",
       "tagId": "6",
       "name": "cHTML - test",
       "type": "html",
@@ -25,7 +25,7 @@
         "2147479553"
       ],
       "tagFiringOption": "oncePerEvent",
-      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/tags/6?apiLink=tag",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/3/tags/6?apiLink=tag",
       "monitoringMetadata": {
         "type": "map"
       },
@@ -34,10 +34,10 @@
       }
     },
     {
-      "path": "accounts/6000085367/containers/30089014/workspaces/4/tags/5",
+      "path": "accounts/6000085367/containers/30089014/workspaces/3/tags/5",
       "accountId": "6000085367",
       "containerId": "30089014",
-      "workspaceId": "4",
+      "workspaceId": "3",
       "tagId": "5",
       "name": "GA - pageview",
       "type": "ua",
@@ -63,28 +63,7 @@
         "2147479553"
       ],
       "tagFiringOption": "oncePerEvent",
-      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/tags/5?apiLink=tag",
-      "monitoringMetadata": {
-        "type": "map"
-      },
-      "consentSettings": {
-        "consentStatus": "notSet"
-      }
-    },
-    {
-      "path": "accounts/6000085367/containers/30089014/workspaces/4/tags/8",
-      "accountId": "6000085367",
-      "containerId": "30089014",
-      "workspaceId": "4",
-      "tagId": "8",
-      "name": "tag for test template",
-      "type": "cvt_30089014_7",
-      "fingerprint": "1694881493186",
-      "firingTriggerId": [
-        "2147479553"
-      ],
-      "tagFiringOption": "oncePerEvent",
-      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/tags/8?apiLink=tag",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/3/tags/5?apiLink=tag",
       "monitoringMetadata": {
         "type": "map"
       },
