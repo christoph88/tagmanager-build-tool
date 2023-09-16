@@ -6,12 +6,12 @@ on:
   workflow_dispatch:
     inputs:
       workspace_id:
-        description: 'Workspace ID'
+        description: "Workspace ID"
         required: true
 
 jobs:
   download-container:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
       CONTAINER_ID: ${{ secrets.CONTAINER_ID }}
