@@ -1,4 +1,4 @@
-name: Download Workspace and create pull request
+name: Download Workspace and create PR
 
 on:
   workflow_dispatch:
