@@ -34,6 +34,6 @@ jobs:
         run: |
           git config --local user.email "${{ env.USER_EMAIL }}"
           git config --local user.name "${{ env.USER_NAME }}"
-          git add tags.json triggers.json variables.json workspaces.json
+          git add tags/tags.json triggers/triggers.json variables/variables.json workspaces/workspaces.json
           git commit -m "Update container data" -a
           git push
