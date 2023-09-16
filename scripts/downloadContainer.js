@@ -32,6 +32,12 @@ async function downloadContainer() {
       parent,
     });
 
+  const templates =
+    await tagmanager.accounts.containers.workspaces.templates.list({
+      auth: authClient,
+      parent: `accounts/${process.env.ACCOUNT_ID}/containers/${process.env.CONTAINER_ID}/workspaces/${process.env.WORKSPACE_ID}`,
+    });
+
   const workspaces = await tagmanager.accounts.containers.workspaces.list({
     auth: authClient,
     parent: `accounts/${process.env.ACCOUNT_ID}/containers/${process.env.CONTAINER_ID}`,
@@ -45,6 +51,10 @@ async function downloadContainer() {
   await writeFile(
     "variables/variables.json",
     JSON.stringify(variables.data, null, 2)
+  );
+  await writeFile(
+    "templates/templates.json",
+    JSON.stringify(templates.data, null, 2)
   );
   await writeFile(
     "workspaces/workspaces.json",
