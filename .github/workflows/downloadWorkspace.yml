@@ -1,4 +1,4 @@
-name: Download Workspace
+name: Download Workspace and create pull request
 
 on:
   workflow_dispatch:
@@ -45,9 +45,10 @@ jobs:
           git config --local user.name "${{ env.USER_NAME }}"
           git add tags/tags.json triggers/triggers.json variables/variables.json templates/templates.json workspaces/workspaces.json
           WORKSPACE_NAME=$(jq -r '.workspace[] | select(.workspaceId=="'"${WORKSPACE_ID}"'") | .name' workspaces/workspaces.json)
+          git fetch origin
+          git checkout update-$WORKSPACE_NAME || git checkout -b update-$WORKSPACE_NAME
           git commit -m "Update container data for $WORKSPACE_NAME" -a
-          git pull --rebase
-          git push
+          git push origin update-$WORKSPACE_NAME
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
@@ -55,4 +56,3 @@ jobs:
           title: ${{ env.WORKSPACE_NAME }}
           commit-message: "Update container data for ${{ env.WORKSPACE_NAME }}"
           branch: update-${{ env.WORKSPACE_NAME }}
-          update-existing-pull-request: true
