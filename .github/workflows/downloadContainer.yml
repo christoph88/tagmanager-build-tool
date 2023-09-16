@@ -32,9 +32,6 @@ jobs:
       - name: Download container
         run: node ./scripts/downloadContainer.js
 
-      - name: List files
-        run: ls -ahltr
-
       - name: Commit and push changes
         run: |
           git config --local user.email "${{ env.USER_EMAIL }}"
