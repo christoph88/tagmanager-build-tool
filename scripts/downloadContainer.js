@@ -1,4 +1,4 @@
-const { TagManager } = require("@google-cloud/tagmanager");
+import { TagManager } from "@google-cloud/tagmanager";
 const fs = require("fs").promises;
 
 async function downloadContainer() {
