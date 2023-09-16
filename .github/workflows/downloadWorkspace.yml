@@ -46,6 +46,7 @@ jobs:
           echo "Last run at $(date)" > last_run.txt
           git add last_run.txt tags/tags.json triggers/triggers.json variables/variables.json templates/templates.json workspaces/workspaces.json
           WORKSPACE_NAME=$(jq -r '.workspace[] | select(.workspaceId=="'"${WORKSPACE_ID}"'") | .name' workspaces/workspaces.json)
+          WORKSPACE_NAME=${WORKSPACE_NAME// /-} # replace spaces with hyphens
           git fetch origin
           git checkout update-$WORKSPACE_NAME || git checkout -b update-$WORKSPACE_NAME
           git commit -m "Update container data for $WORKSPACE_NAME" -a
