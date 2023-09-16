@@ -1,10 +1,10 @@
 {
   "variable": [
     {
-      "path": "accounts/6000085367/containers/30089014/workspaces/3/variables/4",
+      "path": "accounts/6000085367/containers/30089014/workspaces/4/variables/4",
       "accountId": "6000085367",
       "containerId": "30089014",
-      "workspaceId": "3",
+      "workspaceId": "4",
       "variableId": "4",
       "name": "GA - Tracking-ID",
       "type": "gas",
@@ -56,7 +56,7 @@
         }
       ],
       "fingerprint": "1573806517124",
-      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/3/variables/4?apiLink=variable"
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/variables/4?apiLink=variable"
     }
   ]
 }
