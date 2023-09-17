@@ -1,5 +1,5 @@
-const { readFileSync } = require("fs");
-const { google } = require("googleapis");
+import { readFileSync } from "fs";
+import { google } from "googleapis";
 const tagmanager = google.tagmanager("v2");
 
 async function uploadTag() {
