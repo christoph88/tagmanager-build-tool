@@ -1,0 +1,42 @@
+{
+  "tag": [
+    {
+      "path": "accounts/6000085367/containers/30089014/workspaces/11/tags/5",
+      "accountId": "6000085367",
+      "containerId": "30089014",
+      "workspaceId": "11",
+      "tagId": "5",
+      "name": "GA - pageview",
+      "type": "ua",
+      "parameter": [
+        {
+          "type": "boolean",
+          "key": "overrideGaSettings",
+          "value": "false"
+        },
+        {
+          "type": "template",
+          "key": "trackType",
+          "value": "TRACK_PAGEVIEW"
+        },
+        {
+          "type": "template",
+          "key": "gaSettings",
+          "value": "{{GA - Tracking-ID}}"
+        }
+      ],
+      "fingerprint": "1573806542000",
+      "firingTriggerId": [
+        "2147479553"
+      ],
+      "tagFiringOption": "oncePerEvent",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/11/tags/5?apiLink=tag",
+      "monitoringMetadata": {
+        "type": "map"
+      },
+      "consentSettings": {
+        "consentStatus": "notSet"
+      }
+    }
+  ]
+}
