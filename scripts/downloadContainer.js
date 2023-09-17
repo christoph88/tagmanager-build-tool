@@ -1,5 +1,5 @@
 import { google } from "googleapis";
-import { readFileSync, mkdirSync } from "fs";
+import { readFileSync, mkdirSync, readdirSync, rmdirSync } from "fs";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 
@@ -28,11 +28,29 @@ async function downloadContainer() {
     JSON.stringify(workspaces.data, null, 2)
   );
 
+  // check and delete non-existing workspaces
+  const workspaceFolders = readdirSync("workspaces");
+  const workspaceIds = workspaces.data.workspace.map(
+    (workspace) => workspace.workspaceId
+  );
+  for (const folder of workspaceFolders) {
+    const folderId = folder.split("-")[0];
+    if (!workspaceIds.includes(folderId)) {
+      rmdirSync(join("workspaces", folder), { recursive: true });
+    }
+  }
+
   // look through the workspaces
   for (const workspace of workspaces.data.workspace) {
     const workspaceParent = `${parent}/workspaces/${workspace.workspaceId}`;
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
     mkdirSync(workspaceDir, { recursive: true });
+
+    // create description.md file in each workspace folder
+    await writeFile(
+      join(workspaceDir, "description.md"),
+      workspace.description
+    );
 
     // tags
     const tags = await tagmanager.accounts.containers.workspaces.tags.list({
