@@ -70,11 +70,13 @@ async function downloadContainer() {
       mkdirSync(workspaceDir, { recursive: true });
     }
 
-    // create description.md file in each workspace folder
-    await writeFile(
-      join(workspaceDir, "description.md"),
-      workspace.description
-    );
+    // create description.md file in each workspace folder only if a description is present
+    if (workspace.description) {
+      await writeFile(
+        join(workspaceDir, "description.md"),
+        workspace.description
+      );
+    }
 
     // tags
     const tags = await tagmanager.accounts.containers.workspaces.tags.list({
