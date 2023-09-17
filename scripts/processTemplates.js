@@ -5,17 +5,11 @@ const processTemplates = (directory) => {
   // Check if the templates directory exists in the current directory
   const templatesDir = directory;
   if (fs.existsSync(templatesDir)) {
-    // Read all template files in the directory
-    const templateFiles = fs
-      .readdirSync(templatesDir)
-      .filter((file) => file.endsWith(".js"));
-
-    templateFiles.forEach((templateFile) => {
+    // Check if templates.json exists in the directory
+    const templateFile = path.join(templatesDir, "templates.json");
+    if (fs.existsSync(templateFile)) {
       // Read the template file
-      const data = fs.readFileSync(
-        path.join(templatesDir, templateFile),
-        "utf8"
-      );
+      const data = fs.readFileSync(templateFile, "utf8");
 
       // Extract the sandboxed JavaScript code using a regular expression
       const sandboxedJsMatch = data.match(
@@ -25,12 +19,12 @@ const processTemplates = (directory) => {
         const sandboxedJs = sandboxedJsMatch[1];
 
         // Write the sandboxed JavaScript code to a new JavaScript file with the template name as the filename
-        const filename = `${templateFile.replace(/\.js$/, "_sandboxed.js")}`;
+        const filename = `${templateFile.replace(/\.json$/, "_sandboxed.js")}`;
         fs.writeFileSync(path.join(templatesDir, filename), sandboxedJs);
       } else {
         console.log(`No sandboxed JavaScript found in ${templateFile}`);
       }
-    });
+    }
   }
 };
 
