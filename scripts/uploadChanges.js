@@ -31,7 +31,7 @@ async function uploadTag() {
     // Create or update each tag
     for (const tag of tags.tag) {
       // Construct the tag object to match the Google Tag Manager API request format
-      requestTag = {
+      const requestTag = {
         name: tag.name,
         type: tag.type,
         parameter: tag.parameter.map((param) => {
