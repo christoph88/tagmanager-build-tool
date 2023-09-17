@@ -42,6 +42,11 @@ async function downloadContainer() {
   const workspaceIds = workspaces.data.workspace.map(
     (workspace) => workspace.workspaceId
   );
+
+  // Log workspace IDs and folders for debugging
+  console.log("Workspace IDs: ", workspaceIds);
+  console.log("Workspace Folders: ", workspaceFolders);
+
   for (const folder of workspaceFolders) {
     const folderId = folder.split("-")[0];
     if (!workspaceIds.includes(folderId)) {
