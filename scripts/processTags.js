@@ -1,14 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
-// Get all directories in the workspaces directory
-const workspaces = fs
-  .readdirSync("workspaces")
-  .filter((file) => fs.statSync(path.join("workspaces", file)).isDirectory());
-
-workspaces.forEach((workspace) => {
-  // Check if the tags directory exists in the current workspace
-  const tagsDir = path.join("workspaces", workspace, "tags");
+const processTags = (directory) => {
+  // Check if the tags directory exists in the current directory
+  const tagsDir = path.join(directory, "tags");
   if (fs.existsSync(tagsDir)) {
     // Read the JSON file
     const data = fs.readFileSync(path.join(tagsDir, "tags.json"));
@@ -16,7 +11,7 @@ workspaces.forEach((workspace) => {
 
     // Loop through all tags
     json.tag.forEach((tag) => {
-      // Filter out the ones which have type "template" and key "html"
+      // Filter out the ones which have type 'template' and key 'html'
       const htmlParameter = tag.parameter?.find(
         (p) => p.type === "template" && p.key === "html"
       );
@@ -34,4 +29,6 @@ workspaces.forEach((workspace) => {
       }
     });
   }
-});
+};
+
+export default processTags;

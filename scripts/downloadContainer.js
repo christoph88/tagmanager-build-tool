@@ -9,6 +9,9 @@ import {
 } from "fs";
 import { writeFile } from "fs/promises";
 import { join } from "path";
+import processTags from "./processTags.js";
+import processVariables from "./processVariables.js";
+import processTemplates from "./processTemplates.js";
 
 const tagmanager = google.tagmanager("v2");
 
@@ -95,19 +98,8 @@ async function downloadContainer() {
       join(tagsDir, "tags.json"),
       JSON.stringify(tags.data, null, 2)
     );
-
-    // triggers
-    const triggers =
-      await tagmanager.accounts.containers.workspaces.triggers.list({
-        auth: authClient,
-        parent: workspaceParent,
-      });
-    const triggersDir = join(workspaceDir, "triggers");
-    mkdirSync(triggersDir, { recursive: true });
-    await writeFile(
-      join(triggersDir, "triggers.json"),
-      JSON.stringify(triggers.data, null, 2)
-    );
+    // Process tags
+    processTags(tagsDir);
 
     // variables
     const variables =
@@ -121,6 +113,8 @@ async function downloadContainer() {
       join(variablesDir, "variables.json"),
       JSON.stringify(variables.data, null, 2)
     );
+    // Process variables
+    processVariables(variablesDir);
 
     // templates
     const templates =
@@ -134,6 +128,8 @@ async function downloadContainer() {
       join(templatesDir, "templates.json"),
       JSON.stringify(templates.data, null, 2)
     );
+    // Process templates
+    processTemplates(templatesDir);
   }
 }
 
