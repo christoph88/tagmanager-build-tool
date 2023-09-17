@@ -61,10 +61,10 @@ async function downloadContainer() {
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
 
     // rename workspaces if they changed name
-    if (readdirSync("workspaces").includes(workspaceDir)) {
-      const oldWorkspaceDir = workspaceFolders.find((folder) =>
-        folder.startsWith(`${workspace.workspaceId}-`)
-      );
+    const oldWorkspaceDir = workspaceFolders.find((folder) =>
+      folder.startsWith(`${workspace.workspaceId}-`)
+    );
+    if (oldWorkspaceDir) {
       renameSync(
         join("workspaces", oldWorkspaceDir),
         join("workspaces", workspaceDir)
