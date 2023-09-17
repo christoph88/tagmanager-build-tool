@@ -22,7 +22,7 @@ async function uploadTag() {
     // Load the tag from a JSON file
     const tag = JSON.parse(
       readFileSync(
-        `workspaces/${workspace.workspaceId}-${workspace.name}/tags/tag.json`,
+        `workspaces/${workspace.workspaceId}-${workspace.name}/tags/tags.json`,
         "utf8"
       )
     );
