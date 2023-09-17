@@ -65,14 +65,16 @@ async function downloadContainer() {
       folder.startsWith(`${workspace.workspaceId}-`)
     );
     if (oldWorkspaceDir) {
-      renameSync(
-        join("workspaces", oldWorkspaceDir),
-        join("workspaces", workspaceDir)
-      );
+      const newWorkspacePath = join("workspaces", workspaceDir);
+      // If the new workspace directory already exists, do not delete it
+      if (!readdirSync("workspaces").includes(workspaceDir)) {
+        mkdirSync(newWorkspacePath, { recursive: true });
+      }
+      // Rename the old workspace directory to the new workspace directory
+      renameSync(join("workspaces", oldWorkspaceDir), newWorkspacePath);
     } else {
       mkdirSync(workspaceDir, { recursive: true });
     }
-
     // create description.md file in each workspace folder only if a description is present
     if (workspace.description) {
       await writeFile(
