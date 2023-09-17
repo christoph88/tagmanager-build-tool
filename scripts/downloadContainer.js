@@ -21,6 +21,13 @@ async function downloadContainer() {
     parent,
   });
 
+  // write workspaces to file in the workspaces folder
+  mkdirSync("workspaces", { recursive: true });
+  await writeFile(
+    join("workspaces", "workspaces.json"),
+    JSON.stringify(workspaces.data, null, 2)
+  );
+
   // look through the workspaces
   for (const workspace of workspaces.data.workspace) {
     const workspaceParent = `${parent}/workspaces/${workspace.workspaceId}`;
