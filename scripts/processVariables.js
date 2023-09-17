@@ -3,7 +3,7 @@ import path from "path";
 
 const processVariables = (directory) => {
   // Check if the variables directory exists in the current directory
-  const variablesDir = path.join(directory, "variables");
+  const variablesDir = directory;
   if (fs.existsSync(variablesDir)) {
     // Read the JSON file
     const data = fs.readFileSync(path.join(variablesDir, "variables.json"));
