@@ -31,7 +31,7 @@ async function uploadTag() {
     // Create or update each tag
     for (const tag of tags.tag) {
       // Construct the tag object to match the Google Tag Manager API request format
-      tag = {
+      requestTag = {
         name: tag.name,
         type: tag.type,
         parameter: tag.parameter.map((param) => {
@@ -49,7 +49,7 @@ async function uploadTag() {
         await tagmanager.accounts.containers.workspaces.tags.create({
           auth: authClient,
           parent: workspacePath,
-          requestBody: tag,
+          requestBody: requestTag,
         });
         console.log(`Tag ${tag.name} uploaded successfully.`);
       } catch (error) {
