@@ -24,11 +24,16 @@ async function uploadTag() {
 
     // Create or update each tag
     for (const tag of tags.tag) {
-      await tagmanager.accounts.containers.workspaces.tags.create({
-        auth: authClient,
-        parent: workspacePath,
-        requestBody: tag,
-      });
+      try {
+        await tagmanager.accounts.containers.workspaces.tags.create({
+          auth: authClient,
+          parent: workspacePath,
+          requestBody: tag,
+        });
+        console.log(`Tag ${tag.name} uploaded successfully.`);
+      } catch (error) {
+        console.error(`Failed to upload tag ${tag.name}:`, error);
+      }
     }
   }
 }
