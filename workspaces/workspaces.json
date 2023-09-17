@@ -1,0 +1,22 @@
+{
+  "workspace": [
+    {
+      "path": "accounts/6000085367/containers/30089014/workspaces/4",
+      "accountId": "6000085367",
+      "containerId": "30089014",
+      "workspaceId": "4",
+      "name": "Workspace for testing PRs",
+      "fingerprint": "1694895606819",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4?apiLink=workspace"
+    },
+    {
+      "path": "accounts/6000085367/containers/30089014/workspaces/3",
+      "accountId": "6000085367",
+      "containerId": "30089014",
+      "workspaceId": "3",
+      "name": "Default Workspace",
+      "fingerprint": "1694847437667",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/3?apiLink=workspace"
+    }
+  ]
+}
