@@ -1,6 +1,7 @@
 import { google } from "googleapis";
-import { readFileSync } from "fs";
+import { readFileSync, mkdirSync } from "fs";
 import { writeFile } from "fs/promises";
+import { join } from "path";
 
 const tagmanager = google.tagmanager("v2");
 
@@ -13,53 +14,66 @@ async function downloadContainer() {
 
   const authClient = await auth.getClient();
 
-  const parent = `accounts/${process.env.ACCOUNT_ID}/containers/${process.env.CONTAINER_ID}/workspaces/${process.env.WORKSPACE_ID}`;
-
-  const tags = await tagmanager.accounts.containers.workspaces.tags.list({
+  // get all workspaces
+  const parent = `accounts/${process.env.ACCOUNT_ID}/containers/${process.env.CONTAINER_ID}`;
+  const workspaces = await tagmanager.accounts.containers.workspaces.list({
     auth: authClient,
     parent,
   });
 
-  const triggers =
-    await tagmanager.accounts.containers.workspaces.triggers.list({
+  // look through the workspaces
+  for (const workspace of workspaces.data.workspace) {
+    const workspaceParent = `${parent}/workspaces/${workspace.workspaceId}`;
+    const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
+    mkdirSync(workspaceDir, { recursive: true });
+
+    // tags
+    const tags = await tagmanager.accounts.containers.workspaces.tags.list({
       auth: authClient,
-      parent,
+      parent: workspaceParent,
     });
+    mkdirSync(workspaceDir + "/tags", { recursive: true });
+    await writeFile(
+      join(workspaceDir, "tags.json"),
+      JSON.stringify(tags.data, null, 2)
+    );
 
-  const variables =
-    await tagmanager.accounts.containers.workspaces.variables.list({
-      auth: authClient,
-      parent,
-    });
+    // triggers
+    const triggers =
+      await tagmanager.accounts.containers.workspaces.triggers.list({
+        auth: authClient,
+        parent: workspaceParent,
+      });
+    mkdirSync(workspaceDir + "/triggers", { recursive: true });
+    await writeFile(
+      join(workspaceDir, "triggers.json"),
+      JSON.stringify(triggers.data, null, 2)
+    );
 
-  const templates =
-    await tagmanager.accounts.containers.workspaces.templates.list({
-      auth: authClient,
-      parent: `accounts/${process.env.ACCOUNT_ID}/containers/${process.env.CONTAINER_ID}/workspaces/${process.env.WORKSPACE_ID}`,
-    });
+    // variables
+    const variables =
+      await tagmanager.accounts.containers.workspaces.variables.list({
+        auth: authClient,
+        parent: workspaceParent,
+      });
+    mkdirSync(workspaceDir + "/variables", { recursive: true });
+    await writeFile(
+      join(workspaceDir, "variables.json"),
+      JSON.stringify(variables.data, null, 2)
+    );
 
-  const workspaces = await tagmanager.accounts.containers.workspaces.list({
-    auth: authClient,
-    parent: `accounts/${process.env.ACCOUNT_ID}/containers/${process.env.CONTAINER_ID}`,
-  });
-
-  await writeFile("tags/tags.json", JSON.stringify(tags.data, null, 2));
-  await writeFile(
-    "triggers/triggers.json",
-    JSON.stringify(triggers.data, null, 2)
-  );
-  await writeFile(
-    "variables/variables.json",
-    JSON.stringify(variables.data, null, 2)
-  );
-  await writeFile(
-    "templates/templates.json",
-    JSON.stringify(templates.data, null, 2)
-  );
-  await writeFile(
-    "workspaces/workspaces.json",
-    JSON.stringify(workspaces.data, null, 2)
-  );
+    // templates
+    const templates =
+      await tagmanager.accounts.containers.workspaces.templates.list({
+        auth: authClient,
+        parent: workspaceParent,
+      });
+    mkdirSync(workspaceDir + "/templates", { recursive: true });
+    await writeFile(
+      join(workspaceDir, "templates.json"),
+      JSON.stringify(templates.data, null, 2)
+    );
+  }
 }
 
 downloadContainer().catch(console.error);
