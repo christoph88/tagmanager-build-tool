@@ -3,7 +3,7 @@ import path from "path";
 
 const processTemplates = (directory) => {
   // Check if the templates directory exists in the current directory
-  const templatesDir = path.join(directory, "templates");
+  const templatesDir = directory;
   if (fs.existsSync(templatesDir)) {
     // Read all template files in the directory
     const templateFiles = fs
