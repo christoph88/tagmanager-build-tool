@@ -1,15 +1,6 @@
 {
   "workspace": [
     {
-      "path": "accounts/6000085367/containers/30089014/workspaces/10",
-      "accountId": "6000085367",
-      "containerId": "30089014",
-      "workspaceId": "10",
-      "name": "delete me",
-      "fingerprint": "1694943466106",
-      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/10?apiLink=workspace"
-    },
-    {
       "path": "accounts/6000085367/containers/30089014/workspaces/9",
       "accountId": "6000085367",
       "containerId": "30089014",
