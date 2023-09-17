@@ -1,4 +1,4 @@
-name: Run uploadChanges on PR merge to master
+name: Upload changes to container
 
 on:
   pull_request:
