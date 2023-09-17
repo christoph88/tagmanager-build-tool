@@ -1,5 +1,5 @@
 import { google } from "googleapis";
-import { readFileSync, mkdirSync, readdirSync, rmdirSync } from "fs";
+import { readFileSync, mkdirSync, readdirSync, rmdirSync, statSync } from "fs";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 
