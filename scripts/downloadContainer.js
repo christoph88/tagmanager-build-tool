@@ -47,6 +47,7 @@ async function downloadContainer() {
   console.log("Workspace IDs: ", workspaceIds);
   console.log("Workspace Folders: ", workspaceFolders);
 
+  // remove workspaces if they are not active in tagmanager
   for (const folder of workspaceFolders) {
     const folderId = folder.split("-")[0];
     if (!workspaceIds.includes(folderId)) {
@@ -58,6 +59,8 @@ async function downloadContainer() {
   for (const workspace of workspaces.data.workspace) {
     const workspaceParent = `${parent}/workspaces/${workspace.workspaceId}`;
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
+
+    // rename workspaces if they changed name
     if (readdirSync("workspaces").includes(workspaceDir)) {
       const oldWorkspaceDir = workspaceFolders.find((folder) =>
         folder.startsWith(`${workspace.workspaceId}-`)
