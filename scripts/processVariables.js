@@ -16,7 +16,7 @@ const processVariables = async (directory) => {
 
       // Loop through all variables
       Promise.all(
-        json.variable.map(async (variable) => {
+        json?.variable.map(async (variable) => {
           // Filter out the ones which have type 'jsm'
           if (variable.type === "jsm") {
             // Find the parameter with type 'template' and key 'javascript'

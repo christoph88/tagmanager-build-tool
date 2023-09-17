@@ -19,7 +19,7 @@ const processTemplates = async (directory) => {
 
         // Loop through all templates
         Promise.all(
-          json.template.map(async (template) => {
+          json?.template.map(async (template) => {
             // Get the template data
             const templateData = template.templateData;
 
