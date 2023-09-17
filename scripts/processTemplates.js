@@ -19,8 +19,8 @@ const processTemplates = (directory) => {
 
         // Write the template data to a file
         fs.writeFileSync(
-          path.join(templatesDir, `${template.name}.json`),
-          JSON.stringify(templateData, null, 2)
+          path.join(templatesDir, `${template.name}.tpl`),
+          templateData
         );
       });
     }
