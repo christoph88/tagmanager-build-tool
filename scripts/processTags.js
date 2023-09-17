@@ -7,6 +7,7 @@ const writeFile = util.promisify(fs.writeFile);
 const processTags = async (directory) => {
   // Check if the tags directory exists in the current directory
   const tagsDir = directory;
+  console.log(tagsDir);
   if (fs.existsSync(tagsDir)) {
     // Read the JSON file
     const data = fs.readFileSync(path.join(tagsDir, "tags.json"));

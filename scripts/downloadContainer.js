@@ -87,7 +87,7 @@ async function downloadContainer() {
       );
     }
 
-    console.log(workspace.name);
+    console.log("Processing ${workspace.workspaceId + workspace.name}.");
 
     // tags
     const tags = await tagmanager.accounts.containers.workspaces.tags.list({
@@ -95,7 +95,6 @@ async function downloadContainer() {
       parent: workspaceParent,
     });
     const tagsDir = join(workspaceDir, "tags");
-    console.log(tagsDir);
     mkdirSync(tagsDir, { recursive: true });
     await writeFile(
       join(tagsDir, "tags.json"),

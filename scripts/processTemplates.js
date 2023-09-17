@@ -8,6 +8,7 @@ const processTemplates = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the templates directory exists in the current directory
     const templatesDir = directory;
+    console.log(templatesDir);
     if (fs.existsSync(templatesDir)) {
       // Check if templates.json exists in the directory
       const templateFile = path.join(templatesDir, "templates.json");

@@ -8,6 +8,7 @@ const processVariables = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const variablesDir = directory;
+    console.log(variablesDir);
     if (fs.existsSync(variablesDir)) {
       // Read the JSON file
       const data = fs.readFileSync(path.join(variablesDir, "variables.json"));
