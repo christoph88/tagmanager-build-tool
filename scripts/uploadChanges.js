@@ -1,8 +1,3 @@
-import { google } from "googleapis";
-import { readFileSync } from "fs";
-
-const tagmanager = google.tagmanager("v2");
-
 async function uploadTag() {
   const credentials = JSON.parse(readFileSync("./gcp-sa-key.json"));
   const auth = new google.auth.GoogleAuth({
@@ -19,21 +14,21 @@ async function uploadTag() {
   for (const workspace of workspaces.workspace) {
     const workspacePath = `accounts/${workspace.accountId}/containers/${workspace.containerId}/workspaces/${workspace.workspaceId}`;
 
-    // Load the tag from a JSON file
-    const tag = JSON.parse(
+    // Load the tags from a JSON file
+    const tags = JSON.parse(
       readFileSync(
         `workspaces/${workspace.workspaceId}-${workspace.name}/tags/tags.json`,
         "utf8"
       )
     );
 
-    // Create or update the tag
-    await tagmanager.accounts.containers.workspaces.tags.create({
-      auth: authClient,
-      parent: workspacePath,
-      requestBody: tag,
-    });
+    // Create or update each tag
+    for (const tag of tags.tag) {
+      await tagmanager.accounts.containers.workspaces.tags.create({
+        auth: authClient,
+        parent: workspacePath,
+        requestBody: tag,
+      });
+    }
   }
 }
-
-uploadTag().catch(console.error);
