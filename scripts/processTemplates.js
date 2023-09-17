@@ -1,14 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
-// Get all directories in the workspaces directory
-const workspaces = fs
-  .readdirSync("workspaces")
-  .filter((file) => fs.statSync(path.join("workspaces", file)).isDirectory());
-
-workspaces.forEach((workspace) => {
-  // Check if the templates directory exists in the current workspace
-  const templatesDir = path.join("workspaces", workspace, "templates");
+const processTemplates = (directory) => {
+  // Check if the templates directory exists in the current directory
+  const templatesDir = path.join(directory, "templates");
   if (fs.existsSync(templatesDir)) {
     // Read all template files in the directory
     const templateFiles = fs
@@ -37,4 +32,6 @@ workspaces.forEach((workspace) => {
       }
     });
   }
-});
+};
+
+export default processTemplates;
