@@ -30,7 +30,7 @@ workspaces.forEach((workspace) => {
 
         // Write the value to a new JavaScript file with the tag name as the filename
         const filename = `${tag.name.replace(/ /g, "_")}.js`;
-        fs.writeFileSync(path.join(__dirname, filename), scriptContent);
+        fs.writeFileSync(path.join(tagsDir, filename), scriptContent);
       }
     });
   }
