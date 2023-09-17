@@ -42,5 +42,4 @@ jobs:
           git config --local user.email "${{ env.USER_EMAIL }}"
           git config --local user.name "${{ env.USER_NAME }}"
           git add -A workspaces/
-          git commit -m "Download all container workspace data: ${{ env.WORKSPACES_INFO }}" -a
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Download all container workspace data: ${{ env.WORKSPACES_INFO }}" -a && git push)
