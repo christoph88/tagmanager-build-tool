@@ -17,25 +17,30 @@ const processTemplates = async (directory) => {
         const data = fs.readFileSync(templateFile, "utf8");
         const json = JSON.parse(data);
 
-        // Loop through all templates
-        Promise.all(
-          json?.template.map(async (template) => {
-            // Get the template data
-            const templateData = template.templateData;
+        // Check if json.template exists before proceeding
+        if (json.template) {
+          // Loop through all templates
+          Promise.all(
+            json.template.map(async (template) => {
+              // Get the template data
+              const templateData = template.templateData;
 
-            // Write the template data to a file
-            await writeFile(
-              path.join(templatesDir, `${template.name}.tpl`),
-              templateData
-            );
-          })
-        )
-          .then(() => {
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
+              // Write the template data to a file
+              await writeFile(
+                path.join(templatesDir, `${template.name}.tpl`),
+                templateData
+              );
+            })
+          )
+            .then(() => {
+              resolve();
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        } else {
+          resolve();
+        }
       }
     }
   });
