@@ -48,8 +48,11 @@ async function uploadTag() {
           : [],
       };
       try {
+        // TODO remove this log
+        console.log(workspacePath);
         await tagmanager.accounts.containers.workspaces.tags.create({
           auth: authClient,
+          // TODO error lies here in the parent
           parent: workspacePath + tag.tagId,
           requestBody: requestTag,
         });
