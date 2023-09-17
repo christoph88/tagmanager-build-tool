@@ -30,6 +30,9 @@ async function uploadTag() {
 
     // Create or update each tag
     for (const tag of tags.tag) {
+      // Remove the 'path' field from the tag data
+      delete tag.path;
+
       try {
         await tagmanager.accounts.containers.workspaces.tags.create({
           auth: authClient,
