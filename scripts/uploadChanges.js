@@ -1,3 +1,7 @@
+const { readFileSync } = require("fs");
+const { google } = require("googleapis");
+const tagmanager = google.tagmanager("v2");
+
 async function uploadTag() {
   const credentials = JSON.parse(readFileSync("./gcp-sa-key.json"));
   const auth = new google.auth.GoogleAuth({
