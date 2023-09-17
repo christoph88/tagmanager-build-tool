@@ -65,7 +65,7 @@ async function downloadContainer() {
       folder.startsWith(`${workspace.workspaceId}-`)
     );
     if (oldWorkspaceDir) {
-      const newWorkspacePath = join("workspaces", workspaceDir);
+      const newWorkspacePath = workspaceDir;
       // If the new workspace directory already exists, do not delete it
       if (!readdirSync("workspaces").includes(workspaceDir)) {
         mkdirSync(newWorkspacePath, { recursive: true });
@@ -75,6 +75,7 @@ async function downloadContainer() {
     } else {
       mkdirSync(workspaceDir, { recursive: true });
     }
+
     // create description.md file in each workspace folder only if a description is present
     if (workspace.description) {
       await writeFile(
