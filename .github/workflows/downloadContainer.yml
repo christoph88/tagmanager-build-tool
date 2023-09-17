@@ -1,4 +1,4 @@
-name: Download Container
+name: Download Container Workspaces
 
 on:
   workflow_dispatch:
@@ -9,7 +9,6 @@ jobs:
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
       CONTAINER_ID: ${{ secrets.CONTAINER_ID }}
-      WORKSPACE_ID: ${{ secrets.WORKSPACE_ID }}
       USER_EMAIL: ${{ secrets.USER_EMAIL }}
       USER_NAME: ${{ secrets.USER_NAME }}
       GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
@@ -37,5 +36,5 @@ jobs:
           git config --local user.email "${{ env.USER_EMAIL }}"
           git config --local user.name "${{ env.USER_NAME }}"
           git add workspaces/**
-          git commit -m "Download container data from the default workspace" -a
+          git commit -m "Download all container workspace data" -a
           git push
