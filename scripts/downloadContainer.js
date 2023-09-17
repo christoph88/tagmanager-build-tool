@@ -39,9 +39,10 @@ async function downloadContainer() {
       auth: authClient,
       parent: workspaceParent,
     });
-    mkdirSync(workspaceDir + "/tags", { recursive: true });
+    const tagsDir = join(workspaceDir, "tags");
+    mkdirSync(tagsDir, { recursive: true });
     await writeFile(
-      join(workspaceDir, "tags.json"),
+      join(tagsDir, "tags.json"),
       JSON.stringify(tags.data, null, 2)
     );
 
@@ -51,9 +52,10 @@ async function downloadContainer() {
         auth: authClient,
         parent: workspaceParent,
       });
-    mkdirSync(workspaceDir + "/triggers", { recursive: true });
+    const triggersDir = join(workspaceDir, "triggers");
+    mkdirSync(triggersDir, { recursive: true });
     await writeFile(
-      join(workspaceDir, "triggers.json"),
+      join(triggersDir, "triggers.json"),
       JSON.stringify(triggers.data, null, 2)
     );
 
@@ -63,9 +65,10 @@ async function downloadContainer() {
         auth: authClient,
         parent: workspaceParent,
       });
-    mkdirSync(workspaceDir + "/variables", { recursive: true });
+    const variablesDir = join(workspaceDir, "variables");
+    mkdirSync(variablesDir, { recursive: true });
     await writeFile(
-      join(workspaceDir, "variables.json"),
+      join(variablesDir, "variables.json"),
       JSON.stringify(variables.data, null, 2)
     );
 
@@ -75,9 +78,10 @@ async function downloadContainer() {
         auth: authClient,
         parent: workspaceParent,
       });
-    mkdirSync(workspaceDir + "/templates", { recursive: true });
+    const templatesDir = join(workspaceDir, "templates");
+    mkdirSync(templatesDir, { recursive: true });
     await writeFile(
-      join(workspaceDir, "templates.json"),
+      join(templatesDir, "templates.json"),
       JSON.stringify(templates.data, null, 2)
     );
   }
