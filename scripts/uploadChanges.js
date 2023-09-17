@@ -50,7 +50,7 @@ async function uploadTag() {
       try {
         await tagmanager.accounts.containers.workspaces.tags.create({
           auth: authClient,
-          parent: workspacePath + "/tags/" + tag.tagId,
+          parent: workspacePath + tag.tagId,
           requestBody: requestTag,
         });
         console.log(`Tag ${tag.name} uploaded successfully.`);
