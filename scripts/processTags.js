@@ -40,6 +40,8 @@ const processTags = async (directory) => {
               });
           }
         }
+      } else {
+        resolve();
       }
     }
   });

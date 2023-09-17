@@ -15,34 +15,38 @@ const processVariables = async (directory) => {
       const json = JSON.parse(data);
 
       // Loop through all variables
-      Promise.all(
-        json?.variable.map(async (variable) => {
-          // Filter out the ones which have type 'jsm'
-          if (variable.type === "jsm") {
-            // Find the parameter with type 'template' and key 'javascript'
-            const jsParameter = variable.parameter?.find(
-              (p) => p.type === "template" && p.key === "javascript"
-            );
-
-            if (jsParameter) {
-              // Write the value to a new JavaScript file with the variable name as the filename
-              const filename = `${variable.name.replace(/ /g, "_")}.js`;
-              await writeFile(
-                path.join(variablesDir, filename),
-                jsParameter.value
+      if (json.variable) {
+        Promise.all(
+          json.variable.map(async (variable) => {
+            // Filter out the ones which have type 'jsm'
+            if (variable.type === "jsm") {
+              // Find the parameter with type 'template' and key 'javascript'
+              const jsParameter = variable.parameter?.find(
+                (p) => p.type === "template" && p.key === "javascript"
               );
-              return;
+
+              if (jsParameter) {
+                // Write the value to a new JavaScript file with the variable name as the filename
+                const filename = `${variable.name.replace(/ /g, "_")}.js`;
+                await writeFile(
+                  path.join(variablesDir, filename),
+                  jsParameter.value
+                );
+                return;
+              }
             }
-          }
-          await Promise.resolve();
-        })
-      )
-        .then(() => {
-          resolve();
-        })
-        .catch((error) => {
-          reject(error);
-        });
+            await Promise.resolve();
+          })
+        )
+          .then(() => {
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      } else {
+        resolve();
+      }
     } else {
       reject("Directory does not exist");
     }
