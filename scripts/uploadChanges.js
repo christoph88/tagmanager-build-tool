@@ -34,13 +34,15 @@ async function uploadTag() {
       const requestTag = {
         name: tag.name,
         type: tag.type,
-        parameter: tag.parameter.map((param) => {
-          return {
-            type: param.type,
-            key: param.key,
-            value: param.value,
-          };
-        }),
+        parameter: tag.parameter
+          ? tag.parameter.map((param) => {
+              return {
+                type: param.type,
+                key: param.key,
+                value: param.value,
+              };
+            })
+          : [],
         firingTriggerId: tag.firingTriggerId
           ? tag.firingTriggerId.map(String)
           : [],
@@ -58,5 +60,4 @@ async function uploadTag() {
     }
   }
 }
-
 uploadTag();
