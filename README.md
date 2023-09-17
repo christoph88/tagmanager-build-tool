@@ -24,9 +24,8 @@ This project was created using `bun init` in bun v1.0.1. [Bun](https://bun.sh) i
 
 ## Sync
 
-1. get default workspace in master > daily run or manual trigger
-2. run gh actions with workspace id and create pull request
-3. on merge with master upload changes to tagmanager
+1. get default workspace in master > daily run or manual trigger, downloads all workspaces
+3. on merge with master upload changes to tagmanager depending on which workspace files has been adapted
 
 ## Edit
 
@@ -42,4 +41,4 @@ This project was created using `bun init` in bun v1.0.1. [Bun](https://bun.sh) i
 ### On merge with master
 
 4. on merge with master import the values from the js files back to the main json
-5. upload main json so tagmanager is updated
+5. upload main json so tagmanager is updated, do this based on which workspace files are adapted
