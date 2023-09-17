@@ -99,7 +99,7 @@ async function downloadContainer() {
       JSON.stringify(tags.data, null, 2)
     );
     // Process tags
-    processTags(tagsDir);
+    await processTags(tagsDir);
 
     // variables
     const variables =
@@ -114,7 +114,7 @@ async function downloadContainer() {
       JSON.stringify(variables.data, null, 2)
     );
     // Process variables
-    processVariables(variablesDir);
+    await processVariables(variablesDir);
 
     // templates
     const templates =
@@ -129,7 +129,7 @@ async function downloadContainer() {
       JSON.stringify(templates.data, null, 2)
     );
     // Process templates
-    processTemplates(templatesDir);
+    await processTemplates(templatesDir);
   }
 }
 

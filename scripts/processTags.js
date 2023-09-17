@@ -1,7 +1,10 @@
 import fs from "fs";
 import path from "path";
+import util from "util";
 
-const processTags = (directory) => {
+const writeFile = util.promisify(fs.writeFile);
+
+const processTags = async (directory) => {
   // Check if the tags directory exists in the current directory
   const tagsDir = directory;
   if (fs.existsSync(tagsDir)) {
@@ -10,7 +13,7 @@ const processTags = (directory) => {
     const json = JSON.parse(data);
 
     // Loop through all tags
-    json.tag.forEach((tag) => {
+    for (const tag of json.tag) {
       // Filter out the ones which have type 'template' and key 'html'
       const htmlParameter = tag.parameter?.find(
         (p) => p.type === "template" && p.key === "html"
@@ -25,9 +28,9 @@ const processTags = (directory) => {
 
         // Write the value to a new JavaScript file with the tag name as the filename
         const filename = `${tag.name.replace(/ /g, "_")}.js`;
-        fs.writeFileSync(path.join(tagsDir, filename), scriptContent);
+        await writeFile(path.join(tagsDir, filename), scriptContent);
       }
-    });
+    }
   }
 };
 
