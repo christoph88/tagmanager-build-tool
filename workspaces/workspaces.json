@@ -14,9 +14,9 @@
       "accountId": "6000085367",
       "containerId": "30089014",
       "workspaceId": "7",
-      "name": "this is a workspace that needs to be deleted - rename",
+      "name": "this is a workspace that needs to be deleted",
       "description": "we need to delete this workspace",
-      "fingerprint": "1694940030453",
+      "fingerprint": "1694941405327",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/7?apiLink=workspace"
     },
     {
