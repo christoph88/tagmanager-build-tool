@@ -32,10 +32,14 @@ jobs:
       - name: Download container
         run: node ./scripts/downloadContainer.js
 
+      - name: Extract workspace info and set as env variable
+        run: |
+          echo "WORKSPACES_INFO=$(jq -r '.workspace[] | "\(.name): \(.description)"' workspaces/workspaces.json | tr '\n' ', ')" >> $GITHUB_ENV
+
       - name: Commit and push changes
         run: |
           git config --local user.email "${{ env.USER_EMAIL }}"
           git config --local user.name "${{ env.USER_NAME }}"
           git add -A workspaces/
-          git commit -m "Download all container workspace data" -a
+          git commit -m "Download all container workspace data: ${{ env.WORKSPACES_INFO }}" -a
           git push
