@@ -9,9 +9,11 @@ async function uploadTag() {
 
   // get all active workspaces
   const workspaces = JSON.parse(readFileSync("workspaces/workspaces.json"));
+  console.log(workspaces);
 
   // iterate over workspaces and upload a new version of a tag
   for (const workspace of workspaces.workspace) {
+    console.log(`Uploading ${workspace.workspaceId} - ${workspace.name}`);
     const workspacePath = `accounts/${workspace.accountId}/containers/${workspace.containerId}/workspaces/${workspace.workspaceId}`;
 
     // Load the tags from a JSON file
