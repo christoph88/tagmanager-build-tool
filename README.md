@@ -33,6 +33,9 @@ This project was created using `bun init` in bun v1.0.1. [Bun](https://bun.sh) i
 ### On pull request creation
 
 1. Get json files from tags, triggers, variables and custom templates
+
+- save those files to a workspace number subfolder, or they will keep overwriting the default workspace.
+
 2. Filter out only html entities
 3. export the values to seperate js files
 
