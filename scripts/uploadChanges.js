@@ -30,14 +30,21 @@ async function uploadTag() {
 
     // Create or update each tag
     for (const tag of tags.tag) {
-      // Remove the 'path' field from the tag data
-      delete tag.path;
-
-      // Convert firingTriggerId values to strings
-      if (tag.firingTriggerId) {
-        tag.firingTriggerId = tag.firingTriggerId.map(String);
-      }
-
+      // Construct the tag object to match the Google Tag Manager API request format
+      tag = {
+        name: tag.name,
+        type: tag.type,
+        parameter: tag.parameter.map((param) => {
+          return {
+            type: param.type,
+            key: param.key,
+            value: param.value,
+          };
+        }),
+        firingTriggerId: tag.firingTriggerId
+          ? tag.firingTriggerId.map(String)
+          : [],
+      };
       try {
         await tagmanager.accounts.containers.workspaces.tags.create({
           auth: authClient,
