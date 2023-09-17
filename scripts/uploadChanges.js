@@ -48,7 +48,7 @@ async function uploadTag() {
           : [],
       };
       try {
-        await tagmanager.accounts.containers.workspaces.tags.create({
+        await tagmanager.accounts.containers.workspaces.tags.update({
           auth: authClient,
           parent: workspacePath,
           requestBody: requestTag,
