@@ -29,7 +29,9 @@ async function downloadContainer() {
   );
 
   // check and delete non-existing workspaces
-  const workspaceFolders = readdirSync("workspaces");
+  const workspaceFolders = readdirSync("workspaces").filter((folder) => {
+    return statSync(join("workspaces", folder)).isDirectory();
+  });
   const workspaceIds = workspaces.data.workspace.map(
     (workspace) => workspace.workspaceId
   );
