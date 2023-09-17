@@ -33,6 +33,11 @@ async function uploadTag() {
       // Remove the 'path' field from the tag data
       delete tag.path;
 
+      // Convert firingTriggerId values to strings
+      if (tag.firingTriggerId) {
+        tag.firingTriggerId = tag.firingTriggerId.map(String);
+      }
+
       try {
         await tagmanager.accounts.containers.workspaces.tags.create({
           auth: authClient,
