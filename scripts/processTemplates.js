@@ -10,20 +10,19 @@ const processTemplates = (directory) => {
     if (fs.existsSync(templateFile)) {
       // Read the template file
       const data = fs.readFileSync(templateFile, "utf8");
+      const json = JSON.parse(data);
 
-      // Extract the sandboxed JavaScript code using a regular expression
-      const sandboxedJsMatch = data.match(
-        /___SANDBOXED_JS_FOR_WEB_TEMPLATE___\n\n([\s\S]*?)\n\n__/
-      );
-      if (sandboxedJsMatch?.[1]) {
-        const sandboxedJs = sandboxedJsMatch[1];
+      // Loop through all templates
+      json.template.forEach((template) => {
+        // Get the template data
+        const templateData = template.templateData;
 
-        // Write the sandboxed JavaScript code to a new JavaScript file with the template name as the filename
-        const filename = `${templateFile.replace(/\.json$/, "_sandboxed.js")}`;
-        fs.writeFileSync(path.join(templatesDir, filename), sandboxedJs);
-      } else {
-        console.log(`No sandboxed JavaScript found in ${templateFile}`);
-      }
+        // Write the template data to a file
+        fs.writeFileSync(
+          path.join(templatesDir, `${template.name}.json`),
+          JSON.stringify(templateData, null, 2)
+        );
+      });
     }
   }
 };
