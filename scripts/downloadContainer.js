@@ -9,9 +9,11 @@ import {
 } from "fs";
 import { writeFile } from "fs/promises";
 import { join } from "path";
-import processTags from "./processTags.js";
-import processVariables from "./processVariables.js";
-import processTemplates from "./processTemplates.js";
+import {
+  processTags,
+  processTemplates,
+  processVariables,
+} from "./scripts/processContainer.js";
 
 const tagmanager = google.tagmanager("v2");
 
