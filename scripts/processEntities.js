@@ -19,25 +19,27 @@ export const processTags = async (directory) => {
         for (const tag of json.tag) {
           // Filter out the ones which have type 'template' and key 'html'
           if (tag.type === "html") {
-            const htmlParameter = tag.parameter.find((p) => {
+            const htmlParameter = tag.parameter?.find((p) => {
               return p.type === "template" && p.key === "html";
             });
 
-            // Remove script tags from the value
-            const scriptContent = htmlParameter.value.replace(
-              /<script>|<\/script>/g,
-              ""
-            );
+            if (htmlParameter) {
+              // Remove script tags from the value
+              const scriptContent = htmlParameter.value.replace(
+                /<script>|<\/script>/g,
+                ""
+              );
 
-            // Write the value to a new JavaScript file with the tag name as the filename
-            const filename = `${tag.name.replace(/ /g, "_")}.js`;
-            writeFile(path.join(tagsDir, filename), scriptContent)
-              .then(() => {
-                resolve();
-              })
-              .catch((error) => {
-                reject(error);
-              });
+              // Write the value to a new JavaScript file with the tag name as the filename
+              const filename = `${tag.name.replace(/ /g, "_")}.js`;
+              writeFile(path.join(tagsDir, filename), scriptContent)
+                .then(() => {
+                  resolve();
+                })
+                .catch((error) => {
+                  reject(error);
+                });
+            }
           }
         }
       } else {
