@@ -51,6 +51,7 @@ async function uploadTag() {
           const response =
             await tagmanager.accounts.containers.workspaces.tags.update({
               auth: authClient,
+              fingerprint: tag.fingerprint,
               path: tag.path,
               requestBody: requestTag,
             });
