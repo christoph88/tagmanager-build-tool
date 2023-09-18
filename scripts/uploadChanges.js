@@ -28,41 +28,46 @@ async function uploadTag() {
       )
     );
 
-    // TODO filter out html tags, no need in uploading the other ones
-
     // Create or update each tag
     for (const tag of tags.tag) {
-      // Construct the tag object to match the Google Tag Manager API request format
-      const requestTag = {
-        path: tag.path,
-        accountId: tag.accountId,
-        containerId: tag.containerId,
-        workspaceId: tag.workspaceId,
-        tagId: tag.tagId,
-        name: tag.name,
-        type: tag.type,
-        parameter: tag.parameter
-          ? tag.parameter.map((param) => {
-              return {
-                type: param.type,
-                key: param.key,
-                value: param.value,
-              };
-            })
-          : [],
-        firingTriggerId: tag.firingTriggerId
-          ? tag.firingTriggerId.map(String)
-          : [],
-      };
-      try {
-        await tagmanager.accounts.containers.workspaces.tags.create({
-          auth: authClient,
-          parent: workspacePath,
-          requestBody: requestTag,
-        });
-        console.log(`Tag ${tag.name} uploaded successfully.`);
-      } catch (error) {
-        console.error(`Failed to upload tag ${tag.name}:`, error);
+      // Filter out HTML tags only
+      const htmlTag = tag.parameter?.find(
+        (p) => p.type === "template" && p.key === "html"
+      );
+
+      if (htmlTag) {
+        // Construct the tag object to match the Google Tag Manager API request format
+        const requestTag = {
+          path: tag.path,
+          accountId: tag.accountId,
+          containerId: tag.containerId,
+          workspaceId: tag.workspaceId,
+          tagId: tag.tagId,
+          name: tag.name,
+          type: tag.type,
+          parameter: tag.parameter
+            ? tag.parameter.map((param) => {
+                return {
+                  type: param.type,
+                  key: param.key,
+                  value: param.value,
+                };
+              })
+            : [],
+          firingTriggerId: tag.firingTriggerId
+            ? tag.firingTriggerId.map(String)
+            : [],
+        };
+        try {
+          await tagmanager.accounts.containers.workspaces.tags.create({
+            auth: authClient,
+            parent: workspacePath,
+            requestBody: requestTag,
+          });
+          console.log(`Tag ${tag.name} uploaded successfully.`);
+        } catch (error) {
+          console.error(`Failed to upload tag ${tag.name}:`, error);
+        }
       }
     }
   }
