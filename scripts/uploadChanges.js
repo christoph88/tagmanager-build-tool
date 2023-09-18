@@ -32,6 +32,11 @@ async function uploadTag() {
     for (const tag of tags.tag) {
       // Construct the tag object to match the Google Tag Manager API request format
       const requestTag = {
+        path: tag.path,
+        accountId: tag.accountId,
+        containerId: tag.containerId,
+        workspaceId: tag.workspaceId,
+        tagId: tag.tagId,
         name: tag.name,
         type: tag.type,
         parameter: tag.parameter
@@ -48,12 +53,9 @@ async function uploadTag() {
           : [],
       };
       try {
-        // TODO remove this log
-        console.log(workspacePath);
         await tagmanager.accounts.containers.workspaces.tags.create({
           auth: authClient,
-          // TODO error lies here in the parent
-          parent: workspacePath + tag.tagId,
+          parent: workspacePath,
           requestBody: requestTag,
         });
         console.log(`Tag ${tag.name} uploaded successfully.`);
