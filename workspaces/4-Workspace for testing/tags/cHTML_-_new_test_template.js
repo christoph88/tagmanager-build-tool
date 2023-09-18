@@ -1,3 +1,1 @@
-
-  console.log('new test, no checking of fingerprint please!');
-  console.log('test upload');
+console.log("test uploading from file directory");
