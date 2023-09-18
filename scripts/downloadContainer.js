@@ -17,6 +17,18 @@ import {
 
 const tagmanager = google.tagmanager("v2");
 
+const args = process.argv.slice(2); // remove the first two elements
+
+// Read command line argument for processing
+let enableProcessing = "";
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === "--process") {
+    enableProcessing = args[i + 1];
+    enableProcessing = enableProcessing === "true";
+    break;
+  }
+}
+
 async function downloadContainer() {
   const credentials = JSON.parse(readFileSync("./gcp-sa-key.json"));
   const auth = new google.auth.GoogleAuth({
@@ -103,7 +115,7 @@ async function downloadContainer() {
       JSON.stringify(tags.data, null, 2)
     );
     // Process tags
-    await processTags(tagsDir);
+    enableProcessing && (await processTags(tagsDir));
 
     // variables
     const variables =
@@ -118,7 +130,7 @@ async function downloadContainer() {
       JSON.stringify(variables.data, null, 2)
     );
     // Process variables
-    await processVariables(variablesDir);
+    enableProcessing && (await processVariables(variablesDir));
 
     // templates
     const templates =
@@ -133,7 +145,7 @@ async function downloadContainer() {
       JSON.stringify(templates.data, null, 2)
     );
     // Process templates
-    await processTemplates(templatesDir);
+    enableProcessing && (await processTemplates(templatesDir));
   }
 }
 
