@@ -1,3 +1,2 @@
-
-  console.log('new test, no checking of fingerprint please!');
-  console.log('test upload');
+console.log("new test, no checking of fingerprint please!");
+console.log("test upload with new fingerprint");
