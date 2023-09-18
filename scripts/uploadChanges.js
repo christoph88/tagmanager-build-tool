@@ -13,7 +13,6 @@ async function uploadTag() {
 
   // get all active workspaces
   const workspaces = JSON.parse(readFileSync("workspaces/workspaces.json"));
-  console.log(workspaces);
 
   // iterate over workspaces and upload a new version of a tag
   for (const workspace of workspaces.workspace) {
@@ -61,7 +60,7 @@ async function uploadTag() {
         } catch (error) {
           console.error(
             `Failed to upload tag ${tag.name}:`,
-            JSON.stringify(error, null, 2),
+            JSON.stringify(error.data, null, 2),
             JSON.stringify(error, null, 2)
           );
         }
