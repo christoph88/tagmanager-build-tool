@@ -1,3 +1,3 @@
 
   console.log('new test, change fingerprint');
-  console.log('bla');
+  console.log('test upload');
