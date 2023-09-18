@@ -67,7 +67,7 @@
         {
           "type": "template",
           "key": "html",
-          "value": "<script>\n  console.log('new test, change fingerprint');\n  console.log('test upload');\n</script>"
+          "value": "<script>\n  console.log('new test, no checking of fingerprint please!');\n  console.log('test upload');\n</script>"
         },
         {
           "type": "boolean",
