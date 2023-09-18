@@ -48,13 +48,15 @@ async function uploadTag() {
           type: tag.type,
         };
         try {
-          await tagmanager.accounts.containers.workspaces.tags.update({
-            auth: authClient,
-            path: tag.path,
-            fingerprint: tag.fingerprint,
-            requestBody: requestTag,
-          });
+          const response =
+            await tagmanager.accounts.containers.workspaces.tags.update({
+              auth: authClient,
+              path: tag.path,
+              fingerprint: tag.fingerprint,
+              requestBody: requestTag,
+            });
           console.log(`Tag ${tag.name} uploaded successfully.`);
+          console.log(response);
         } catch (error) {
           console.error(
             `Failed to upload tag ${tag.name}:`,
