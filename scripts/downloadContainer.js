@@ -13,7 +13,7 @@ import {
   processTags,
   processTemplates,
   processVariables,
-} from "./processContainer.js";
+} from "./processEntities.js";
 
 const tagmanager = google.tagmanager("v2");
 
