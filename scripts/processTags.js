@@ -18,11 +18,9 @@ const processTags = async (directory) => {
       if (json.tag) {
         for (const tag of json.tag) {
           // Filter out the ones which have type 'template' and key 'html'
-          const htmlParameter = tag.parameter?.find(
-            (p) => p.type === "template" && p.key === "html"
-          );
+          const htmlTag = tag.type === "html";
 
-          if (htmlParameter) {
+          if (htmlTag) {
             // Remove script tags from the value
             const scriptContent = htmlParameter.value.replace(
               /<script>|<\/script>/g,
