@@ -26,9 +26,7 @@
         }
       ],
       "fingerprint": "1573806542000",
-      "firingTriggerId": [
-        "2147479553"
-      ],
+      "firingTriggerId": ["2147479553"],
       "tagFiringOption": "oncePerEvent",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/9/tags/5?apiLink=tag",
       "monitoringMetadata": {
