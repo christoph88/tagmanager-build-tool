@@ -28,6 +28,8 @@ async function uploadTag() {
       )
     );
 
+    // TODO filter out html tags, no need in uploading the other ones
+
     // Create or update each tag
     for (const tag of tags.tag) {
       // Construct the tag object to match the Google Tag Manager API request format
