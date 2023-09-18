@@ -61,6 +61,7 @@ async function uploadTag() {
           console.error(
             `Failed to upload tag ${tag.name}:`,
             JSON.stringify(error.errors, null, 2)
+            console.log(error.status);
           );
         }
       }
