@@ -47,6 +47,16 @@ async function uploadTag() {
           priority: tag.priority,
           type: tag.type,
         };
+
+        if (tag.type === "html") {
+          const htmlParameterIndex = tag.parameter?.findIndex((p) => {
+            return p.type === "template" && p.key === "html";
+          });
+
+          if (htmlParameterIndex) {
+            tag.parameter[htmlParameterIndex].value = "<script></script>";
+          }
+        }
         try {
           const response =
             await tagmanager.accounts.containers.workspaces.tags.update({
