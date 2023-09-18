@@ -1,2 +1,1 @@
-
-  console.log('test uploading, new tag html');
+console.log("test uploading, new tag html");
