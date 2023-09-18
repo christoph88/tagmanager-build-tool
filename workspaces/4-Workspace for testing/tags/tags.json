@@ -26,7 +26,9 @@
         }
       ],
       "fingerprint": "1573806542000",
-      "firingTriggerId": ["2147479553"],
+      "firingTriggerId": [
+        "2147479553"
+      ],
       "tagFiringOption": "oncePerEvent",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/tags/5?apiLink=tag",
       "monitoringMetadata": {
@@ -45,7 +47,9 @@
       "name": "tag for test template",
       "type": "cvt_30089014_7",
       "fingerprint": "1694881493186",
-      "firingTriggerId": ["2147479553"],
+      "firingTriggerId": [
+        "2147479553"
+      ],
       "tagFiringOption": "oncePerEvent",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/tags/8?apiLink=tag",
       "monitoringMetadata": {
@@ -67,7 +71,7 @@
         {
           "type": "template",
           "key": "html",
-          "value": "<script>\n  console.log('try uploading, new test');\n</script>"
+          "value": "<script>\n  console.log('new test, change fingerprint');\n  console.log('bla');\n</script>"
         },
         {
           "type": "boolean",
@@ -75,8 +79,10 @@
           "value": "false"
         }
       ],
-      "fingerprint": "1694941508697",
-      "firingTriggerId": ["2147479553"],
+      "fingerprint": "1694970039568",
+      "firingTriggerId": [
+        "2147479553"
+      ],
       "tagFiringOption": "oncePerEvent",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/tags/12?apiLink=tag",
       "monitoringMetadata": {

@@ -58,8 +58,7 @@
           "value": "false"
         }
       ],
-      "fingerprint": "1694947994371",
-      "tagFiringOption": "oncePerEvent",
+      "fingerprint": "1695017138168",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/9/tags/13?apiLink=tag",
       "monitoringMetadata": {
         "type": "map"
