@@ -44,30 +44,24 @@ async function uploadTag() {
           workspaceId: tag.workspaceId,
           tagId: tag.tagId,
           name: tag.name,
+          parameter: tag.parameter,
+          consentSettings: tag.consentSettings,
+          monitoringMetadata: tag.monitoringMetadata,
+          priority: tag.priority,
           type: tag.type,
-          parameter: tag.parameter
-            ? tag.parameter.map((param) => {
-                return {
-                  type: param.type,
-                  key: param.key,
-                  value: param.value,
-                };
-              })
-            : [],
-          firingTriggerId: tag.firingTriggerId
-            ? tag.firingTriggerId.map(String)
-            : [],
         };
         try {
-          await tagmanager.accounts.containers.workspaces.tags.create({
+          await tagmanager.accounts.containers.workspaces.tags.update({
             auth: authClient,
-            parent: workspacePath,
+            path: tag.path,
+            fingerprint: tag.fingerprint,
             requestBody: requestTag,
           });
           console.log(`Tag ${tag.name} uploaded successfully.`);
         } catch (error) {
           console.error(
             `Failed to upload tag ${tag.name}:`,
+            JSON.stringify(error, null, 2),
             JSON.stringify(error, null, 2)
           );
         }
