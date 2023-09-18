@@ -30,9 +30,7 @@ async function uploadTag() {
     // Create or update each tag
     for (const tag of tags.tag) {
       // Filter out HTML tags only
-      const htmlTag = tag.parameter?.find(
-        (p) => p.type === "template" && p.key === "html"
-      );
+      const htmlTag = tag.type === "html";
 
       if (htmlTag) {
         // Construct the tag object to match the Google Tag Manager API request format
