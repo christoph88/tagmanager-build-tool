@@ -66,7 +66,10 @@ async function uploadTag() {
           });
           console.log(`Tag ${tag.name} uploaded successfully.`);
         } catch (error) {
-          console.error(`Failed to upload tag ${tag.name}:`, error);
+          console.error(
+            `Failed to upload tag ${tag.name}:`,
+            JSON.stringify(error, null, 2)
+          );
         }
       }
     }
