@@ -1,1 +1,6 @@
-console.log("test uploading from file directory");
+console.log("this is a file I want to be diffed");
+console.log("this is a file I want to be diffed");
+console.log("this is a file I want to be diffed");
+console.log("this is a file I want to be diffed");
+console.log("this is a file I want to be diffed");
+console.log("this is a file I want to be diffed");
