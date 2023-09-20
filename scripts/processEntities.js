@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import util from "util";
-const diffLines = require("diff");
+import diffLines from "diff";
 
 const writeFile = util.promisify(fs.writeFile);
 
