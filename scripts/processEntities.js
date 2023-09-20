@@ -1,12 +1,30 @@
 import fs from "fs";
 import path from "path";
 import util from "util";
+const diffLines = require("diff");
 
 const writeFile = util.promisify(fs.writeFile);
 
+const diff = (existingFileContent, newFileContent) => {
+  const changes = diffLines(existingFileContent, newFileContent);
+
+  const fileDiff = changes
+    .map((change) => {
+      if (change.added) {
+        return `+ ${change.value}`;
+      } else if (change.removed) {
+        return `- ${change.value}`;
+      } else {
+        return `  ${change.value}`;
+      }
+    })
+    .join("\n");
+  return fileDiff;
+};
+
 export const processTags = async (directory) => {
   return await new Promise((resolve, reject) => {
-    // Check if the tags directory exists in the current directory
+    // Check if the variables directory exists in the current directory
     const tagsDir = directory;
     console.log(tagsDir);
     if (fs.existsSync(tagsDir)) {
@@ -14,79 +32,104 @@ export const processTags = async (directory) => {
       const data = fs.readFileSync(path.join(tagsDir, "tags.json"));
       const json = JSON.parse(data);
 
-      // Loop through all tags
+      // Loop through all variables
       if (json.tag) {
-        for (const tag of json.tag) {
-          // Filter out the ones which have type 'template' and key 'html'
-          if (tag.type === "html") {
-            const htmlParameter = tag.parameter?.find((p) => {
-              return p.type === "template" && p.key === "html";
-            });
-
-            if (htmlParameter) {
-              // Remove script tags from the value
-              const scriptContent = htmlParameter.value.replace(
-                /<script>|<\/script>/g,
-                ""
+        Promise.all(
+          json.tag.map(async (tag) => {
+            // Filter out the ones which have type 'jsm'
+            if (tag.type === "html") {
+              // Find the parameter with type 'template' and key 'javascript'
+              const htmlParameter = tag.parameter?.find(
+                (p) => p.type === "template" && p.key === "html"
               );
 
-              // Write the value to a new JavaScript file with the tag name as the filename
-              const filename = `${tag.name.replace(/ /g, "_")}.js`;
-              writeFile(path.join(tagsDir, filename), scriptContent)
-                .then(() => {
-                  resolve();
-                })
-                .catch((error) => {
-                  reject(error);
-                });
+              if (htmlParameter) {
+                // Remove script tags from the value
+                const scriptContent = htmlParameter.value.replace(
+                  /<script>|<\/script>/g,
+                  ""
+                );
+
+                // Write the value to a new JavaScript file with the variable name as the filename
+                const filename = `${tag.name.replace(/ /g, "_")}.js`;
+                const filePath = path.join(tagsDir, filename);
+                const newFileContent = scriptContent;
+
+                let fileDiff;
+                // If file already exists, do a diff
+                if (fs.existsSync(filePath)) {
+                  const existingFileContent = fs.readFileSync(filePath, "utf8");
+                  fileDiff = diff(existingFileContent, newFileContent);
+                }
+
+                const fileContents = fileDiff || newFileContent;
+
+                await writeFile(filePath, fileContents);
+                return;
+              }
             }
-          }
-        }
+            await Promise.resolve();
+          })
+        )
+          .then(() => {
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
       } else {
         resolve();
       }
+    } else {
+      reject("Directory does not exist");
     }
   });
 };
 
 export const processTemplates = async (directory) => {
   return await new Promise((resolve, reject) => {
-    // Check if the templates directory exists in the current directory
+    // Check if the variables directory exists in the current directory
     const templatesDir = directory;
     console.log(templatesDir);
     if (fs.existsSync(templatesDir)) {
-      // Check if templates.json exists in the directory
-      const templateFile = path.join(templatesDir, "templates.json");
-      if (fs.existsSync(templateFile)) {
-        // Read the template file
-        const data = fs.readFileSync(templateFile, "utf8");
-        const json = JSON.parse(data);
+      // Read the JSON file
+      const data = fs.readFileSync(path.join(templatesDir, "templates.json"));
+      const json = JSON.parse(data);
 
-        // Check if json.template exists before proceeding
-        if (json.template) {
-          // Loop through all templates
-          Promise.all(
-            json.template.map(async (template) => {
-              // Get the template data
-              const templateData = template.templateData;
+      // Loop through all variables
+      if (json.template) {
+        Promise.all(
+          json.template.map(async (template) => {
+            // Write the value to a new JavaScript file with the variable name as the filename
+            const filename = `${template.name.replace(/ /g, "_")}.js`;
+            const filePath = path.join(templatesDir, filename);
+            const newFileContent = template.templateData;
 
-              // Write the template data to a file
-              await writeFile(
-                path.join(templatesDir, `${template.name}.tpl`),
-                templateData
-              );
-            })
-          )
-            .then(() => {
-              resolve();
-            })
-            .catch((error) => {
-              reject(error);
-            });
-        } else {
-          resolve();
-        }
+            let fileDiff;
+            // If file already exists, do a diff
+            if (fs.existsSync(filePath)) {
+              const existingFileContent = fs.readFileSync(filePath, "utf8");
+              fileDiff = diff(existingFileContent, newFileContent);
+            }
+
+            const fileContents = fileDiff || newFileContent;
+
+            await writeFile(filePath, fileContents);
+
+            await Promise.resolve();
+          })
+        )
+          .then(() => {
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      } else {
+        resolve();
       }
+    } else {
+      reject("Directory does not exist");
     }
   });
 };
@@ -115,10 +158,19 @@ export const processVariables = async (directory) => {
               if (jsParameter) {
                 // Write the value to a new JavaScript file with the variable name as the filename
                 const filename = `${variable.name.replace(/ /g, "_")}.js`;
-                await writeFile(
-                  path.join(variablesDir, filename),
-                  jsParameter.value
-                );
+                const filePath = path.join(variablesDir, filename);
+                const newFileContent = jsParameter.value;
+
+                let fileDiff;
+                // If file already exists, do a diff
+                if (fs.existsSync(filePath)) {
+                  const existingFileContent = fs.readFileSync(filePath, "utf8");
+                  fileDiff = diff(existingFileContent, newFileContent);
+                }
+
+                const fileContents = fileDiff || newFileContent;
+
+                await writeFile(filePath, fileContents);
                 return;
               }
             }
