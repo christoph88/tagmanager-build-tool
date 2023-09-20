@@ -11,14 +11,17 @@ const diffLinesHelper = (existingFileContent, newFileContent) => {
   });
 
   const fileDiff = changes
-    .map((change) => {
-      if (change.added) {
-        return `+ ${change.value}`;
-      } else if (change.removed) {
-        return `- ${change.value}`;
-      } else {
-        return `  ${change.value}`;
-      }
+    .flatMap((change) => {
+      const lines = change.value.split("\n");
+      return lines.map((line) => {
+        if (change.added) {
+          return `++ ${line}`;
+        } else if (change.removed) {
+          return `-- ${line}`;
+        } else {
+          return `${line}`;
+        }
+      });
     })
     .join("\n");
   return fileDiff;
