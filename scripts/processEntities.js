@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
 import util from "util";
-import Diff from "diff";
+import { diffLines } from "diff";
 
 const writeFile = util.promisify(fs.writeFile);
 
-const diffLines = (existingFileContent, newFileContent) => {
-  const changes = Diff.diffLines(existingFileContent, newFileContent, {
+const diffLinesHelper = (existingFileContent, newFileContent) => {
+  const changes = diffLines(existingFileContent, newFileContent, {
     newLineIsToken: true,
   });
 
@@ -61,7 +61,10 @@ export const processTags = async (directory) => {
                 // If file already exists, do a diff
                 if (fs.existsSync(filePath)) {
                   const existingFileContent = fs.readFileSync(filePath, "utf8");
-                  fileDiff = diffLines(existingFileContent, newFileContent);
+                  fileDiff = diffLinesHelper(
+                    existingFileContent,
+                    newFileContent
+                  );
                 }
 
                 const fileContents = fileDiff || newFileContent;
@@ -111,7 +114,7 @@ export const processTemplates = async (directory) => {
             // If file already exists, do a diff
             if (fs.existsSync(filePath)) {
               const existingFileContent = fs.readFileSync(filePath, "utf8");
-              fileDiff = diffLines(existingFileContent, newFileContent);
+              fileDiff = diffLinesHelper(existingFileContent, newFileContent);
             }
 
             const fileContents = fileDiff || newFileContent;
@@ -167,7 +170,10 @@ export const processVariables = async (directory) => {
                 // If file already exists, do a diff
                 if (fs.existsSync(filePath)) {
                   const existingFileContent = fs.readFileSync(filePath, "utf8");
-                  fileDiff = diffLines(existingFileContent, newFileContent);
+                  fileDiff = diffLinesHelper(
+                    existingFileContent,
+                    newFileContent
+                  );
                 }
 
                 const fileContents = fileDiff || newFileContent;
