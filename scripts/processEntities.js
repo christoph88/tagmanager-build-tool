@@ -1,12 +1,14 @@
 import fs from "fs";
 import path from "path";
 import util from "util";
-import diffLines from "diff";
+import Diff from "diff";
 
 const writeFile = util.promisify(fs.writeFile);
 
-const diff = (existingFileContent, newFileContent) => {
-  const changes = diffLines(existingFileContent, newFileContent);
+const diffLines = (existingFileContent, newFileContent) => {
+  const changes = Diff.diffLines(existingFileContent, newFileContent, {
+    newLineIsToken: true,
+  });
 
   const fileDiff = changes
     .map((change) => {
@@ -59,7 +61,7 @@ export const processTags = async (directory) => {
                 // If file already exists, do a diff
                 if (fs.existsSync(filePath)) {
                   const existingFileContent = fs.readFileSync(filePath, "utf8");
-                  fileDiff = diff(existingFileContent, newFileContent);
+                  fileDiff = diffLines(existingFileContent, newFileContent);
                 }
 
                 const fileContents = fileDiff || newFileContent;
@@ -109,7 +111,7 @@ export const processTemplates = async (directory) => {
             // If file already exists, do a diff
             if (fs.existsSync(filePath)) {
               const existingFileContent = fs.readFileSync(filePath, "utf8");
-              fileDiff = diff(existingFileContent, newFileContent);
+              fileDiff = diffLines(existingFileContent, newFileContent);
             }
 
             const fileContents = fileDiff || newFileContent;
@@ -165,7 +167,7 @@ export const processVariables = async (directory) => {
                 // If file already exists, do a diff
                 if (fs.existsSync(filePath)) {
                   const existingFileContent = fs.readFileSync(filePath, "utf8");
-                  fileDiff = diff(existingFileContent, newFileContent);
+                  fileDiff = diffLines(existingFileContent, newFileContent);
                 }
 
                 const fileContents = fileDiff || newFileContent;
