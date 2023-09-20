@@ -16,6 +16,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "diff": "^5.1.0",
     "googleapis": "^126.0.1"
   }
 }
