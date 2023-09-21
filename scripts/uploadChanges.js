@@ -55,12 +55,8 @@ async function uploadTag() {
 
           if (htmlParameterIndex) {
             const tagFile = readFileSync(
-              `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").js}`
+              `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
             );
-
-            tag.parameter[
-              htmlParameterIndex
-            ].value = `<script>${tagFile}</script>`;
           }
         }
         try {
