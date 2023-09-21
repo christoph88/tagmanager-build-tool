@@ -43,4 +43,4 @@ jobs:
 
       - name: Run downloadContainer action
         if: steps.upload.outputs.fingerprint_error == 'true'
-        uses: actions/downloadContainer@v1
+        uses: ./.github/workflows/downloadContainer.yml
