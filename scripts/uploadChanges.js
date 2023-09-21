@@ -59,6 +59,8 @@ async function uploadTag() {
             );
 
             tag.parameter[htmlParameterIndex].value = tagFile;
+            // Wait for the tag parameter to be changed before trying the update
+            await new Promise((resolve) => setImmediate(resolve));
           }
         }
         try {
