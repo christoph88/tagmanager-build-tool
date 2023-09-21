@@ -72,33 +72,25 @@ async function uploadTag() {
               // TODO remove log
               console.log("tagFile", tagFile);
 
-              tag.parameter[htmlParameterIndex].value = tagFile;
-
-              try {
-                // TODO remove log
-                console.log("requestBody", requestTag);
-                tagmanager.accounts.containers.workspaces.tags.update({
-                  auth: authClient,
-                  fingerprint: tag.fingerprint,
-                  path: tag.path,
-                  requestBody: requestTag,
-                }, (err, response) => {
-                  if (err) {
-                    console.error(`Failed to upload tag ${tag.name}.`);
-                    console.error(JSON.stringify(err.errors, null, 2));
-                    console.error(err.status);
-                  } else {
-                    console.log(`Tag ${tag.name} uploaded successfully.`);
-                    console.log(response.status);
-                  }
-                });
-              } catch (error) {
-                console.error(`Failed to upload tag ${tag.name}.`);
-                console.error(JSON.stringify(error.errors, null, 2));
-                console.error(error.status);
-              }
-            });
+            tag.parameter[htmlParameterIndex].value = tagFile;
+            // Wait for the tag parameter to be changed before trying the update
+            await new Promise((resolve) => setImmediate(resolve));
           }
+        }
+        try {
+          const response =
+            await tagmanager.accounts.containers.workspaces.tags.update({
+              auth: authClient,
+              fingerprint: tag.fingerprint,
+              path: tag.path,
+              requestBody: requestTag,
+            });
+          console.log(`Tag ${tag.name} uploaded successfully.`);
+          console.log(response.status);
+        } catch (error) {
+          console.error(`Failed to upload tag ${tag.name}.`);
+          console.error(JSON.stringify(error.errors, null, 2));
+          console.error(error.status);
         }
       }
     }
