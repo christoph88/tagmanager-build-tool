@@ -31,16 +31,4 @@ jobs:
         run: echo "$GCP_SA_KEY" > ./gcp-sa-key.json
 
       - name: Run uploadChanges script
-        id: upload
-        run: |
-          OUTPUT=$(node scripts/uploadChanges.js 2>&1)
-          echo "$OUTPUT"
-          if [[ "$OUTPUT" == *"fingerprint"* ]]; then
-            echo "::set-output name=fingerprint_error::true"
-          fi
-          exit 1
-        continue-on-error: true
-
-      - name: Run downloadContainer action
-        if: steps.upload.outputs.fingerprint_error == 'true'
-        uses: ./.github/workflows/downloadContainer.yml
+        run: node scripts/uploadChanges.js
