@@ -50,13 +50,10 @@ export const processTags = async (directory) => {
 
               if (htmlParameter) {
                 // Remove script tags from the value
-                const scriptContent = htmlParameter.value.replace(
-                  /<script>|<\/script>/g,
-                  ""
-                );
+                const scriptContent = htmlParameter.value;
 
                 // Write the value to a new JavaScript file with the variable name as the filename
-                const filename = `${tag.name.replace(/ /g, "_")}.js`;
+                const filename = `${tag.name.replace(/ /g, "_")}.html`;
                 const filePath = path.join(tagsDir, filename);
                 const newFileContent = scriptContent;
 
