@@ -99,12 +99,12 @@ async function uploadVariables() {
     await fs.promises.readFile("workspaces/workspaces.json", "utf8")
   );
 
-  // iterate over workspaces and upload a new version of a tag
+  // iterate over workspaces and upload a new version of a variable
   for (const workspace of workspaces.workspace) {
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
     console.log(`Uploading variables from ${workspaceDir}`);
 
-    // Load the tags from a JSON file
+    // Load the variables from a JSON file
     const variables = JSON.parse(
       await fs.promises.readFile(
         `${workspaceDir}/variables/variables.json`,
@@ -112,27 +112,27 @@ async function uploadVariables() {
       )
     );
 
-    // Create or update each tag
+    // Create or update each variable
     for (const variable of variables.variable) {
       const variablesDir = workspaceDir + "/variables";
-      // Filter out HTML tags only
+      // Filter out HTML variables only
       const jsVariable = variable.type === "jsm";
 
       if (jsVariable) {
         console.log(`Process Variable ${variable.name}.`);
-        // Already start reading tag file
+        // Already start reading variable file
         const variableFile = await fs.promises.readFile(
           `${variablesDir}/${variable.name.replace(/ /g, "_")}.js`,
           "utf8"
         );
 
-        // Construct the tag object to match the Google Tag Manager API request format
+        // Construct the variable object to match the Google variable Manager API request format
         const requestVariable = {
           path: variable.path,
           accountId: variable.accountId,
           containerId: variable.containerId,
           workspaceId: variable.workspaceId,
-          tagId: variable.variableId,
+          variableId: variable.variableId,
           name: variable.name,
           parameter: variable.parameter,
           consentSettings: variable.consentSettings,
@@ -167,9 +167,87 @@ async function uploadVariables() {
   }
 }
 
+async function uploadTemplates() {
+  const credentials = JSON.parse(
+    await fs.promises.readFile("./gcp-sa-key.json", "utf8")
+  );
+  const auth = new google.auth.GoogleAuth({
+    credentials,
+    scopes: ["https://www.googleapis.com/auth/templatemanager.edit.containers"],
+  });
+
+  const authClient = await auth.getClient();
+
+  // get all active workspaces
+  const workspaces = JSON.parse(
+    await fs.promises.readFile("workspaces/workspaces.json", "utf8")
+  );
+
+  // iterate over workspaces and upload a new version of a template
+  for (const workspace of workspaces.workspace) {
+    const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
+    console.log(`Uploading templates from ${workspaceDir}`);
+
+    // Load the templates from a JSON file
+    const templates = JSON.parse(
+      await fs.promises.readFile(
+        `${workspaceDir}/templates/templates.json`,
+        "utf8"
+      )
+    );
+
+    // Create or update each template
+    for (const template of templates.template) {
+      const templatesDir = workspaceDir + "/templates";
+
+      console.log(`Process Template ${template.name}.`);
+      // Already start reading  file
+      const templateFile = await fs.promises.readFile(
+        `${templatesDir}/${template.name.replace(/ /g, "_")}.js`,
+        "utf8"
+      );
+
+      // Construct the template object to match the Google template Manager API request format
+      const requestTemplate = {
+        path: template.path,
+        accountId: template.accountId,
+        containerId: template.containerId,
+        workspaceId: template.workspaceId,
+        templateId: template.templateId,
+        name: template.name,
+        parameter: template.parameter,
+        consentSettings: template.consentSettings,
+        monitoringMetadata: template.monitoringMetadata,
+        priority: template.priority,
+        type: template.type,
+        templateData: template.templateData,
+      };
+
+      requestTemplate.templateData = templateFile;
+
+      try {
+        const response =
+          await tagmanager.accounts.containers.workspaces.variables.update({
+            auth: authClient,
+            fingerprint: template.fingerprint,
+            path: template.path,
+            requestBody: requestTemplate,
+          });
+        console.log(`Template ${template.name} uploaded successfully.`);
+        console.log(response.status);
+      } catch (error) {
+        console.error(`Failed to upload template ${template.name}.`);
+        console.error(JSON.stringify(error.errors, null, 2));
+        console.error(error.status);
+      }
+    }
+  }
+}
+
 const uploadChanges = async () => {
   await uploadTags();
   await uploadVariables();
+  await uploadTemplates();
 };
 
 uploadChanges();
