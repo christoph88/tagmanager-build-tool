@@ -220,7 +220,7 @@ async function uploadTemplates() {
             "utf8"
           );
 
-          // FIXME fix uploading of templates, this still gives errors
+          // TODO fix uploading of templates, this still gives errors
           // Construct the template object to match the Google template Manager API request format
           const requestTemplate = {
             path: template.path,
@@ -235,6 +235,9 @@ async function uploadTemplates() {
 
           requestTemplate.templateData = templateFile;
 
+          // TODO remove console log
+          console.log(requestTemplate);
+
           try {
             const response =
               await tagmanager.accounts.containers.workspaces.template.update({
@@ -247,7 +250,7 @@ async function uploadTemplates() {
             console.log(response.status);
           } catch (error) {
             console.error(`Failed to upload template ${template.name}.`);
-            // FIXME remove full error
+            // TODO remove full error
             console.error(JSON.stringify(error, null, 2));
             console.error(error.status);
           }
