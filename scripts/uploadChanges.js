@@ -1,9 +1,11 @@
-import { readFileSync } from "fs";
+import fs from "fs";
 import { google } from "googleapis";
 const tagmanager = google.tagmanager("v2");
 
 async function uploadTag() {
-  const credentials = JSON.parse(readFileSync("./gcp-sa-key.json"));
+  const credentials = JSON.parse(
+    await fs.promises.readFile("./gcp-sa-key.json", "utf8")
+  );
   const auth = new google.auth.GoogleAuth({
     credentials,
     scopes: ["https://www.googleapis.com/auth/tagmanager.edit.containers"],
@@ -12,30 +14,33 @@ async function uploadTag() {
   const authClient = await auth.getClient();
 
   // get all active workspaces
-  const workspaces = JSON.parse(readFileSync("workspaces/workspaces.json"));
+  const workspaces = JSON.parse(
+    await fs.promises.readFile("workspaces/workspaces.json", "utf8")
+  );
+
+  console.log(workspaces);
 
   // iterate over workspaces and upload a new version of a tag
   for (const workspace of workspaces.workspace) {
-    console.log(`Uploading ${workspace.workspaceId} - ${workspace.name}`);
-    const workspacePath = `accounts/${workspace.accountId}/containers/${workspace.containerId}/workspaces/${workspace.workspaceId}`;
+    const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
+    console.log(`Uploading ${workspaceDir}`);
 
     // Load the tags from a JSON file
     const tags = JSON.parse(
-      readFileSync(
-        `workspaces/${workspace.workspaceId}-${workspace.name}/tags/tags.json`,
-        "utf8"
-      )
+      await fs.promises.readFile(`${workspaceDir}/tags/tags.json`, "utf8")
     );
 
     // Create or update each tag
     for (const tag of tags.tag) {
+      const tagsDir = workspaceDir + "/tags";
       // Filter out HTML tags only
       const htmlTag = tag.type === "html";
 
       if (htmlTag) {
         // Already start reading tag file
-        const tagFile = readFileSync(
-          `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
+        const tagFile = await fs.promises.readFile(
+          `${tagsDir}/${tag.name.replace(/ /g, "_")}.html`,
+          "utf8"
         );
 
         // Construct the tag object to match the Google Tag Manager API request format
@@ -56,9 +61,6 @@ async function uploadTag() {
         const htmlParameterIndex = requestTag.parameter?.findIndex((p) => {
           return p.type === "template" && p.key === "html";
         });
-
-        // TODO remove log
-        console.log("tagFile", tagFile);
 
         requestTag.parameter[htmlParameterIndex].value = tagFile;
 
