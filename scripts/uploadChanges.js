@@ -18,8 +18,6 @@ async function uploadTag() {
     await fs.promises.readFile("workspaces/workspaces.json", "utf8")
   );
 
-  console.log(workspaces);
-
   // iterate over workspaces and upload a new version of a tag
   for (const workspace of workspaces.workspace) {
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
@@ -37,6 +35,7 @@ async function uploadTag() {
       const htmlTag = tag.type === "html";
 
       if (htmlTag) {
+        console.log(`Process Tag ${tag.name}.`);
         // Already start reading tag file
         const tagFile = await fs.promises.readFile(
           `${tagsDir}/${tag.name.replace(/ /g, "_")}.html`,
@@ -65,8 +64,6 @@ async function uploadTag() {
         requestTag.parameter[htmlParameterIndex].value = tagFile;
 
         try {
-          // TODO remove log
-          console.log("requestBody", requestTag);
           const response =
             await tagmanager.accounts.containers.workspaces.tags.update({
               auth: authClient,
