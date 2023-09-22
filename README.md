@@ -1,18 +1,20 @@
 # google-tagmanager-gh-deploy
 
-To install dependencies:
+## Workflow
 
-```bash
-bun install
-```
+### 1. Create pull request
 
-To run:
+On create of the pull request the tagmanager container will be downloaded and diff'ed with main. You'll also get the fingerprints.
 
-```bash
-bun run index.ts
-```
+New javascript/html files are transpiled into ES6.
 
-This project was created using `bun init` in bun v1.0.1. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+### 2. Change code
+
+Change code, you can manually run upload if you want to test. If somebody does changes directly into tagmanager the fingerprint will change and you will need to run the download action again without processing.
+
+### 3. Merge PR to main
+
+When merging to main the updates are uploaded to tagmanager.
 
 ## Setup
 
@@ -22,43 +24,10 @@ This project was created using `bun init` in bun v1.0.1. [Bun](https://bun.sh) i
 4. go into tagmanager and give service account admin access by adding its email
 5. give github actions read and write access
 
+## Fingerprinting and sync errors
+
+When running the update function and the fingerprints have changed e.g. somebody did a change in tagmanager the upload will fail. Download the container again in master and rebase.
+
 ## Github Actions
 
-### Download and process container
-
-Download tagmanager container and process all html, template and js files so they can be edited.
-These files will be merged into the request object when trying to upload.
-
-### Download container
-
-If an error occurs when trying to upload, the fingerprint has most likely changed.
-Download container without processing (and overwriting) the editable html, templates and js files.
-
-### Upload changes
-
-When you have done the required edits use this script to upload the information back to the Tagmanager container.
-
-## Sync
-
-1. get default workspace in master > daily run or manual trigger, downloads all workspaces
-3. on merge with master upload changes to tagmanager depending on which workspace files has been adapted
-
-## Edit
-
-### On manual run or cronjob
-
-1. Get json files from tags, triggers, variables and custom templates
-
-- save those files to a workspace number subfolder, or they will keep overwriting the default workspace.
-
-2. Filter out only html entities
-3. export the values to seperate js files
-
-### On PR merge with master or manually
-
-4. on merge with master import the values from the js files back to the main json
-5. upload main json so tagmanager is updated, do this based on which workspace files are adapted
-
-notes
-
-- when running the update function and the fingerprints have changed e.g. somebody did a change in tagmanager the upload will fail. Download the container again in master and rebase.
+This tool runs entirely using Github Actions in Github Workflows. Get familiar with them.
