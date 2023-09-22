@@ -200,45 +200,49 @@ async function uploadTemplates() {
     for (const template of templates.template) {
       const templatesDir = workspaceDir + "/templates";
 
-      console.log(`Process Template ${template.name}.`);
-      // Already start reading  file
-      const templateFile = await fs.promises.readFile(
-        `${templatesDir}/${template.name.replace(/ /g, "_")}.js`,
-        "utf8"
-      );
+      const galleryTemplate = typeof template.galleryReference !== "undefined";
 
-      // Construct the template object to match the Google template Manager API request format
-      const requestTemplate = {
-        path: template.path,
-        accountId: template.accountId,
-        containerId: template.containerId,
-        workspaceId: template.workspaceId,
-        templateId: template.templateId,
-        name: template.name,
-        parameter: template.parameter,
-        consentSettings: template.consentSettings,
-        monitoringMetadata: template.monitoringMetadata,
-        priority: template.priority,
-        type: template.type,
-        templateData: template.templateData,
-      };
+      if (!galleryTemplate) {
+        console.log(`Process Template ${template.name}.`);
+        // Already start reading  file
+        const templateFile = await fs.promises.readFile(
+          `${templatesDir}/${template.name.replace(/ /g, "_")}.js`,
+          "utf8"
+        );
 
-      requestTemplate.templateData = templateFile;
+        // Construct the template object to match the Google template Manager API request format
+        const requestTemplate = {
+          path: template.path,
+          accountId: template.accountId,
+          containerId: template.containerId,
+          workspaceId: template.workspaceId,
+          templateId: template.templateId,
+          name: template.name,
+          parameter: template.parameter,
+          consentSettings: template.consentSettings,
+          monitoringMetadata: template.monitoringMetadata,
+          priority: template.priority,
+          type: template.type,
+          templateData: template.templateData,
+        };
 
-      try {
-        const response =
-          await tagmanager.accounts.containers.workspaces.variables.update({
-            auth: authClient,
-            fingerprint: template.fingerprint,
-            path: template.path,
-            requestBody: requestTemplate,
-          });
-        console.log(`Template ${template.name} uploaded successfully.`);
-        console.log(response.status);
-      } catch (error) {
-        console.error(`Failed to upload template ${template.name}.`);
-        console.error(JSON.stringify(error.errors, null, 2));
-        console.error(error.status);
+        requestTemplate.templateData = templateFile;
+
+        try {
+          const response =
+            await tagmanager.accounts.containers.workspaces.variables.update({
+              auth: authClient,
+              fingerprint: template.fingerprint,
+              path: template.path,
+              requestBody: requestTemplate,
+            });
+          console.log(`Template ${template.name} uploaded successfully.`);
+          console.log(response.status);
+        } catch (error) {
+          console.error(`Failed to upload template ${template.name}.`);
+          console.error(JSON.stringify(error.errors, null, 2));
+          console.error(error.status);
+        }
       }
     }
   }
