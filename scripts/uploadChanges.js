@@ -220,6 +220,7 @@ async function uploadTemplates() {
             "utf8"
           );
 
+          // FIXME fix uploading of templates, this still gives errors
           // Construct the template object to match the Google template Manager API request format
           const requestTemplate = {
             path: template.path,
@@ -246,7 +247,7 @@ async function uploadTemplates() {
             console.log(response.status);
           } catch (error) {
             console.error(`Failed to upload template ${template.name}.`);
-            // TODO remove full error
+            // FIXME remove full error
             console.error(JSON.stringify(error, null, 2));
             console.error(JSON.stringify(error.errors, null, 2));
             console.error(error.status);
