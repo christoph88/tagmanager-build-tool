@@ -36,9 +36,14 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 const log = require('logToConsole');
 log('data =', data);
 
-log('this is a test template upload');
+++ log('this is a test using the explorer');
+++ 
 
 
+-- log('this is a test template upload');
+-- 
+-- 
+-- 
 // Call data.gtmOnSuccess when the tag is finished.
 data.gtmOnSuccess();
 
