@@ -27,9 +27,8 @@ const diffLinesHelper = (existingFileContent, newFileContent) => {
   return fileDiff;
 };
 
-// TODO javascript code for tags and variables should be upgraded to ES6
-// TODO extract javascript from templates and upgrade syntax to ES6
-// TODO test what breaks
+// TODO find an easy option to transpile in vs code, do NOT do it automatically
+// TODO extract javascript from templates
 
 export const processTags = async (directory) => {
   return await new Promise((resolve, reject) => {
