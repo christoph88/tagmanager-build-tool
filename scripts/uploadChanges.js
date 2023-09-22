@@ -241,7 +241,6 @@ async function uploadTemplates() {
             const response =
               await tagmanager.accounts.containers.workspaces.template.update({
                 auth: authClient,
-                fingerprint: template.fingerprint,
                 path: template.path,
                 requestBody: requestTemplate,
               });
