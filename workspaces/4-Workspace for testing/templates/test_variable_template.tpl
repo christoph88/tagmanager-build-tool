@@ -36,9 +36,14 @@ log('data =', data);
 ++ 
 
 
--- log('variable tempmlate, template upload', data);
---  
+-- ++ log('variable tempmlate', data);
+-- ++ 
 -- 
+-- 
+-- -- log('variable tempmlate, template upload', data);
+-- --  
+-- -- 
+-- -- 
 -- 
 // Variables must return a value.
 return false;
