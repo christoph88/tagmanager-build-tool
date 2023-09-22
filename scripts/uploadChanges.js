@@ -228,11 +228,7 @@ async function uploadTemplates() {
             workspaceId: template.workspaceId,
             templateId: template.templateId,
             name: template.name,
-            parameter: template.parameter,
-            consentSettings: template.consentSettings,
-            monitoringMetadata: template.monitoringMetadata,
-            priority: template.priority,
-            type: template.type,
+            tagManagerUrl: template.tagManagerUrl,
             templateData: template.templateData,
           };
 
