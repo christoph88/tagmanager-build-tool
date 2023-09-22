@@ -32,9 +32,14 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 const log = require('logToConsole');
 log('data =', data);
 
-log('variable tempmlate, template upload', data);
- 
+++ log('variable tempmlate', data);
+++ 
 
+
+-- log('variable tempmlate, template upload', data);
+--  
+-- 
+-- 
 // Variables must return a value.
 return false;
 
