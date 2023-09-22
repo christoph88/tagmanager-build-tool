@@ -11,8 +11,8 @@ import { writeFile } from "fs/promises";
 import { join } from "path";
 import {
   processTags,
-  processTemplates,
   processVariables,
+  processTemplates,
 } from "./processEntities.js";
 
 const tagmanager = google.tagmanager("v2");
