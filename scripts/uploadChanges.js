@@ -2,6 +2,8 @@ import fs from "fs";
 import { google } from "googleapis";
 const tagmanager = google.tagmanager("v2");
 
+// TODO before uploading convert back to ES5
+
 async function uploadTags() {
   const credentials = JSON.parse(
     await fs.promises.readFile("./gcp-sa-key.json", "utf8")

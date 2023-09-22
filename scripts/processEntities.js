@@ -27,6 +27,10 @@ const diffLinesHelper = (existingFileContent, newFileContent) => {
   return fileDiff;
 };
 
+// TODO javascript code for tags and variables should be upgraded to ES6
+// TODO extract javascript from templates and upgrade syntax to ES6
+// TODO test what breaks
+
 export const processTags = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
