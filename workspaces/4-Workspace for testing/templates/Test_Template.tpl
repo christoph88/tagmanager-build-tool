@@ -36,22 +36,9 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 const log = require('logToConsole');
 log('data =', data);
 
--- log('this is a test');
--- 
-++ log('this is a test using the explorer');
-++ 
+log('this is a test template upload');
 
-<<<<<<< HEAD
 
--- 
--- -- 
--- --  log('I am uploading a template');
--- -- 
--- -- 
--- 
-=======
-log('I am uploading a template');
->>>>>>> 5f2e6e4 (update templates for upload)
 // Call data.gtmOnSuccess when the tag is finished.
 data.gtmOnSuccess();
 
