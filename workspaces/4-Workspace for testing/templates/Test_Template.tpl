@@ -41,6 +41,7 @@ log('data =', data);
 ++ log('this is a test using the explorer');
 ++ 
 
+<<<<<<< HEAD
 
 -- 
 -- -- 
@@ -48,6 +49,9 @@ log('data =', data);
 -- -- 
 -- -- 
 -- 
+=======
+log('I am uploading a template');
+>>>>>>> 5f2e6e4 (update templates for upload)
 // Call data.gtmOnSuccess when the tag is finished.
 data.gtmOnSuccess();
 
