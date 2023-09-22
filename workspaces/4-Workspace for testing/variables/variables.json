@@ -82,12 +82,11 @@
         {
           "type": "template",
           "key": "javascript",
-          "value": "function() {\n  return \"this is a test custom javascript tempmlate';\n}"
+          "value": "function () {\n  return \"I am trying to upload variables\";\n};\n"
         }
       ],
-      "fingerprint": "1694938377642",
-      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/variables/11?apiLink=variable",
-      "formatValue": {}
+      "fingerprint": "1695376952503",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/variables/11?apiLink=variable"
     }
   ]
 }
