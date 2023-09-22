@@ -229,7 +229,6 @@ async function uploadTemplates() {
             workspaceId: template.workspaceId,
             templateId: template.templateId,
             name: template.name,
-            tagManagerUrl: template.tagManagerUrl,
             templateData: template.templateData,
           };
 
