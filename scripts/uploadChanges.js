@@ -29,6 +29,11 @@ async function uploadTag() {
 
     // Create or update each tag
     for (const tag of tags.tag) {
+      // Already start reading tag file
+      const tagFile = readFileSync(
+        `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
+      );
+
       // Filter out HTML tags only
       const htmlTag = tag.type === "html";
 
@@ -48,22 +53,15 @@ async function uploadTag() {
           type: tag.type,
         };
 
-        if (tag.type === "html") {
-          const htmlParameterIndex = requestTag.parameter?.findIndex((p) => {
-            return p.type === "template" && p.key === "html";
-          });
+        const htmlParameterIndex = requestTag.parameter?.findIndex((p) => {
+          return p.type === "template" && p.key === "html";
+        });
 
-          if (htmlParameterIndex) {
-            const tagFile = readFileSync(
-              `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
-            );
+        // TODO remove log
+        console.log("tagFile", tagFile);
 
-            // TODO remove log
-            console.log("tagFile", tagFile);
+        requestTag.parameter[htmlParameterIndex].value = tagFile;
 
-            requestTag.parameter[htmlParameterIndex].value = tagFile;
-          }
-        }
         try {
           // TODO remove log
           console.log("requestBody", requestTag);
