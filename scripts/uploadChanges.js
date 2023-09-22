@@ -28,7 +28,19 @@ async function uploadTag() {
     );
 
     // Create or update each tag
-    for (const tag of tags.tag) {
+// Check    fo if the tag type is html
+      if (tag.type === "html") {
+        // Read the HTML content from the corresponding file
+        const htmlContent = readFileSync(`workspaces/${workspace.workspaceId}-${workspace.name}/tags/${tag.tagId}-${tag.name.replace(/ /g, "_")}.html`, "utf8");
+
+        // Find the index of the html parameter in the tag parameters
+        const htmlParameterIndex = tag.parameter.findIndex((p) => p.key === "html");
+
+        // If the html parameter exists, update its value with the HTML content
+        if (htmlParameterIndex !== -1) {
+          tag.parameter[htmlParameterIndex].value = htmlContent;
+        }
+      }r (const tag of tags.tag) {
       // Filter out HTML tags only
       const htmlTag = tag.type === "html";
 
@@ -53,33 +65,40 @@ async function uploadTag() {
             return p.type === "template" && p.key === "html";
           });
 
-          if (htmlParameterIndex) {
-            const tagFile = readFileSync(
-              `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
-            );
+          if (htmlParameterIndex !== undefined) {
+            readFileSync(`workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`, (err, tagFile) => {
+              if (err) throw err;
 
-            // TODO remove log
-            console.log("tagFile", tagFile);
+              // TODO remove log
+              console.log("tagFile", tagFile);
 
-            tag.parameter[htmlParameterIndex].value = tagFile;
-          }
-        }
-        try {
-          // TODO remove log
-          console.log("requestBody", requestTag);
-          const response =
-            await tagmanager.accounts.containers.workspaces.tags.update({
-              auth: authClient,
-              fingerprint: tag.fingerprint,
-              path: tag.path,
-              requestBody: requestTag,
+              tag.parameter[htmlParameterIndex].value = tagFile;
+
+              try {
+                // TODO remove log
+                console.log("requestBody", requestTag);
+                tagmanager.accounts.containers.workspaces.tags.update({
+                  auth: authClient,
+                  fingerprint: tag.fingerprint,
+                  path: tag.path,
+                  requestBody: requestTag,
+                }, (err, response) => {
+                  if (err) {
+                    console.error(`Failed to upload tag ${tag.name}.`);
+                    console.error(JSON.stringify(err.errors, null, 2));
+                    console.error(err.status);
+                  } else {
+                    console.log(`Tag ${tag.name} uploaded successfully.`);
+                    console.log(response.status);
+                  }
+                });
+              } catch (error) {
+                console.error(`Failed to upload tag ${tag.name}.`);
+                console.error(JSON.stringify(error.errors, null, 2));
+                console.error(error.status);
+              }
             });
-          console.log(`Tag ${tag.name} uploaded successfully.`);
-          console.log(response.status);
-        } catch (error) {
-          console.error(`Failed to upload tag ${tag.name}.`);
-          console.error(JSON.stringify(error.errors, null, 2));
-          console.error(error.status);
+          }
         }
       }
     }
