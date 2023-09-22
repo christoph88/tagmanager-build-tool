@@ -91,54 +91,6 @@ export const processTags = async (directory) => {
   });
 };
 
-export const processTemplates = async (directory) => {
-  return await new Promise((resolve, reject) => {
-    // Check if the variables directory exists in the current directory
-    const templatesDir = directory;
-    console.log(templatesDir);
-    if (fs.existsSync(templatesDir)) {
-      // Read the JSON file
-      const data = fs.readFileSync(path.join(templatesDir, "templates.json"));
-      const json = JSON.parse(data);
-
-      // Loop through all variables
-      if (json.template) {
-        Promise.all(
-          json.template.map(async (template) => {
-            // Write the value to a new JavaScript file with the variable name as the filename
-            const filename = `${template.name.replace(/ /g, "_")}.js`;
-            const filePath = path.join(templatesDir, filename);
-            const newFileContent = template.templateData;
-
-            let fileDiff;
-            // If file already exists, do a diff
-            if (fs.existsSync(filePath)) {
-              const existingFileContent = fs.readFileSync(filePath, "utf8");
-              fileDiff = diffLinesHelper(existingFileContent, newFileContent);
-            }
-
-            const fileContents = fileDiff || newFileContent;
-
-            await writeFile(filePath, fileContents);
-
-            await Promise.resolve();
-          })
-        )
-          .then(() => {
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      } else {
-        resolve();
-      }
-    } else {
-      reject("Directory does not exist");
-    }
-  });
-};
-
 export const processVariables = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
@@ -182,6 +134,54 @@ export const processVariables = async (directory) => {
                 return;
               }
             }
+            await Promise.resolve();
+          })
+        )
+          .then(() => {
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      } else {
+        resolve();
+      }
+    } else {
+      reject("Directory does not exist");
+    }
+  });
+};
+
+export const processTemplates = async (directory) => {
+  return await new Promise((resolve, reject) => {
+    // Check if the variables directory exists in the current directory
+    const templatesDir = directory;
+    console.log(templatesDir);
+    if (fs.existsSync(templatesDir)) {
+      // Read the JSON file
+      const data = fs.readFileSync(path.join(templatesDir, "templates.json"));
+      const json = JSON.parse(data);
+
+      // Loop through all variables
+      if (json.template) {
+        Promise.all(
+          json.template.map(async (template) => {
+            // Write the value to a new JavaScript file with the variable name as the filename
+            const filename = `${template.name.replace(/ /g, "_")}.js`;
+            const filePath = path.join(templatesDir, filename);
+            const newFileContent = template.templateData;
+
+            let fileDiff;
+            // If file already exists, do a diff
+            if (fs.existsSync(filePath)) {
+              const existingFileContent = fs.readFileSync(filePath, "utf8");
+              fileDiff = diffLinesHelper(existingFileContent, newFileContent);
+            }
+
+            const fileContents = fileDiff || newFileContent;
+
+            await writeFile(filePath, fileContents);
+
             await Promise.resolve();
           })
         )
