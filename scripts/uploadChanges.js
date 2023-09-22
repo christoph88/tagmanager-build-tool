@@ -28,19 +28,12 @@ async function uploadTag() {
     );
 
     // Create or update each tag
-// Check    fo if the tag type is html
-      if (tag.type === "html") {
-        // Read the HTML content from the corresponding file
-        const htmlContent = readFileSync(`workspaces/${workspace.workspaceId}-${workspace.name}/tags/${tag.tagId}-${tag.name.replace(/ /g, "_")}.html`, "utf8");
+    for (const tag of tags.tag) {
+      // Already start reading tag file
+      const tagFile = readFileSync(
+        `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
+      );
 
-        // Find the index of the html parameter in the tag parameters
-        const htmlParameterIndex = tag.parameter.findIndex((p) => p.key === "html");
-
-        // If the html parameter exists, update its value with the HTML content
-        if (htmlParameterIndex !== -1) {
-          tag.parameter[htmlParameterIndex].value = htmlContent;
-        }
-      }r (const tag of tags.tag) {
       // Filter out HTML tags only
       const htmlTag = tag.type === "html";
 
@@ -60,24 +53,15 @@ async function uploadTag() {
           type: tag.type,
         };
 
-        if (tag.type === "html") {
-          const htmlParameterIndex = requestTag.parameter?.findIndex((p) => {
-            return p.type === "template" && p.key === "html";
-          });
+        const htmlParameterIndex = requestTag.parameter?.findIndex((p) => {
+          return p.type === "template" && p.key === "html";
+        });
 
-          if (htmlParameterIndex !== undefined) {
-            readFileSync(`workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`, (err, tagFile) => {
-              if (err) throw err;
+        // TODO remove log
+        console.log("tagFile", tagFile);
 
-              // TODO remove log
-              console.log("tagFile", tagFile);
+        requestTag.parameter[htmlParameterIndex].value = tagFile;
 
-            // TODO remove log
-            console.log("tagFile", tagFile);
-
-            requestTag.parameter[htmlParameterIndex].value = tagFile;
-          }
-        }
         try {
           // TODO remove log
           console.log("requestBody", requestTag);
