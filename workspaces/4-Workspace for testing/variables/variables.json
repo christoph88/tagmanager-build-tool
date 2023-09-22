@@ -82,10 +82,10 @@
         {
           "type": "template",
           "key": "javascript",
-          "value": "function () {\n  return \"I am trying to upload variables\";\n};\n"
+          "value": "function () {\n  return \"I am trying to upload a template\";\n};\n"
         }
       ],
-      "fingerprint": "1695376952503",
+      "fingerprint": "1695378649927",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/variables/11?apiLink=variable"
     }
   ]

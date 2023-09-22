@@ -50,7 +50,7 @@
         {
           "type": "template",
           "key": "html",
-          "value": "<script>\n  console.log('no finderprint, test uploading, new tag html');\n</script>"
+          "value": "<script>\n  console.log(\"templates\");\n</script>\n"
         },
         {
           "type": "boolean",
@@ -58,7 +58,7 @@
           "value": "false"
         }
       ],
-      "fingerprint": "1695376951920",
+      "fingerprint": "1695378649109",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/9/tags/13?apiLink=tag",
       "monitoringMetadata": {
         "type": "map"
