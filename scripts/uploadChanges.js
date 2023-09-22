@@ -61,7 +61,7 @@ async function uploadTag() {
         };
 
         if (tag.type === "html") {
-          const htmlParameterIndex = tag.parameter?.findIndex((p) => {
+          const htmlParameterIndex = requestTag.parameter?.findIndex((p) => {
             return p.type === "template" && p.key === "html";
           });
 
@@ -75,7 +75,7 @@ async function uploadTag() {
             // TODO remove log
             console.log("tagFile", tagFile);
 
-            tag.parameter[htmlParameterIndex].value = tagFile;
+            requestTag.parameter[htmlParameterIndex].value = tagFile;
           }
         }
         try {
