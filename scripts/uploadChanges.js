@@ -214,11 +214,14 @@ async function uploadTemplates() {
 
         if (!galleryTemplate) {
           console.log(`Process Template ${template.name}.`);
-          // Already start reading  file
-          const templateFile = await fs.promises.readFile(
-            `${templatesDir}/${template.name.replace(/ /g, "_")}.tpl`,
-            "utf8"
-          );
+
+          // Already start reading  file and merge the output in one string
+          const templateFile = (
+            await fs.promises.readFile(
+              `${templatesDir}/${template.name.replace(/ /g, "_")}.tpl`,
+              "utf8"
+            )
+          ).toString();
 
           // TODO fix uploading of templates, this still gives errors
           // Construct the template object to match the Google template Manager API request format
@@ -236,7 +239,7 @@ async function uploadTemplates() {
           requestTemplate.templateData = templateFile;
 
           // TODO remove console log
-          console.log(requestTemplate);
+          console.log("templateData", requestTemplate.templateData);
 
           try {
             const response =
