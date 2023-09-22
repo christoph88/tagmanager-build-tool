@@ -233,13 +233,9 @@ async function uploadTemplates() {
             templateId: template.templateId,
             name: template.name,
             templateData: template.templateData,
-            fingerprint: template.fingerprint,
           };
 
           requestTemplate.templateData = templateFile;
-
-          // TODO remove console log
-          console.log("templateData", requestTemplate.templateData);
 
           try {
             const response =
