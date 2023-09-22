@@ -58,12 +58,15 @@ async function uploadTag() {
               `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
             );
 
+            // TODO remove log
+            console.log("tagFile", tagFile);
+
             tag.parameter[htmlParameterIndex].value = tagFile;
-            // Wait for the tag parameter to be changed before trying the update
-            await new Promise((resolve) => setImmediate(resolve));
           }
         }
         try {
+          // TODO remove log
+          console.log("requestBody", requestTag);
           const response =
             await tagmanager.accounts.containers.workspaces.tags.update({
               auth: authClient,
