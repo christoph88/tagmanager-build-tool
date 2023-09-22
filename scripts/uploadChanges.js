@@ -29,15 +29,15 @@ async function uploadTag() {
 
     // Create or update each tag
     for (const tag of tags.tag) {
-      // Already start reading tag file
-      const tagFile = readFileSync(
-        `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
-      );
-
       // Filter out HTML tags only
       const htmlTag = tag.type === "html";
 
       if (htmlTag) {
+        // Already start reading tag file
+        const tagFile = readFileSync(
+          `workspaces/${tag.tagId}-${tag.name.replace(/ /g, "_").html}`
+        );
+
         // Construct the tag object to match the Google Tag Manager API request format
         const requestTag = {
           path: tag.path,
