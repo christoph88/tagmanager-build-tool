@@ -246,6 +246,8 @@ async function uploadTemplates() {
             console.log(response.status);
           } catch (error) {
             console.error(`Failed to upload template ${template.name}.`);
+            // TODO remove full error
+            console.error(JSON.stringify(error, null, 2));
             console.error(JSON.stringify(error.errors, null, 2));
             console.error(error.status);
           }
