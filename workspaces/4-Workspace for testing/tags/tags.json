@@ -71,7 +71,7 @@
         {
           "type": "template",
           "key": "html",
-          "value": "<script>\n  console.log('fingerprint should change');\n  console.log('test upload with this new fingerprint');\n</script>"
+          "value": "<script>\n  console.log(\"fingerprint should change\");\n  console.log(\"test upload with this new fingerprint\");\n  if (true) {\n    console.log(\"bla\");\n  }\n</script>\n"
         },
         {
           "type": "boolean",
@@ -79,7 +79,7 @@
           "value": "false"
         }
       ],
-      "fingerprint": "1695367709907",
+      "fingerprint": "1695374627958",
       "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6000085367/containers/30089014/workspaces/4/tags/12?apiLink=tag",
       "monitoringMetadata": {
         "type": "map"
