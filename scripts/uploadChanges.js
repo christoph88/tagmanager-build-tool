@@ -2,7 +2,7 @@ import fs from "fs";
 import { google } from "googleapis";
 const tagmanager = google.tagmanager("v2");
 
-async function uploadTag() {
+async function uploadTags() {
   const credentials = JSON.parse(
     await fs.promises.readFile("./gcp-sa-key.json", "utf8")
   );
@@ -21,7 +21,7 @@ async function uploadTag() {
   // iterate over workspaces and upload a new version of a tag
   for (const workspace of workspaces.workspace) {
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
-    console.log(`Uploading ${workspaceDir}`);
+    console.log(`Uploading tags from ${workspaceDir}`);
 
     // Load the tags from a JSON file
     const tags = JSON.parse(
@@ -83,8 +83,93 @@ async function uploadTag() {
   }
 }
 
+async function uploadVariables() {
+  const credentials = JSON.parse(
+    await fs.promises.readFile("./gcp-sa-key.json", "utf8")
+  );
+  const auth = new google.auth.GoogleAuth({
+    credentials,
+    scopes: ["https://www.googleapis.com/auth/tagmanager.edit.containers"],
+  });
+
+  const authClient = await auth.getClient();
+
+  // get all active workspaces
+  const workspaces = JSON.parse(
+    await fs.promises.readFile("workspaces/workspaces.json", "utf8")
+  );
+
+  // iterate over workspaces and upload a new version of a tag
+  for (const workspace of workspaces.workspace) {
+    const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
+    console.log(`Uploading variables from ${workspaceDir}`);
+
+    // Load the tags from a JSON file
+    const variables = JSON.parse(
+      await fs.promises.readFile(
+        `${workspaceDir}/variables/variables.json`,
+        "utf8"
+      )
+    );
+
+    // Create or update each tag
+    for (const variable of variables.variable) {
+      const variablesDir = workspaceDir + "/variables";
+      // Filter out HTML tags only
+      const jsVariable = variable.type === "jsm";
+
+      if (jsVariable) {
+        console.log(`Process Variable ${variable.name}.`);
+        // Already start reading tag file
+        const variableFile = await fs.promises.readFile(
+          `${variablesDir}/${variable.name.replace(/ /g, "_")}.js`,
+          "utf8"
+        );
+
+        // Construct the tag object to match the Google Tag Manager API request format
+        const requestVariable = {
+          path: variable.path,
+          accountId: variable.accountId,
+          containerId: variable.containerId,
+          workspaceId: variable.workspaceId,
+          tagId: variable.variableId,
+          name: variable.name,
+          parameter: variable.parameter,
+          consentSettings: variable.consentSettings,
+          monitoringMetadata: variable.monitoringMetadata,
+          priority: variable.priority,
+          type: variable.type,
+        };
+
+        const jsParameterIndex = requestVariable.parameter?.findIndex((p) => {
+          return p.type === "template" && p.key === "javascript";
+        });
+
+        requestVariable.parameter[jsParameterIndex].value = variableFile;
+
+        try {
+          const response =
+            await tagmanager.accounts.containers.workspaces.variables.update({
+              auth: authClient,
+              fingerprint: variable.fingerprint,
+              path: variable.path,
+              requestBody: requestVariable,
+            });
+          console.log(`Variable ${variable.name} uploaded successfully.`);
+          console.log(response.status);
+        } catch (error) {
+          console.error(`Failed to upload variable ${variable.name}.`);
+          console.error(JSON.stringify(error.errors, null, 2));
+          console.error(error.status);
+        }
+      }
+    }
+  }
+}
+
 const uploadChanges = async () => {
-  await uploadTag();
+  await uploadTags();
+  await uploadVariables();
 };
 
 uploadChanges();
