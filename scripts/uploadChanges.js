@@ -216,7 +216,7 @@ async function uploadTemplates() {
           console.log(`Process Template ${template.name}.`);
           // Already start reading  file
           const templateFile = await fs.promises.readFile(
-            `${templatesDir}/${template.name.replace(/ /g, "_")}.js`,
+            `${templatesDir}/${template.name.replace(/ /g, "_")}.tpl`,
             "utf8"
           );
 
