@@ -237,6 +237,8 @@ async function uploadTemplates() {
 
           requestTemplate.templateData = templateFile;
 
+          console.log(requestTemplate);
+
           try {
             const response =
               await tagmanager.accounts.containers.workspaces.template.update({
@@ -261,8 +263,9 @@ async function uploadTemplates() {
 }
 
 const uploadChanges = async () => {
-  await uploadTags();
-  await uploadVariables();
+  // TODO uncomment
+  // await uploadTags();
+  // await uploadVariables();
   await uploadTemplates();
 };
 
