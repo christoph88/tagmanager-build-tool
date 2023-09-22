@@ -37,8 +37,10 @@ const log = require('logToConsole');
 log('data =', data);
 log('this is a test');
 
-log('I am uploading a template');
 
+-- log('I am uploading a template');
+-- 
+-- 
 // Call data.gtmOnSuccess when the tag is finished.
 data.gtmOnSuccess();
 
