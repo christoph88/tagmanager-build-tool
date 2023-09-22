@@ -82,4 +82,9 @@ async function uploadTag() {
     }
   }
 }
-uploadTag();
+
+const uploadChanges = async () => {
+  await uploadTag();
+};
+
+uploadChanges();
