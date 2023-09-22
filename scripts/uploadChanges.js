@@ -230,6 +230,7 @@ async function uploadTemplates() {
             templateId: template.templateId,
             name: template.name,
             templateData: template.templateData,
+            fingerprint: template.fingerprint,
           };
 
           requestTemplate.templateData = templateFile;
@@ -248,7 +249,6 @@ async function uploadTemplates() {
             console.error(`Failed to upload template ${template.name}.`);
             // FIXME remove full error
             console.error(JSON.stringify(error, null, 2));
-            console.error(JSON.stringify(error.errors, null, 2));
             console.error(error.status);
           }
         }
