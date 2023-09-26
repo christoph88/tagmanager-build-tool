@@ -15,7 +15,7 @@ program
   });
 
 program
-  .command("uploadChanges")
+  .command("upload")
   .description("Upload changes")
   .option("-t, --tags <tags>", "Tags to upload", false)
   .option("-v, --variables <variables>", "Variables to upload", false)
