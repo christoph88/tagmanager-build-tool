@@ -212,6 +212,8 @@ async function uploadTemplates() {
         const galleryTemplate =
           typeof template.galleryReference !== "undefined";
 
+        // TODO add a filter to the templates which filters out the selection here
+
         if (!galleryTemplate) {
           console.log(`Process Template ${template.name}.`);
 

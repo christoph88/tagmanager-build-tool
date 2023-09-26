@@ -19,12 +19,21 @@ program
 program
   .command("upload")
   .description("Upload changes")
-  .option("-t, --tags <tags>", "Tags to upload", false)
-  .option("-v, --variables <variables>", "Variables to upload", false)
-  .option("-m, --templates <templates>", "Template to upload", true)
+  .option("-t, --tags <tags...>", "List of tags to upload")
+  .option("-v, --variables <variables...>", "List of variables to upload")
+  .option("-m, --templates <templates...>", "List of templates to upload")
+  .option("-a, --all <boolean>", "Upload all tags, variables and templates")
+  .option("--test <boolean>", "run a test", true)
   .action((options) => {
-    // TODO if options contain * upload all of them
-    // TODO add a filter to the templates which filters out the selection here
+    // TODO fix it so you can select which templates to upload
+    if (options.all) {
+      uploadChanges(true, true, true);
+      return;
+    }
+    if (options.test) {
+      uploadChanges(false, false, true);
+      return;
+    }
     console.log(options);
     uploadChanges(options.tags, options.variables, options.templates);
   });
