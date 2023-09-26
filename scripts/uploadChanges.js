@@ -262,11 +262,8 @@ async function uploadTemplates() {
   }
 }
 
-const uploadChanges = async () => {
-  // TODO uncomment
-  // await uploadTags();
-  // await uploadVariables();
-  await uploadTemplates();
+export const uploadChanges = async (tags, variables, templates) => {
+  tags && (await uploadTags());
+  variables && (await uploadVariables());
+  templates && (await uploadTemplates());
 };
-
-uploadChanges();
