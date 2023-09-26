@@ -1,4 +1,5 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 import { downloadContainer } from "./scripts/downloadContainer.js";
 import { uploadChanges } from "./scripts/uploadChanges.js";
 import { Command } from "commander";
