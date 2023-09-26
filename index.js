@@ -21,7 +21,7 @@ program
   .description("Upload changes")
   .option("-t, --tags <tags>", "Tags to upload", false)
   .option("-v, --variables <variables>", "Variables to upload", false)
-  .option("-m, --template <template>", "Template to upload", true)
+  .option("-m, --template <templates>", "Template to upload", true)
   .action((options) => {
     // TODO if options contain * upload all of them
     // TODO add a filter to the templates which filters out the selection here
