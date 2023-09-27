@@ -30,7 +30,7 @@ const diffLinesHelper = (existingFileContent, newFileContent) => {
 // TODO find an easy option to transpile in vs code, do NOT do it automatically
 // TODO extract javascript from templates
 
-export const processTags = async (directory) => {
+export const processTags = async (directory, enableDiff) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const tagsDir = directory;
@@ -65,7 +65,7 @@ export const processTags = async (directory) => {
 
                 let fileDiff;
                 // If file already exists, do a diff
-                if (fs.existsSync(filePath)) {
+                if (enableDiff && fs.existsSync(filePath)) {
                   const existingFileContent = fs.readFileSync(filePath, "utf8");
                   fileDiff = diffLinesHelper(
                     existingFileContent,
@@ -97,7 +97,7 @@ export const processTags = async (directory) => {
   });
 };
 
-export const processVariables = async (directory) => {
+export const processVariables = async (directory, enableDiff) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const variablesDir = directory;
@@ -129,7 +129,7 @@ export const processVariables = async (directory) => {
 
                 let fileDiff;
                 // If file already exists, do a diff
-                if (fs.existsSync(filePath)) {
+                if (enableDiff && fs.existsSync(filePath)) {
                   const existingFileContent = fs.readFileSync(filePath, "utf8");
                   fileDiff = diffLinesHelper(
                     existingFileContent,
@@ -161,7 +161,7 @@ export const processVariables = async (directory) => {
   });
 };
 
-export const processTemplates = async (directory) => {
+export const processTemplates = async (directory, enableDiff) => {
   return await new Promise((resolve, reject) => {
     // Check if the templates directory exists in the current directory
     const templatesDir = directory;
@@ -187,7 +187,7 @@ export const processTemplates = async (directory) => {
 
               let fileDiff;
               // If file already exists, do a diff
-              if (fs.existsSync(filePath)) {
+              if (enableDiff && fs.existsSync(filePath)) {
                 const existingFileContent = fs.readFileSync(filePath, "utf8");
                 fileDiff = diffLinesHelper(existingFileContent, newFileContent);
               }
