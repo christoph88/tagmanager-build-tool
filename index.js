@@ -8,7 +8,7 @@ const program = new Command();
 program.version("0.0.1").description("Tagmanager build tool");
 
 program
-  .command("download")
+  .command("pull")
   .description("Download container")
   .option("-p, --enableProcessing", "Enable processing")
   .option("-d, --enableDiff", "Enable processing")
@@ -18,7 +18,14 @@ program
   });
 
 program
-  .command("upload")
+  .command("build")
+  .description("Build files and make them ready for upload.")
+  .action((options) => {
+    console.log(options);
+  });
+
+program
+  .command("push")
   .description(
     "Upload changes to tagmanager. Include a comma seperated list of paths to process or omit to process all."
   )
