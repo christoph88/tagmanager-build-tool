@@ -251,8 +251,6 @@ async function uploadTemplates(templateArray) {
       });
     }
 
-    console.log(templates);
-
     // Create or update each tag
     if (Array.isArray(templates) && templates.length > 0) {
       for (const template of templates) {
@@ -294,7 +292,7 @@ async function uploadTemplates(templateArray) {
 
           try {
             const response =
-              await tagmanager.accounts.containers.workspaces.template.update({
+              await tagmanager.accounts.containers.workspaces.templates.update({
                 auth: authClient,
                 path: template.path,
                 requestBody: requestTemplate,
@@ -304,8 +302,7 @@ async function uploadTemplates(templateArray) {
           } catch (error) {
             console.error(`Failed to upload template ${template.name}.`);
             // TODO remove full error
-            console.error(JSON.stringify(error, null, 2));
-            console.error(error.status);
+            console.error(error);
           }
         }
       }
