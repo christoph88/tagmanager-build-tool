@@ -56,7 +56,7 @@ export const processTags = async (directory, enableDiff) => {
                 const scriptContent = htmlParameter.value;
 
                 // Write the value to a new JavaScript file with the variable name as the filename
-                const filename = `${tagId}__${tag.name.replace(
+                const filename = `${tag.tagId}__${tag.name.replace(
                   / /g,
                   "_"
                 )}.html`;
@@ -120,10 +120,9 @@ export const processVariables = async (directory, enableDiff) => {
 
               if (jsParameter) {
                 // Write the value to a new JavaScript file with the variable name as the filename
-                const filename = `${variableId}__${variable.name.replace(
-                  / /g,
-                  "_"
-                )}.js`;
+                const filename = `${
+                  variable.variableId
+                }__${variable.name.replace(/ /g, "_")}.js`;
                 const filePath = path.join(variablesDir, filename);
                 const newFileContent = jsParameter.value;
 
@@ -178,7 +177,7 @@ export const processTemplates = async (directory, enableDiff) => {
             // Filter out the ones which not belong to a gallery
             if (typeof template.galleryReference === "undefined") {
               // Write the value to a new JavaScript file with the variable name as the filename
-              const filename = `${templateId}__${template.name.replace(
+              const filename = `${template.templateId}__${template.name.replace(
                 / /g,
                 "_"
               )}.tpl`;

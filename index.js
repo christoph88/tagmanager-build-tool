@@ -10,10 +10,11 @@ program.version("0.0.1").description("Tagmanager build tool");
 program
   .command("download")
   .description("Download container")
-  .option("-p, --enableProcessing <boolean>", "Enable processing", false)
+  .option("-p, --enableProcessing", "Enable processing")
+  .option("-d, --enableDiff", "Enable processing")
   .action((options) => {
     console.log(options);
-    downloadContainer(options.enableProcessing);
+    downloadContainer(options.enableProcessing, options.enableDiff);
   });
 
 program

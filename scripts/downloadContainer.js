@@ -19,7 +19,7 @@ const tagmanager = google.tagmanager("v2");
 
 const args = process.argv.slice(2); // remove the first two elements
 
-export const downloadContainer = async (enableProcessing) => {
+export const downloadContainer = async (enableProcessing, enableDiff) => {
   const credentials = JSON.parse(readFileSync("./gcp-sa-key.json"));
   const auth = new google.auth.GoogleAuth({
     credentials,
@@ -91,7 +91,7 @@ export const downloadContainer = async (enableProcessing) => {
       );
     }
 
-    console.log("Processing ${workspace.workspaceId + workspace.name}.");
+    console.log(`Processing ${workspace.workspaceId + workspace.name}.`);
 
     // tags
     const tags = await tagmanager.accounts.containers.workspaces.tags.list({
@@ -105,7 +105,7 @@ export const downloadContainer = async (enableProcessing) => {
       JSON.stringify(tags.data, null, 2)
     );
     // Process tags
-    enableProcessing && (await processTags(tagsDir));
+    enableProcessing && (await processTags(tagsDir, enableDiff));
 
     // variables
     const variables =
@@ -120,7 +120,7 @@ export const downloadContainer = async (enableProcessing) => {
       JSON.stringify(variables.data, null, 2)
     );
     // Process variables
-    enableProcessing && (await processVariables(variablesDir));
+    enableProcessing && (await processVariables(variablesDir, enableDiff));
 
     // templates
     const templates =
@@ -135,6 +135,6 @@ export const downloadContainer = async (enableProcessing) => {
       JSON.stringify(templates.data, null, 2)
     );
     // Process templates
-    enableProcessing && (await processTemplates(templatesDir));
+    enableProcessing && (await processTemplates(templatesDir, enableDiff));
   }
 };
