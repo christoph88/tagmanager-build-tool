@@ -288,8 +288,6 @@ async function uploadTemplates(templateArray) {
 
           requestTemplate.templateData = templateFile;
 
-          console.log(requestTemplate);
-
           try {
             const response =
               await tagmanager.accounts.containers.workspaces.templates.update({
@@ -300,9 +298,11 @@ async function uploadTemplates(templateArray) {
             console.log(`Template ${template.name} uploaded successfully.`);
             console.log(response.status);
           } catch (error) {
-            console.error(`Failed to upload template ${template.name}.`);
-            // TODO remove full error
             console.error(error);
+            console.error(`Failed to upload template ${template.name}.`);
+            console.error(JSON.stringify(error.errors, null, 2));
+            console.error(error.status);
+            // TODO remove full error
           }
         }
       }
