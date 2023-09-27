@@ -18,24 +18,25 @@ program
 
 program
   .command("upload")
-  .description("Upload changes")
-  .option("-t, --tags <tags...>", "List of tags to upload")
-  .option("-v, --variables <variables...>", "List of variables to upload")
-  .option("-m, --templates <templates...>", "List of templates to upload")
-  .option("-a, --all <boolean>", "Upload all tags, variables and templates")
-  .option("--test <boolean>", "run a test", true)
+  .description(
+    "Upload changes to tagmanager. Include a comma seperated list of paths to process or omit to process all."
+  )
+  .option("-t, --tags [tags...]", "Paths of tags to upload")
+  .option("-v, --variables [variables...]", "Paths of variables to upload")
+  .option("-m, --templates [templates...]", "Paths of templates to upload")
+  .option("-a, --all", "Upload all tags, variables and templates")
   .action((options) => {
     // TODO fix it so you can select which templates to upload
+    console.log(options);
     if (options.all) {
-      uploadChanges(true, true, true);
+      // uploadChanges(true, true, true);
       return;
     }
     if (options.test) {
-      uploadChanges(false, false, true);
+      // uploadChanges(false, false, true);
       return;
     }
-    console.log(options);
-    uploadChanges(options.tags, options.variables, options.templates);
+    // uploadChanges(options.tags, options.variables, options.templates);
   });
 
 program.parse();
