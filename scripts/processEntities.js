@@ -30,7 +30,7 @@ const diffLinesHelper = (existingFileContent, newFileContent) => {
 // TODO find an easy option to transpile in vs code, do NOT do it automatically
 // TODO extract javascript from templates
 
-export const processTags = async (directory) => {
+export const processTags = async (directory, enableDiff) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const tagsDir = directory;
@@ -56,13 +56,16 @@ export const processTags = async (directory) => {
                 const scriptContent = htmlParameter.value;
 
                 // Write the value to a new JavaScript file with the variable name as the filename
-                const filename = `${tag.name.replace(/ /g, "_")}.html`;
+                const filename = `${tag.tagId}__${tag.name.replace(
+                  / /g,
+                  "_"
+                )}.html`;
                 const filePath = path.join(tagsDir, filename);
                 const newFileContent = scriptContent;
 
                 let fileDiff;
                 // If file already exists, do a diff
-                if (fs.existsSync(filePath)) {
+                if (enableDiff && fs.existsSync(filePath)) {
                   const existingFileContent = fs.readFileSync(filePath, "utf8");
                   fileDiff = diffLinesHelper(
                     existingFileContent,
@@ -94,7 +97,7 @@ export const processTags = async (directory) => {
   });
 };
 
-export const processVariables = async (directory) => {
+export const processVariables = async (directory, enableDiff) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const variablesDir = directory;
@@ -117,13 +120,15 @@ export const processVariables = async (directory) => {
 
               if (jsParameter) {
                 // Write the value to a new JavaScript file with the variable name as the filename
-                const filename = `${variable.name.replace(/ /g, "_")}.js`;
+                const filename = `${
+                  variable.variableId
+                }__${variable.name.replace(/ /g, "_")}.js`;
                 const filePath = path.join(variablesDir, filename);
                 const newFileContent = jsParameter.value;
 
                 let fileDiff;
                 // If file already exists, do a diff
-                if (fs.existsSync(filePath)) {
+                if (enableDiff && fs.existsSync(filePath)) {
                   const existingFileContent = fs.readFileSync(filePath, "utf8");
                   fileDiff = diffLinesHelper(
                     existingFileContent,
@@ -155,7 +160,7 @@ export const processVariables = async (directory) => {
   });
 };
 
-export const processTemplates = async (directory) => {
+export const processTemplates = async (directory, enableDiff) => {
   return await new Promise((resolve, reject) => {
     // Check if the templates directory exists in the current directory
     const templatesDir = directory;
@@ -172,13 +177,16 @@ export const processTemplates = async (directory) => {
             // Filter out the ones which not belong to a gallery
             if (typeof template.galleryReference === "undefined") {
               // Write the value to a new JavaScript file with the variable name as the filename
-              const filename = `${template.name.replace(/ /g, "_")}.tpl`;
+              const filename = `${template.templateId}__${template.name.replace(
+                / /g,
+                "_"
+              )}.tpl`;
               const filePath = path.join(templatesDir, filename);
               const newFileContent = template.templateData;
 
               let fileDiff;
               // If file already exists, do a diff
-              if (fs.existsSync(filePath)) {
+              if (enableDiff && fs.existsSync(filePath)) {
                 const existingFileContent = fs.readFileSync(filePath, "utf8");
                 fileDiff = diffLinesHelper(existingFileContent, newFileContent);
               }

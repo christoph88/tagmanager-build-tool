@@ -2,7 +2,7 @@ import fs from "fs";
 import { google } from "googleapis";
 const tagmanager = google.tagmanager("v2");
 
-async function uploadTags() {
+async function uploadTags(tagArray) {
   const credentials = JSON.parse(
     await fs.promises.readFile("./gcp-sa-key.json", "utf8")
   );
@@ -24,13 +24,28 @@ async function uploadTags() {
     console.log(`Uploading tags from ${workspaceDir}`);
 
     // Load the tags from a JSON file
-    const tags = JSON.parse(
+    const tagsFile = JSON.parse(
       await fs.promises.readFile(`${workspaceDir}/tags/tags.json`, "utf8")
     );
 
+    let tags;
+    // cmd argument can be passed without arguments
+    if (tagArray === true) {
+      console.log("Process all tags.");
+      tags = tagsFile.tag;
+    }
+
+    // if paths or filenames are passed use those
+    if (Array.isArray(tagsFile.tag) && Array.isArray(tagArray)) {
+      console.log(`Process selected tags: ${tagArray.join(", ")}`);
+      tags = tagsFile.tag.filter((tag) => {
+        return tagArray.includes(tag.tagId);
+      });
+    }
+
     // Create or update each tag
-    if (Array.isArray(tags.tag)) {
-      for (const tag of tags.tag) {
+    if (Array.isArray(tags) && tags.length > 0) {
+      for (const tag of tags) {
         const tagsDir = workspaceDir + "/tags";
         // Filter out HTML tags only
         const htmlTag = tag.type === "html";
@@ -39,7 +54,7 @@ async function uploadTags() {
           console.log(`Process Tag ${tag.name}.`);
           // Already start reading tag file
           const tagFile = await fs.promises.readFile(
-            `${tagsDir}/${tag.name.replace(/ /g, "_")}.html`,
+            `${tagsDir}/${tag.tagId}__${tag.name.replace(/ /g, "_")}.html`,
             "utf8"
           );
 
@@ -82,12 +97,12 @@ async function uploadTags() {
         }
       }
     } else {
-      console.log("No templates found!");
+      console.log("No tags found!");
     }
   }
 }
 
-async function uploadVariables() {
+async function uploadVariables(variableArray) {
   const credentials = JSON.parse(
     await fs.promises.readFile("./gcp-sa-key.json", "utf8")
   );
@@ -109,16 +124,30 @@ async function uploadVariables() {
     console.log(`Uploading variables from ${workspaceDir}`);
 
     // Load the variables from a JSON file
-    const variables = JSON.parse(
+    const variablesFile = JSON.parse(
       await fs.promises.readFile(
         `${workspaceDir}/variables/variables.json`,
         "utf8"
       )
     );
+    let variables;
+    // cmd argument can be passed without arguments
+    if (variableArray) {
+      console.log("Process all tags.");
+      variables = variablesFile.variable;
+    }
 
-    // Create or update each variable
-    if (Array.isArray(variables.variable)) {
-      for (const variable of variables.variable) {
+    // if paths or filenames are passed use those
+    if (Array.isArray(variablesFile.variable) && Array.isArray(variableArray)) {
+      console.log(`Process selected variables: ${variableArray.join(", ")}`);
+      variables = variablesFile.variable.filter((variable) => {
+        return variableArray.includes(variable.variableId);
+      });
+    }
+
+    // Create or update each tag
+    if (Array.isArray(variables) && variables.length > 0) {
+      for (const variable of variables) {
         const variablesDir = workspaceDir + "/variables";
         // Filter out HTML variables only
         const jsVariable = variable.type === "jsm";
@@ -127,7 +156,10 @@ async function uploadVariables() {
           console.log(`Process Variable ${variable.name}.`);
           // Already start reading variable file
           const variableFile = await fs.promises.readFile(
-            `${variablesDir}/${variable.name.replace(/ /g, "_")}.js`,
+            `${variablesDir}/${variable.variableId}__${variable.name.replace(
+              / /g,
+              "_"
+            )}.js`,
             "utf8"
           );
 
@@ -170,12 +202,12 @@ async function uploadVariables() {
         }
       }
     } else {
-      console.log("No templates found!");
+      console.log("No variables found!");
     }
   }
 }
 
-async function uploadTemplates() {
+async function uploadTemplates(templateArray) {
   const credentials = JSON.parse(
     await fs.promises.readFile("./gcp-sa-key.json", "utf8")
   );
@@ -197,16 +229,34 @@ async function uploadTemplates() {
     console.log(`Uploading templates from ${workspaceDir}`);
 
     // Load the templates from a JSON file
-    const templates = JSON.parse(
+    const templatesFile = JSON.parse(
       await fs.promises.readFile(
         `${workspaceDir}/templates/templates.json`,
         "utf8"
       )
     );
 
-    // Create or update each template
-    if (Array.isArray(templates.template)) {
-      for (const template of templates.template) {
+    let templates;
+    // cmd argument can be passed without arguments
+    if (templateArray === true) {
+      console.log("Process all templates.");
+      templates = templatesFile.template;
+    }
+
+    // if paths or filenames are passed use those
+    if (Array.isArray(templatesFile.template) && Array.isArray(templateArray)) {
+      console.log(`Process selected templates: ${templateArray.join(", ")}`);
+      templates = templatesFile.template.filter((template) => {
+        return templateArray.includes(template.templateId);
+      });
+    }
+
+    console.log(templates);
+
+    // Create or update each tag
+    if (Array.isArray(templates) && templates.length > 0) {
+      for (const template of templates) {
+        // Create or update each template
         const templatesDir = workspaceDir + "/templates";
 
         const galleryTemplate =
@@ -218,7 +268,10 @@ async function uploadTemplates() {
           // Already start reading  file and merge the output in one string
           const templateFile = (
             await fs.promises.readFile(
-              `${templatesDir}/${template.name.replace(/ /g, "_")}.tpl`,
+              `${templatesDir}/${template.templateId}__${template.name.replace(
+                / /g,
+                "_"
+              )}.tpl`,
               "utf8"
             )
           ).toString();
@@ -263,7 +316,7 @@ async function uploadTemplates() {
 }
 
 export const uploadChanges = async (tags, variables, templates) => {
-  tags && (await uploadTags());
-  variables && (await uploadVariables());
-  templates && (await uploadTemplates());
+  tags && (await uploadTags(tags));
+  variables && (await uploadVariables(variables));
+  templates && (await uploadTemplates(templates));
 };

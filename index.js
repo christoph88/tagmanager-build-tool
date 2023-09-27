@@ -8,25 +8,43 @@ const program = new Command();
 program.version("0.0.1").description("Tagmanager build tool");
 
 program
-  .command("download")
-  .description("Download container")
-  .option("-p, --enableProcessing <boolean>", "Enable processing", false)
+  .command("pull")
+  .description("Pull changes from Tagmanager")
+  .option("-p, --enableProcessing", "Enable processing")
+  .option("-d, --enableDiff", "Enable processing")
   .action((options) => {
     console.log(options);
-    downloadContainer(options.enableProcessing);
+    downloadContainer(options.enableProcessing, options.enableDiff);
   });
 
 program
-  .command("upload")
-  .description("Upload changes")
-  .option("-t, --tags <tags>", "Tags to upload", false)
-  .option("-v, --variables <variables>", "Variables to upload", false)
-  .option("-m, --template <template>", "Template to upload", true)
+  .command("build")
+  .description("Build files and make them ready for upload.")
   .action((options) => {
-    // TODO if options contain * upload all of them
-    // TODO add a filter to the templates which filters out the selection here
     console.log(options);
-    uploadChanges(options.tags, options.variables, options.templates);
+  });
+
+program
+  .command("push")
+  .description(
+    "Push changes to tagmanager. Include a comma seperated list of paths to process or omit to process all."
+  )
+  .option("-t, --tags [tags...]", "Ids of tags to upload")
+  .option("-v, --variables [variables...]", "Ids of variables to upload")
+  .option("-m, --templates [templates...]", "Ids of templates to upload")
+  .option("-a, --all", "Upload all tags, variables and templates")
+  .action((options) => {
+    console.log(options);
+    if (options.tags || options.variables || options.templates) {
+      uploadChanges(options.tags, options.variables, options.templates);
+      return;
+    }
+    if (options.all) {
+      uploadChanges(true, true, true);
+      return;
+    }
+    console.error("At least one option is required");
+    process.exit(1);
   });
 
 program.parse();
