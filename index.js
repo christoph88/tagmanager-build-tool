@@ -29,22 +29,22 @@ program
   .description(
     "Upload changes to tagmanager. Include a comma seperated list of paths to process or omit to process all."
   )
-  .option("-t, --tags [tags...]", "Paths of tags to upload")
-  .option("-v, --variables [variables...]", "Paths of variables to upload")
-  .option("-m, --templates [templates...]", "Paths of templates to upload")
+  .option("-t, --tags [tags...]", "Ids of tags to upload")
+  .option("-v, --variables [variables...]", "Ids of variables to upload")
+  .option("-m, --templates [templates...]", "Ids of templates to upload")
   .option("-a, --all", "Upload all tags, variables and templates")
   .action((options) => {
-    // TODO fix it so you can select which templates to upload
     console.log(options);
+    if (options.tags || options.variables || options.templates) {
+      uploadChanges(options.tags, options.variables, options.templates);
+      return;
+    }
     if (options.all) {
-      // uploadChanges(true, true, true);
+      uploadChanges(true, true, true);
       return;
     }
-    if (options.test) {
-      // uploadChanges(false, false, true);
-      return;
-    }
-    // uploadChanges(options.tags, options.variables, options.templates);
+    console.error("At least one option is required");
+    process.exit(1);
   });
 
 program.parse();
