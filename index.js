@@ -9,7 +9,7 @@ program.version("0.0.1").description("Tagmanager build tool");
 
 program
   .command("pull")
-  .description("Download container")
+  .description("Pull changes from Tagmanager")
   .option("-p, --enableProcessing", "Enable processing")
   .option("-d, --enableDiff", "Enable processing")
   .action((options) => {
@@ -27,7 +27,7 @@ program
 program
   .command("push")
   .description(
-    "Upload changes to tagmanager. Include a comma seperated list of paths to process or omit to process all."
+    "Push changes to tagmanager. Include a comma seperated list of paths to process or omit to process all."
   )
   .option("-t, --tags [tags...]", "Ids of tags to upload")
   .option("-v, --variables [variables...]", "Ids of variables to upload")

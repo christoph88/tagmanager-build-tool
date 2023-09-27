@@ -36,8 +36,8 @@ async function uploadTags(tagArray) {
     }
 
     // if paths or filenames are passed use those
-    if (Array.isArray(tagArray)) {
-      console.log(`Process selected tags: ${tagsArray.join(", ")}`);
+    if (Array.isArray(tagsFile.tag) && Array.isArray(tagArray)) {
+      console.log(`Process selected tags: ${tagArray.join(", ")}`);
       tags = tagsFile.tag.filter((tag) => {
         return tagArray.includes(tag.tagId);
       });
@@ -102,7 +102,7 @@ async function uploadTags(tagArray) {
   }
 }
 
-async function uploadVariables(variablesArray) {
+async function uploadVariables(variableArray) {
   const credentials = JSON.parse(
     await fs.promises.readFile("./gcp-sa-key.json", "utf8")
   );
@@ -132,16 +132,16 @@ async function uploadVariables(variablesArray) {
     );
     let variables;
     // cmd argument can be passed without arguments
-    if (variablesArray) {
+    if (variableArray) {
       console.log("Process all tags.");
       variables = variablesFile.variable;
     }
 
     // if paths or filenames are passed use those
-    if (Array.isArray(variablesArray)) {
-      console.log(`Process selected variables: ${variablesArray.join(", ")}`);
+    if (Array.isArray(variablesFile.variable) && Array.isArray(variableArray)) {
+      console.log(`Process selected variables: ${variableArray.join(", ")}`);
       variables = variablesFile.variable.filter((variable) => {
-        variablesArray.includes(variable.variableId);
+        return variableArray.includes(variable.variableId);
       });
     }
 
@@ -207,7 +207,7 @@ async function uploadVariables(variablesArray) {
   }
 }
 
-async function uploadTemplates(templatesArray) {
+async function uploadTemplates(templateArray) {
   const credentials = JSON.parse(
     await fs.promises.readFile("./gcp-sa-key.json", "utf8")
   );
@@ -238,18 +238,20 @@ async function uploadTemplates(templatesArray) {
 
     let templates;
     // cmd argument can be passed without arguments
-    if (templatesArray === true) {
+    if (templateArray === true) {
       console.log("Process all templates.");
       templates = templatesFile.template;
     }
 
     // if paths or filenames are passed use those
-    if (Array.isArray(templatesArray)) {
-      console.log(`Process selected templates: ${templatesArray.join(", ")}`);
+    if (Array.isArray(templatesFile.template) && Array.isArray(templateArray)) {
+      console.log(`Process selected templates: ${templateArray.join(", ")}`);
       templates = templatesFile.template.filter((template) => {
-        templateArray.includes(template.templateId);
+        return templateArray.includes(template.templateId);
       });
     }
+
+    console.log(templates);
 
     // Create or update each tag
     if (Array.isArray(templates) && templates.length > 0) {
