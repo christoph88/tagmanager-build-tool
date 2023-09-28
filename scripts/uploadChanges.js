@@ -213,7 +213,7 @@ async function uploadTemplates(templateArray) {
   );
   const auth = new google.auth.GoogleAuth({
     credentials,
-    scopes: ["https://www.googleapis.com/auth/templatemanager.edit.containers"],
+    scopes: ["https://www.googleapis.com/auth/tagmanager.edit.containers"],
   });
 
   const authClient = await auth.getClient();
