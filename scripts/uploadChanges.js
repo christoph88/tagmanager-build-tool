@@ -293,6 +293,7 @@ async function uploadTemplates(templateArray) {
               await tagmanager.accounts.containers.workspaces.templates.update({
                 auth: authClient,
                 path: template.path,
+                fingerprint: template.fingerprint,
                 requestBody: requestTemplate,
               });
             console.log(`Template ${template.name} uploaded successfully.`);
