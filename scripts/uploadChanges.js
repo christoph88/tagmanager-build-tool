@@ -298,7 +298,7 @@ async function uploadTemplates(templateArray) {
             console.log(`Template ${template.name} uploaded successfully.`);
             console.log(response.status);
           } catch (error) {
-            console.error(error);
+            console.error(JSON.stringify(error, null, 2));
             console.error(`Failed to upload template ${template.name}.`);
             console.error(JSON.stringify(error.errors, null, 2));
             console.error(error.status);
