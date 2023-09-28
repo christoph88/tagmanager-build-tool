@@ -42,7 +42,6 @@ Options:
 
 Commands:
   pull [options]  Pull changes from Tagmanager
-  build           Build files and make them ready for upload.
   push [options]  Push changes to tagmanager. Include a comma seperated list of paths to process or omit to process
                   all.
   help [command]  display help for command
@@ -53,10 +52,6 @@ Commands:
 ### 1. Pull
 
 Download all container data, `--enableProcessing` if you want to edit the javascript and html files in your code-editor.
-
-### 1. Build
-
-<Not yet implemented> transpile your code to ES5 so it is useable from within Tagmanager.
 
 ### 3. Push
 
