@@ -2,7 +2,7 @@
 
 ## Description
 
-Tagmanager build tool is a tool which downloads and uploads your Tagmanager tags, variables and templates.
+Tagmanager build tool is a unofficial tool which downloads and uploads your Tagmanager tags, variables and templates.
 This will enable you to work in a code editor of choice and version your code.
 
 ## Roadmap
@@ -14,9 +14,10 @@ Following ideas I am toying with but their is no strict timeline:
 
 ## Installation
 
-1. Run `npm install -g tbt`
+1. Run `npm install -g tagmanager-build-tool`
 1. Create a Google Cloud Project and connect enable the Tagmanager API.
 1. After enabling the API create a service account with access to use that API.
+1. Create a new folder where you want to work and optionally run `git init`.
 1. Download the key as json and save it in the root as `gcp-sa-key.json`.
 
 1. Create a `.env` file. You can find the required id's in your tagmanager url
