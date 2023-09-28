@@ -2,12 +2,29 @@
 
 import dotenv from "dotenv";
 dotenv.config();
+import readline from "readline";
 import { downloadContainer } from "./scripts/downloadContainer.js";
 import { uploadChanges } from "./scripts/uploadChanges.js";
 import { Command } from "commander";
 const program = new Command();
 
-program.version("0.0.1").description("Tagmanager build tool");
+const verify = (message, cb) => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rl.question(message + " yes/no > ", (answer) => {
+    if (answer.toLowerCase() === "yes" || answer.toLowerCase() === "y") {
+      cb();
+    } else {
+      console.log("Operation cancelled.");
+    }
+    rl.close();
+  });
+};
+
+program.version("1.1.1").description("Tagmanager build tool");
 
 program
   .command("pull")
@@ -16,15 +33,17 @@ program
   .option("-d, --enableDiff", "Enable processing")
   .action((options) => {
     console.log(options);
-    downloadContainer(options.enableProcessing, options.enableDiff);
+    verify("Download entire container?", () => {
+      downloadContainer(options.enableProcessing, options.enableDiff);
+    });
   });
 
-program
-  .command("build")
-  .description("Build files and make them ready for upload.")
-  .action((options) => {
-    console.log(options);
-  });
+// program
+//   .command("build")
+//   .description("Build files and make them ready for upload.")
+//   .action((options) => {
+//     console.log(options);
+//   });
 
 program
   .command("push")
@@ -38,11 +57,15 @@ program
   .action((options) => {
     console.log(options);
     if (options.tags || options.variables || options.templates) {
-      uploadChanges(options.tags, options.variables, options.templates);
+      verify("Upload changes?\n" + JSON.stringify(options, null, 2), () => {
+        uploadChanges(options.tags, options.variables, options.templates);
+      });
       return;
     }
     if (options.all) {
-      uploadChanges(true, true, true);
+      verify("Upload all changes?", () => {
+        uploadChanges(true, true, true);
+      });
       return;
     }
     console.error("At least one option is required");
