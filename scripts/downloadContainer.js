@@ -91,7 +91,7 @@ export const downloadContainer = async (enableProcessing, enableDiff) => {
       );
     }
 
-    console.log(`Processing ${workspace.workspaceId + workspace.name}.`);
+    console.log(`Processing ${workspace.workspaceId} - ${workspace.name}.`);
 
     // tags
     const tags = await tagmanager.accounts.containers.workspaces.tags.list({
