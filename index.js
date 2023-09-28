@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import dotenv from "dotenv";
 dotenv.config();
 import { downloadContainer } from "./scripts/downloadContainer.js";
@@ -31,7 +33,7 @@ program
   )
   .option("-t, --tags [tags...]", "Ids of tags to upload")
   .option("-v, --variables [variables...]", "Ids of variables to upload")
-  .option("-m, --templates [templates...]", "Ids of templates to upload")
+  .option("-tm, --templates [templates...]", "Ids of templates to upload")
   .option("-a, --all", "Upload all tags, variables and templates")
   .action((options) => {
     console.log(options);
