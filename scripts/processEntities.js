@@ -139,6 +139,41 @@ export const processVariables = async (directory, enableDiff) => {
                 let fileContents = fileDiff || newFileContent;
                 fileContents = "var gtmVariable = " + fileContents;
 
+                const getHandlebarsVariables = (str) => {
+                  const regex = /\{\{([^}]+)\}\}/g;
+                  let match;
+                  const matches = [];
+
+                  while ((match = regex.exec(str)) !== null) {
+                    matches.push(match[1].trim());
+                  }
+
+                  return matches;
+                };
+
+                let handlebarsVariables = getHandlebarsVariables(fileContents);
+
+                const processHandlebarsVariables = (str, variables) => {
+                  let result = str;
+                  variables.forEach((variable) => {
+                    const regex = new RegExp(
+                      `\\{\\{\\s*${variable}\\s*\\}\\}`,
+                      "g"
+                    );
+                    // Adding the original handlebar variable as a comment before replacing it
+                    result = result.replace(
+                      regex,
+                      `/* {{${variable}}} */ "${variable}"`
+                    );
+                  });
+                  return result;
+                };
+
+                fileContents = processHandlebarsVariables(
+                  fileContents,
+                  handlebarsVariables
+                );
+
                 await writeFile(filePath, fileContents);
                 return;
               }
