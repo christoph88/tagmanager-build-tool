@@ -136,7 +136,8 @@ export const processVariables = async (directory, enableDiff) => {
                   );
                 }
 
-                const fileContents = fileDiff || newFileContent;
+                let fileContents = fileDiff || newFileContent;
+                fileContents = "var gtmVariable = " + fileContents;
 
                 await writeFile(filePath, fileContents);
                 return;
