@@ -27,17 +27,20 @@ const verify = (message, cb) => {
 program.version("1.1.3").description("Tagmanager build tool");
 
 program
-  .command("pull")
-  .description("Pull changes from Tagmanager")
-  .option(
-    "-e, --enableExtract [boolean]",
-    "Extract code so it can be edited.",
-    true
-  )
-  .action((options) => {
-    console.log(options);
+  .command("fetch")
+  .description("Fetch changes from Tagmanager without extracting code.")
+  .action(() => {
     verify("Download entire container?", () => {
-      downloadContainer(options.enableProcessing);
+      downloadContainer(false);
+    });
+  });
+
+program
+  .command("pull")
+  .description("Pull changes from Tagmanager and extract code.")
+  .action(() => {
+    verify("Download entire container?", () => {
+      downloadContainer(true);
     });
   });
 
