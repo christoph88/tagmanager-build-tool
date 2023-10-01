@@ -19,3 +19,17 @@ export const processHandlebarsVariables = (str, variables) => {
   });
   return result;
 };
+
+export const reverseProcessHandlebarsVariables = (str) => {
+  let result = str;
+  const regex = /\/\*\s\{\{(.+?)\}\}\s\*\/\s"(.+?)"/g;
+  let match;
+
+  while ((match = regex.exec(str)) !== null) {
+    const variable = match[1].trim();
+    const replacement = `{{${variable}}}`;
+    result = result.replace(match[0], replacement);
+  }
+
+  return result;
+};

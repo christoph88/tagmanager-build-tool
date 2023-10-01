@@ -1,6 +1,7 @@
 import fs from "fs";
 import { google } from "googleapis";
 const tagmanager = google.tagmanager("v2");
+import { reverseProcessHandlebarsVariables } from "./handlebars.js";
 
 async function uploadTags(tagArray) {
   const credentials = JSON.parse(
@@ -58,6 +59,8 @@ async function uploadTags(tagArray) {
             "utf8"
           );
 
+          let processedValue = reverseProcessHandlebarsVariables(tagFile);
+
           // Construct the tag object to match the Google Tag Manager API request format
           const requestTag = {
             path: tag.path,
@@ -77,7 +80,7 @@ async function uploadTags(tagArray) {
             return p.type === "template" && p.key === "html";
           });
 
-          requestTag.parameter[htmlParameterIndex].value = tagFile;
+          requestTag.parameter[htmlParameterIndex].value = processedValue;
 
           try {
             const response =
@@ -163,25 +166,9 @@ async function uploadVariables(variableArray) {
             "utf8"
           );
 
-          const reverseProcessHandlebarsVariables = (str) => {
-            let result = str;
-            const regex = /\/\*\s\{\{(.+?)\}\}\s\*\/\s"(.+?)"/g;
-            let match;
-
-            while ((match = regex.exec(str)) !== null) {
-              const variable = match[1].trim();
-              const replacement = `{{${variable}}}`;
-              result = result.replace(match[0], replacement);
-            }
-
-            return result;
-          };
-
-          // TODO move this to a seperate script file so it can be reused for templates and tags
           let processedValue = reverseProcessHandlebarsVariables(
             variableFile
           ).replace("var gtmVariable = ", "");
-          console.log(processedValue);
 
           // Construct the variable object to match the Google variable Manager API request format
           const requestVariable = {
@@ -294,6 +281,8 @@ async function uploadTemplates(templateArray) {
             )
           ).toString();
 
+          let processedValue = reverseProcessHandlebarsVariables(templateFile);
+
           // Construct the template object to match the Google template Manager API request format
           const requestTemplate = {
             path: template.path,
@@ -305,7 +294,7 @@ async function uploadTemplates(templateArray) {
             templateData: template.templateData,
           };
 
-          requestTemplate.templateData = templateFile;
+          requestTemplate.templateData = processedValue;
 
           try {
             const response =
