@@ -149,7 +149,6 @@ export const extractTemplates = async (directory) => {
             // Filter out the ones which not belong to a gallery
             if (typeof template.galleryReference === "undefined") {
               // Write the value to a new JavaScript file with the variable name as the filename
-              // TODO change filename to js
               const filename = `${template.templateId}__${template.name.replace(
                 /( |\/)/g,
                 "_"
@@ -159,16 +158,36 @@ export const extractTemplates = async (directory) => {
               const templateContent = template.templateData;
 
               // Get only the sandboxed js
-              const sections = templateContent.split("___");
-              const sandboxedJSCode = sections
-                .find((section) =>
+              function getSandboxedJS(templateContent) {
+                const sections = templateContent.split("___");
+                const sandboxedJSStartIndex = sections.findIndex((section) =>
                   section.startsWith("SANDBOXED_JS_FOR_WEB_TEMPLATE")
-                )
-                .split("\n")
-                .slice(1)
-                .join("\n");
+                );
+                const sandboxedJSEndIndex = sections.findIndex((section) =>
+                  section.startsWith("WEB_PERMISSIONS")
+                );
 
-              let fileContents = sandboxedJSCode;
+                if (
+                  sandboxedJSStartIndex === -1 ||
+                  sandboxedJSEndIndex === -1
+                ) {
+                  throw new Error(
+                    "Could not find sandboxed JS or web permissions section"
+                  );
+                }
+
+                const sandboxedJSCode = sections
+                  .slice(sandboxedJSStartIndex + 1, sandboxedJSEndIndex)
+                  .join("___")
+                  .split("\n")
+                  .slice(1)
+                  .join("\n");
+
+                return sandboxedJSCode;
+              }
+
+              // Usage:
+              let fileContents = getSandboxedJS(templateContent);
 
               let handlebarsVariables = getHandlebarsVariables(fileContents);
 
