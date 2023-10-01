@@ -14,7 +14,7 @@ const verify = (message, cb) => {
     output: process.stdout,
   });
 
-  rl.question(message + " yes/no > ", (answer) => {
+  rl.question(message + " y/n > ", (answer) => {
     if (answer.toLowerCase() === "yes" || answer.toLowerCase() === "y") {
       cb();
     } else {
@@ -29,8 +29,11 @@ program.version("1.1.3").description("Tagmanager build tool");
 program
   .command("pull")
   .description("Pull changes from Tagmanager")
-  .option("-p, --enableProcessing", "Enable processing")
-  .option("-d, --enableDiff", "Enable processing")
+  .option(
+    "-e, --enableExtract [boolean]",
+    "Extract code so it can be edited.",
+    true
+  )
   .action((options) => {
     console.log(options);
     verify("Download entire container?", () => {

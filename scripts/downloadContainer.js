@@ -10,16 +10,16 @@ import {
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import {
-  processTags,
-  processVariables,
-  processTemplates,
-} from "./processEntities.js";
+  extractTags,
+  extractVariables,
+  extractTemplates,
+} from "./extractCode.js";
 
 const tagmanager = google.tagmanager("v2");
 
 const args = process.argv.slice(2); // remove the first two elements
 
-export const downloadContainer = async (enableProcessing) => {
+export const downloadContainer = async (enableExtract) => {
   const credentials = JSON.parse(readFileSync("./gcp-sa-key.json"));
   const auth = new google.auth.GoogleAuth({
     credentials,
@@ -108,7 +108,7 @@ export const downloadContainer = async (enableProcessing) => {
       JSON.stringify(tags.data, null, 2)
     );
     // Process tags
-    enableProcessing && (await processTags(tagsDir));
+    enableExtract && (await extractTags(tagsDir));
 
     // variables
     const variables =
@@ -123,7 +123,7 @@ export const downloadContainer = async (enableProcessing) => {
       JSON.stringify(variables.data, null, 2)
     );
     // Process variables
-    enableProcessing && (await processVariables(variablesDir));
+    enableExtract && (await extractVariables(variablesDir));
 
     // templates
     const templates =
@@ -138,6 +138,6 @@ export const downloadContainer = async (enableProcessing) => {
       JSON.stringify(templates.data, null, 2)
     );
     // Process templates
-    enableProcessing && (await processTemplates(templatesDir));
+    enableExtract && (await extractTemplates(templatesDir));
   }
 };

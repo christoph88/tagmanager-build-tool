@@ -1,36 +1,10 @@
 import fs from "fs";
 import path from "path";
 import util from "util";
-import { diffLines } from "diff";
 
 const writeFile = util.promisify(fs.writeFile);
 
-const diffLinesHelper = (existingFileContent, newFileContent) => {
-  const changes = diffLines(existingFileContent, newFileContent, {
-    newLineIsToken: true,
-  });
-
-  const fileDiff = changes
-    .flatMap((change) => {
-      const lines = change.value.split("\n");
-      return lines.map((line) => {
-        if (change.added) {
-          return `++ ${line}`;
-        } else if (change.removed) {
-          return `-- ${line}`;
-        } else {
-          return `${line}`;
-        }
-      });
-    })
-    .join("\n");
-  return fileDiff;
-};
-
-// TODO find an easy option to transpile in vs code, do NOT do it automatically
-
-// TODO rename to extractTags
-export const processTags = async (directory) => {
+export const extractTags = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const tagsDir = directory;
@@ -87,7 +61,7 @@ export const processTags = async (directory) => {
   });
 };
 
-export const processVariables = async (directory) => {
+export const extractVariables = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const variablesDir = directory;
@@ -177,7 +151,7 @@ export const processVariables = async (directory) => {
   });
 };
 
-export const processTemplates = async (directory) => {
+export const extractTemplates = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the templates directory exists in the current directory
     const templatesDir = directory;
