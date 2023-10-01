@@ -289,7 +289,7 @@ async function uploadTemplates(templateArray) {
               `${templatesDir}/${template.templateId}__${template.name.replace(
                 / /g,
                 "_"
-              )}.tpl`,
+              )}.js`,
               "utf8"
             )
           ).toString();
