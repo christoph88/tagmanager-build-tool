@@ -26,60 +26,66 @@ async function uploadTags(tagArray) {
     // TODO you need this
     // Get an array of all files in the tags/ dir
     const tagsDir = `${workspaceDir}/tags`;
-    const tagsFiles = await fs.promises.readdir(tagsDir);
+    let tagsFiles;
 
-    // TODO remove
-    console.log("tagsFiles", tagsFiles);
+    // Check if the directory exists
+    if (fs.existsSync(tagsDir)) {
+      tagsFiles = await fs.promises.readdir(tagsDir);
 
-    let tags;
-    // cmd argument can be passed without arguments
-    if (tagArray === true) {
-      console.log("Upload all tags.");
-      tags = tagsFiles;
-    }
+      // TODO remove
+      console.log("tagsFiles", tagsFiles);
 
-    // TODO fix this because tagsfiles are only filenames
-    // if paths or filenames are passed use those
-    if (Array.isArray(tagsFiles) && Array.isArray(tagArray)) {
-      console.log(`Upload selected tags: ${tagArray.join(", ")}`);
-      tags = tagsFiles.filter((tag) => {
-        return tagArray.includes(tag.tagId);
-      });
-    }
-
-    // Create or update each tag
-    if (Array.isArray(tags) && tags.length > 0) {
-      for (const tag of tags) {
-        const tagsDir = workspaceDir + "/tags";
-        // Filter out HTML tags only
-
-        console.log(`Upload Tag ${tag.name}.`);
-
-        // Already start reading tag file
-        const tagName = tag;
-        const requestTag = await fs.promises.readFile(
-          `${tagsDir}/${tagName}`,
-          "utf8"
-        );
-
-        try {
-          const response =
-            await tagmanager.accounts.containers.workspaces.tags.update({
-              auth: authClient,
-              fingerprint: tag.fingerprint,
-              path: tag.path,
-              requestBody: requestTag,
-            });
-          console.log(`Tag ${tag.name} uploaded successfully.`);
-          console.log(response.status);
-        } catch (error) {
-          console.error(`Failed to upload tag ${tag.name}.`);
-          console.error(JSON.stringify(error.errors, null, 2));
-          console.error(error.status);
-        }
+      let tags;
+      // cmd argument can be passed without arguments
+      if (tagArray === true) {
+        console.log("Upload all tags.");
+        tags = tagsFiles;
+        console.log(tags);
       }
-    } else {
-      console.log("No tags found!");
+
+      // TODO fix this because tagsfiles are only filenames
+      // if paths or filenames are passed use those
+      if (Array.isArray(tagsFiles) && Array.isArray(tagArray)) {
+        console.log(`Upload selected tags: ${tagArray.join(", ")}`);
+        tags = tagsFiles.filter((tag) => {
+          return tagArray.includes(tag.tagId);
+        });
+      }
+
+      // Create or update each tag
+      if (Array.isArray(tags) && tags.length > 0) {
+        for (const tag of tags) {
+          const tagsDir = workspaceDir + "/tags";
+          // Filter out HTML tags only
+
+          console.log(`Upload Tag ${tag.name}.`);
+
+          // Already start reading tag file
+          const tagName = tag;
+          const requestTag = await fs.promises.readFile(
+            `${tagsDir}/${tagName}`,
+            "utf8"
+          );
+
+          try {
+            const response =
+              await tagmanager.accounts.containers.workspaces.tags.update({
+                auth: authClient,
+                fingerprint: tag.fingerprint,
+                path: tag.path,
+                requestBody: requestTag,
+              });
+            console.log(`Tag ${tag.name} uploaded successfully.`);
+            console.log(response.status);
+          } catch (error) {
+            console.error(`Failed to upload tag ${tag.name}.`);
+            console.error(JSON.stringify(error.errors, null, 2));
+            console.error(error.status);
+          }
+        }
+      } else {
+        console.log("No tags found!");
+      }
     }
   }
 }
@@ -107,55 +113,58 @@ async function uploadVariables(variableArray) {
 
     // Get an array of all files in the variables/ dir
     const variablesDir = `${workspaceDir}/variables`;
-    const variablesFiles = await fs.promises.readdir(variablesDir);
+    if (fs.existsSync(variablesDir)) {
+      const variablesFiles = await fs.promises.readdir(variablesDir);
 
-    let variables;
-    // cmd argument can be passed without arguments
-    if (variableArray) {
-      console.log("Upload all variables.");
-      variables = variablesFiles;
-    }
-
-    // TODO fix this with filenames
-    // if paths or filenames are passed use those
-    if (Array.isArray(variablesFiles) && Array.isArray(variableArray)) {
-      console.log(`Upload selected variables: ${variableArray.join(", ")}`);
-      variables = variablesFiles.filter((variable) => {
-        return variableArray.includes(variable.variableId);
-      });
-    }
-
-    // Create or update each tag
-    if (Array.isArray(variables) && variables.length > 0) {
-      for (const variable of variables) {
-        const variablesDir = workspaceDir + "/variables";
-
-        console.log(`Upload Variable ${variable.name}.`);
-        // Already start reading variable file
-        const variableName = variable;
-        const requestVariable = await fs.promises.readFile(
-          `${variablesDir}/${variableName}`,
-          "utf8"
-        );
-
-        try {
-          const response =
-            await tagmanager.accounts.containers.workspaces.variables.update({
-              auth: authClient,
-              fingerprint: variable.fingerprint,
-              path: variable.path,
-              requestBody: requestVariable,
-            });
-          console.log(`Variable ${variable.name} uploaded successfully.`);
-          console.log(response.status);
-        } catch (error) {
-          console.error(`Failed to upload variable ${variable.name}.`);
-          console.error(JSON.stringify(error.errors, null, 2));
-          console.error(error.status);
-        }
+      let variables;
+      // cmd argument can be passed without arguments
+      if (variableArray) {
+        console.log("Upload all variables.");
+        variables = variablesFiles;
+        console.log(variables);
       }
-    } else {
-      console.log("No variables found!");
+
+      // TODO fix this with filenames
+      // if paths or filenames are passed use those
+      if (Array.isArray(variablesFiles) && Array.isArray(variableArray)) {
+        console.log(`Upload selected variables: ${variableArray.join(", ")}`);
+        variables = variablesFiles.filter((variable) => {
+          return variableArray.includes(variable.variableId);
+        });
+      }
+
+      // Create or update each tag
+      if (Array.isArray(variables) && variables.length > 0) {
+        for (const variable of variables) {
+          const variablesDir = workspaceDir + "/variables";
+
+          console.log(`Upload Variable ${variable.name}.`);
+          // Already start reading variable file
+          const variableName = variable;
+          const requestVariable = await fs.promises.readFile(
+            `${variablesDir}/${variableName}`,
+            "utf8"
+          );
+
+          try {
+            const response =
+              await tagmanager.accounts.containers.workspaces.variables.update({
+                auth: authClient,
+                fingerprint: variable.fingerprint,
+                path: variable.path,
+                requestBody: requestVariable,
+              });
+            console.log(`Variable ${variable.name} uploaded successfully.`);
+            console.log(response.status);
+          } catch (error) {
+            console.error(`Failed to upload variable ${variable.name}.`);
+            console.error(JSON.stringify(error.errors, null, 2));
+            console.error(error.status);
+          }
+        }
+      } else {
+        console.log("No variables found!");
+      }
     }
   }
 }
@@ -183,57 +192,60 @@ async function uploadTemplates(templateArray) {
 
     // Get an array of all files in the templates/ dir
     const templatesDir = `${workspaceDir}/templates`;
-    const templatesFiles = await fs.promises.readdir(templatesDir);
+    if (fs.existsSync(templatesDir)) {
+      const templatesFiles = await fs.promises.readdir(templatesDir);
 
-    let templates;
-    // cmd argument can be passed without arguments
-    if (templateArray === true) {
-      console.log("Upload all templates.");
-      templates = templatesFiles;
-    }
-
-    // TODO fix
-    // if paths or filenames are passed use those
-    if (Array.isArray(templatesFiles) && Array.isArray(templateArray)) {
-      console.log(`Upload selected templates: ${templateArray.join(", ")}`);
-      templates = templatesFiles.filter((template) => {
-        return templateArray.includes(template.templateId);
-      });
-    }
-
-    // Create or update each tag
-    if (Array.isArray(templates) && templates.length > 0) {
-      for (const template of templates) {
-        // Create or update each template
-        const templatesDir = workspaceDir + "/templates";
-
-        console.log(`Upload Template ${template.name}.`);
-
-        // Already start reading template file
-        const templateName = template;
-        const requestTemplate = await fs.promises.readFile(
-          `${templatesDir}/${templateName}`,
-          "utf8"
-        );
-
-        try {
-          const response =
-            await tagmanager.accounts.containers.workspaces.templates.update({
-              auth: authClient,
-              path: template.path,
-              fingerprint: template.fingerprint,
-              requestBody: requestTemplate,
-            });
-          console.log(`Template ${template.name} uploaded successfully.`);
-          console.log(response.status);
-        } catch (error) {
-          console.error(`Failed to upload template ${template.name}.`);
-          console.error(JSON.stringify(error.errors, null, 2));
-          console.error(error.status);
-        }
+      let templates;
+      // cmd argument can be passed without arguments
+      if (templateArray === true) {
+        console.log("Upload all templates.");
+        templates = templatesFiles;
+        console.log(templates);
       }
-    } else {
-      console.log("No templates found!");
+
+      // TODO fix
+      // if paths or filenames are passed use those
+      if (Array.isArray(templatesFiles) && Array.isArray(templateArray)) {
+        console.log(`Upload selected templates: ${templateArray.join(", ")}`);
+        templates = templatesFiles.filter((template) => {
+          return templateArray.includes(template.templateId);
+        });
+      }
+
+      // Create or update each tag
+      if (Array.isArray(templates) && templates.length > 0) {
+        for (const template of templates) {
+          // Create or update each template
+          const templatesDir = workspaceDir + "/templates";
+
+          console.log(`Upload Template ${template.name}.`);
+
+          // Already start reading template file
+          const templateName = template;
+          const requestTemplate = await fs.promises.readFile(
+            `${templatesDir}/${templateName}`,
+            "utf8"
+          );
+
+          try {
+            const response =
+              await tagmanager.accounts.containers.workspaces.templates.update({
+                auth: authClient,
+                path: template.path,
+                fingerprint: template.fingerprint,
+                requestBody: requestTemplate,
+              });
+            console.log(`Template ${template.name} uploaded successfully.`);
+            console.log(response.status);
+          } catch (error) {
+            console.error(`Failed to upload template ${template.name}.`);
+            console.error(JSON.stringify(error.errors, null, 2));
+            console.error(error.status);
+          }
+        }
+      } else {
+        console.log("No templates found!");
+      }
     }
   }
 }
