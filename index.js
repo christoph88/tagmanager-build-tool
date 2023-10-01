@@ -44,9 +44,8 @@ program
 program
   .command("build")
   .description("Build json files so they are ready for upload.")
-  .action((options) => {
-    console.log(options);
-    buildChanges(true, true, true);
+  .action(() => {
+    buildChanges();
   });
 
 program
