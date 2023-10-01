@@ -1,5 +1,18 @@
 # TBT - Tagmanager build tool
 
+## TODO Remove these TODO's
+
+## TODO
+
+- pull src
+- pull and extract
+- build dist
+  - build and transpile
+  - build and test
+- build and push dist
+- push dist
+- push src
+
 ## Description
 
 Tagmanager build tool is a unofficial tool which downloads and uploads your Tagmanager tags, variables and templates.
@@ -22,7 +35,6 @@ Following ideas I am toying with but their is no strict timeline:
 
 1. Create a `.env` file. You can find the required id's in your tagmanager url
 `<https://tagmanager.google.com/#/container/accounts/<accountid>/containers/<containerid>/workspaces/<workspaceid>`
-1. Run `tbt pull` to see if everything works.
 
 ``` .env
 ACCOUNT_ID=<your account id>
@@ -30,6 +42,8 @@ CONTAINER_ID=<your container id>
 USER_EMAIL=<service account email address>
 USER_NAME='<This name you want to display when you do uploads>'
 ```
+
+7. Run `tbt pull` to see if everything works.
 
 ## Options
 

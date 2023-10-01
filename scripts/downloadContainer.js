@@ -100,6 +100,9 @@ export const downloadContainer = async (enableProcessing, enableDiff) => {
     });
     const tagsDir = join(workspaceDir, "tags");
     mkdirSync(tagsDir, { recursive: true });
+    // TODO for download write to src_tags.json
+    // TODO for upload write to dist_tags.json
+    // TODO fix this also for variables and templates
     await writeFile(
       join(tagsDir, "tags.json"),
       JSON.stringify(tags.data, null, 2)
