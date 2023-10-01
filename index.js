@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import readline from "readline";
 import { downloadContainer } from "./scripts/downloadContainer.js";
+import { buildChanges } from "./scripts/buildChanges.js";
 import { uploadChanges } from "./scripts/uploadChanges.js";
 import { Command } from "commander";
 const program = new Command();
@@ -40,12 +41,13 @@ program
     downloadContainer(true);
   });
 
-// program
-//   .command("build")
-//   .description("Build files and make them ready for upload.")
-//   .action((options) => {
-//     console.log(options);
-//   });
+program
+  .command("build")
+  .description("Build json files so they are ready for upload.")
+  .action((options) => {
+    console.log(options);
+    buildChanges(true, true, true);
+  });
 
 program
   .command("push")
