@@ -11,7 +11,7 @@ async function buildTags() {
   // iterate over workspaces
   for (const workspace of workspaces.workspace) {
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
-    console.log(`Building tags from ${workspaceDir}`);
+    console.log(`\n\nBuilding tags from ${workspaceDir}`);
 
     // Load the tags from a JSON file
     const tagsFile = JSON.parse(
@@ -28,7 +28,7 @@ async function buildTags() {
         const htmlTag = tag.type === "html";
 
         if (htmlTag) {
-          console.log(`Process Tag ${tag.name}.`);
+          console.log(`Build Tag ${tag.name}.`);
           // Already start reading tag file
           const tagName = `${tag.tagId}__${tag.name.replace(/ /g, "_")}`;
           const tagFile = await fs.promises.readFile(
@@ -84,7 +84,7 @@ async function buildVariables() {
   // iterate over workspaces
   for (const workspace of workspaces.workspace) {
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
-    console.log(`Building variables from ${workspaceDir}`);
+    console.log(`\n\nBuilding variables from ${workspaceDir}`);
 
     // Load the variables from a JSON file
     const variablesFile = JSON.parse(
@@ -103,7 +103,7 @@ async function buildVariables() {
         const jsVariable = variable.type === "jsm";
 
         if (jsVariable) {
-          console.log(`Process Variable ${variable.name}.`);
+          console.log(`Build Variable ${variable.name}.`);
           // Already start reading variable file
           const variableName = `${variable.variableId}__${variable.name.replace(
             / /g,
@@ -165,7 +165,7 @@ async function buildTemplates() {
   // iterate over workspaces
   for (const workspace of workspaces.workspace) {
     const workspaceDir = `workspaces/${workspace.workspaceId}-${workspace.name}`;
-    console.log(`Building templates from ${workspaceDir}`);
+    console.log(`\n\nBuilding templates from ${workspaceDir}`);
 
     // Load the templates from a JSON file
     const templatesFile = JSON.parse(
@@ -187,7 +187,7 @@ async function buildTemplates() {
           typeof template.galleryReference !== "undefined";
 
         if (!galleryTemplate) {
-          console.log(`Process Template ${template.name}.`);
+          console.log(`Build Template ${template.name}.`);
 
           // Already start reading  file and merge the output in one string
           const templateName = `${template.templateId}__${template.name.replace(
