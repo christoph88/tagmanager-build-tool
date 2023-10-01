@@ -39,7 +39,7 @@ async function buildTags() {
           let processedValue = reverseProcessHandlebarsVariables(tagFile);
 
           // Construct the tag object to match the Google Tag Manager API request format
-          const requestTag = {
+          const requestObject = {
             path: tag.path,
             accountId: tag.accountId,
             containerId: tag.containerId,
@@ -51,13 +51,14 @@ async function buildTags() {
             monitoringMetadata: tag.monitoringMetadata,
             priority: tag.priority,
             type: tag.type,
+            fingerprint: tag.fingerprint,
           };
 
-          const htmlParameterIndex = requestTag.parameter?.findIndex((p) => {
+          const htmlParameterIndex = requestObject.parameter?.findIndex((p) => {
             return p.type === "template" && p.key === "html";
           });
 
-          requestTag.parameter[htmlParameterIndex].value = processedValue;
+          requestObject.parameter[htmlParameterIndex].value = processedValue;
 
           // Write the requestTag to the dist folder
           const outputDir = path.dirname(`dist/${tagsDir}/${tagName}.json`);
@@ -65,7 +66,7 @@ async function buildTags() {
 
           await fs.promises.writeFile(
             `dist/${tagsDir}/${tagName}.json`,
-            JSON.stringify(requestTag, null, 2)
+            JSON.stringify(requestObject, null, 2)
           );
         }
       }
@@ -119,7 +120,7 @@ async function buildVariables() {
           ).replace("var gtmVariable = ", "");
 
           // Construct the variable object to match the Google variable Manager API request format
-          const requestVariable = {
+          const requestObject = {
             path: variable.path,
             accountId: variable.accountId,
             containerId: variable.containerId,
@@ -131,13 +132,14 @@ async function buildVariables() {
             monitoringMetadata: variable.monitoringMetadata,
             priority: variable.priority,
             type: variable.type,
+            fingerprint: variable.fingerprint,
           };
 
-          const jsParameterIndex = requestVariable.parameter?.findIndex((p) => {
+          const jsParameterIndex = requestObject.parameter?.findIndex((p) => {
             return p.type === "template" && p.key === "javascript";
           });
 
-          requestVariable.parameter[jsParameterIndex].value = processedValue;
+          requestObject.parameter[jsParameterIndex].value = processedValue;
 
           const outputDir = path.dirname(
             `dist/${variablesDir}/${variableName}.json`
@@ -146,7 +148,7 @@ async function buildVariables() {
 
           await fs.promises.writeFile(
             `dist/${variablesDir}/${variableName}.json`,
-            JSON.stringify(requestVariable, null, 2)
+            JSON.stringify(requestObject, null, 2)
           );
         }
       }
@@ -204,7 +206,7 @@ async function buildTemplates() {
           let processedValue = reverseProcessHandlebarsVariables(templateFile);
 
           // Construct the template object to match the Google template Manager API request format
-          const requestTemplate = {
+          const requestObject = {
             path: template.path,
             accountId: template.accountId,
             containerId: template.containerId,
@@ -212,9 +214,10 @@ async function buildTemplates() {
             templateId: template.templateId,
             name: template.name,
             templateData: template.templateData,
+            fingerprint: template.fingerprint,
           };
 
-          requestTemplate.templateData = processedValue;
+          requestObject.templateData = processedValue;
 
           const outputDir = path.dirname(
             `dist/${templatesDir}/${templateName}.json`
@@ -223,7 +226,7 @@ async function buildTemplates() {
 
           await fs.promises.writeFile(
             `dist/${templatesDir}/${templateName}.json`,
-            JSON.stringify(requestTemplate, null, 2)
+            JSON.stringify(requestObject, null, 2)
           );
         }
       }
