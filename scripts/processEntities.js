@@ -30,7 +30,7 @@ const diffLinesHelper = (existingFileContent, newFileContent) => {
 // TODO find an easy option to transpile in vs code, do NOT do it automatically
 
 // TODO rename to extractTags
-export const processTags = async (directory, enableDiff) => {
+export const processTags = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const tagsDir = directory;
@@ -63,17 +63,7 @@ export const processTags = async (directory, enableDiff) => {
                 const filePath = path.join(tagsDir, filename);
                 const newFileContent = scriptContent;
 
-                let fileDiff;
-                // If file already exists, do a diff
-                if (enableDiff && fs.existsSync(filePath)) {
-                  const existingFileContent = fs.readFileSync(filePath, "utf8");
-                  fileDiff = diffLinesHelper(
-                    existingFileContent,
-                    newFileContent
-                  );
-                }
-
-                const fileContents = fileDiff || newFileContent;
+                const fileContents = newFileContent;
 
                 await writeFile(filePath, fileContents);
                 return;
@@ -97,7 +87,7 @@ export const processTags = async (directory, enableDiff) => {
   });
 };
 
-export const processVariables = async (directory, enableDiff) => {
+export const processVariables = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
     const variablesDir = directory;
@@ -126,17 +116,7 @@ export const processVariables = async (directory, enableDiff) => {
                 const filePath = path.join(variablesDir, filename);
                 const newFileContent = jsParameter.value;
 
-                let fileDiff;
-                // If file already exists, do a diff
-                if (enableDiff && fs.existsSync(filePath)) {
-                  const existingFileContent = fs.readFileSync(filePath, "utf8");
-                  fileDiff = diffLinesHelper(
-                    existingFileContent,
-                    newFileContent
-                  );
-                }
-
-                let fileContents = fileDiff || newFileContent;
+                let fileContents = newFileContent;
                 fileContents = "var gtmVariable = " + fileContents;
 
                 // TODO move this to a seperate ascript so it can be reused for tags and templates
@@ -197,7 +177,7 @@ export const processVariables = async (directory, enableDiff) => {
   });
 };
 
-export const processTemplates = async (directory, enableDiff) => {
+export const processTemplates = async (directory) => {
   return await new Promise((resolve, reject) => {
     // Check if the templates directory exists in the current directory
     const templatesDir = directory;
@@ -227,17 +207,9 @@ export const processTemplates = async (directory, enableDiff) => {
 
               // const sections = fileContent.split('___');
               // const sandboxedJSCode = sections.find(section => section.startsWith('SANDBOXED_JS_FOR_WEB_TEMPLATE')).split('\n').slice(1).join('\n');
+              // console.log(sandboxedJSCode);
 
-              console.log(sandboxedJSCode);
-
-              let fileDiff;
-              // If file already exists, do a diff
-              if (enableDiff && fs.existsSync(filePath)) {
-                const existingFileContent = fs.readFileSync(filePath, "utf8");
-                fileDiff = diffLinesHelper(existingFileContent, newFileContent);
-              }
-
-              const fileContents = fileDiff || newFileContent;
+              const fileContents = newFileContent;
 
               await writeFile(filePath, fileContents);
               return;

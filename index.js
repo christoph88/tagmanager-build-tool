@@ -34,7 +34,7 @@ program
   .action((options) => {
     console.log(options);
     verify("Download entire container?", () => {
-      downloadContainer(options.enableProcessing, options.enableDiff);
+      downloadContainer(options.enableProcessing);
     });
   });
 
