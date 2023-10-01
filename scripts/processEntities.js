@@ -28,8 +28,8 @@ const diffLinesHelper = (existingFileContent, newFileContent) => {
 };
 
 // TODO find an easy option to transpile in vs code, do NOT do it automatically
-// TODO extract javascript from templates
 
+// TODO rename to extractTags
 export const processTags = async (directory, enableDiff) => {
   return await new Promise((resolve, reject) => {
     // Check if the variables directory exists in the current directory
@@ -214,12 +214,21 @@ export const processTemplates = async (directory, enableDiff) => {
             // Filter out the ones which not belong to a gallery
             if (typeof template.galleryReference === "undefined") {
               // Write the value to a new JavaScript file with the variable name as the filename
+              // TODO change filename to js
               const filename = `${template.templateId}__${template.name.replace(
                 /( |\/)/g,
                 "_"
               )}.tpl`;
               const filePath = path.join(templatesDir, filename);
               const newFileContent = template.templateData;
+
+              // TODO only get the sandboxed javascript
+              // const fileContent = `...`; // Replace this with your file content
+
+              // const sections = fileContent.split('___');
+              // const sandboxedJSCode = sections.find(section => section.startsWith('SANDBOXED_JS_FOR_WEB_TEMPLATE')).split('\n').slice(1).join('\n');
+
+              console.log(sandboxedJSCode);
 
               let fileDiff;
               // If file already exists, do a diff

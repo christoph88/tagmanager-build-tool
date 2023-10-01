@@ -331,6 +331,8 @@ async function uploadTemplates(templateArray) {
 }
 
 export const uploadChanges = async (tags, variables, templates) => {
+  // TODO create a seperate build functionality to build dist json files for uploading
+
   tags && (await uploadTags(tags));
   variables && (await uploadVariables(variables));
   templates && (await uploadTemplates(templates));
