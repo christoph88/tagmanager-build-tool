@@ -23,7 +23,6 @@ async function uploadTags(tagArray) {
     const workspaceDir = `dist/workspaces/${workspace.workspaceId}-${workspace.name}`;
     console.log(`Uploading tags from ${workspaceDir}`);
 
-    // TODO you need this
     // Get an array of all files in the tags/ dir
     const tagsDir = `${workspaceDir}/tags`;
     let tagsFiles;
@@ -31,9 +30,6 @@ async function uploadTags(tagArray) {
     // Check if the directory exists
     if (fs.existsSync(tagsDir)) {
       tagsFiles = await fs.promises.readdir(tagsDir);
-
-      // TODO remove
-      console.log("tagsFiles", tagsFiles);
 
       let tags;
       // cmd argument can be passed without arguments
