@@ -34,10 +34,11 @@ async function uploadTags(tagArray) {
     let tags;
     // cmd argument can be passed without arguments
     if (tagArray === true) {
-      console.log("Process all tags.");
+      console.log("Upload all tags.");
       tags = tagsFiles;
     }
 
+    // TODO fix this because tagsfiles are only filenames
     // if paths or filenames are passed use those
     if (Array.isArray(tagsFiles) && Array.isArray(tagArray)) {
       console.log(`Upload selected tags: ${tagArray.join(", ")}`);
@@ -55,9 +56,9 @@ async function uploadTags(tagArray) {
         console.log(`Upload Tag ${tag.name}.`);
 
         // Already start reading tag file
-        const tagName = `${tag.tagId}__${tag.name.replace(/ /g, "_")}`;
+        const tagName = tag;
         const requestTag = await fs.promises.readFile(
-          `${tagsDir}/${tagName}.json`,
+          `${tagsDir}/${tagName}`,
           "utf8"
         );
 
@@ -105,16 +106,17 @@ async function uploadVariables(variableArray) {
     console.log(`Uploading variables from ${workspaceDir}`);
 
     // Get an array of all files in the variables/ dir
-    const variablesDir = `${workspaceDir}/tags`;
+    const variablesDir = `${workspaceDir}/variables`;
     const variablesFiles = await fs.promises.readdir(variablesDir);
 
     let variables;
     // cmd argument can be passed without arguments
     if (variableArray) {
-      console.log("Process all tags.");
+      console.log("Upload all variables.");
       variables = variablesFiles;
     }
 
+    // TODO fix this with filenames
     // if paths or filenames are passed use those
     if (Array.isArray(variablesFiles) && Array.isArray(variableArray)) {
       console.log(`Upload selected variables: ${variableArray.join(", ")}`);
@@ -130,12 +132,9 @@ async function uploadVariables(variableArray) {
 
         console.log(`Upload Variable ${variable.name}.`);
         // Already start reading variable file
-        const variableName = `${variable.variableId}__${variable.name.replace(
-          / /g,
-          "_"
-        )}`;
+        const variableName = variable;
         const requestVariable = await fs.promises.readFile(
-          `${variablesDir}/${variableName}.json`,
+          `${variablesDir}/${variableName}`,
           "utf8"
         );
 
@@ -193,6 +192,7 @@ async function uploadTemplates(templateArray) {
       templates = templatesFiles;
     }
 
+    // TODO fix
     // if paths or filenames are passed use those
     if (Array.isArray(templatesFiles) && Array.isArray(templateArray)) {
       console.log(`Upload selected templates: ${templateArray.join(", ")}`);
@@ -210,12 +210,9 @@ async function uploadTemplates(templateArray) {
         console.log(`Upload Template ${template.name}.`);
 
         // Already start reading template file
-        const templateName = `${template.templateId}__${template.name.replace(
-          / /g,
-          "_"
-        )}`;
+        const templateName = template;
         const requestTemplate = await fs.promises.readFile(
-          `${templatesDir}/${templateName}.json`,
+          `${templatesDir}/${templateName}`,
           "utf8"
         );
 
