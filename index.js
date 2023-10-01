@@ -30,18 +30,14 @@ program
   .command("fetch")
   .description("Fetch changes from Tagmanager without extracting code.")
   .action(() => {
-    verify("Download entire container?", () => {
-      downloadContainer(false);
-    });
+    downloadContainer(false);
   });
 
 program
   .command("pull")
   .description("Pull changes from Tagmanager and extract code.")
   .action(() => {
-    verify("Download entire container?", () => {
-      downloadContainer(true);
-    });
+    downloadContainer(true);
   });
 
 // program
