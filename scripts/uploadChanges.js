@@ -58,11 +58,11 @@ async function uploadTags(tagArray) {
           const tagsDir = workspaceDir + "/tags";
           // Filter out HTML tags only
 
-          console.log(`Upload Tag ${tag.name}.`);
+          console.log(`Upload Tag ${tag}.`);
 
           // Already start reading tag file
           const tagName = tag;
-          const requestTag = await fs.promises.readFile(
+          const requestObject = await fs.promises.readFile(
             `${tagsDir}/${tagName}`,
             "utf8"
           );
@@ -71,14 +71,14 @@ async function uploadTags(tagArray) {
             const response =
               await tagmanager.accounts.containers.workspaces.tags.update({
                 auth: authClient,
-                fingerprint: tag.fingerprint,
-                path: tag.path,
-                requestBody: requestTag,
+                fingerprint: requestObject.fingerprint,
+                path: requestObject.path,
+                requestBody: requestObject,
               });
-            console.log(`Tag ${tag.name} uploaded successfully.`);
+            console.log(`Tag ${tag} uploaded successfully.`);
             console.log(response.status);
           } catch (error) {
-            console.error(`Failed to upload tag ${tag.name}.`);
+            console.error(`Failed to upload tag ${tag}.`);
             console.error(JSON.stringify(error.errors, null, 2));
             console.error(error.status);
           }
@@ -138,10 +138,11 @@ async function uploadVariables(variableArray) {
         for (const variable of variables) {
           const variablesDir = workspaceDir + "/variables";
 
-          console.log(`Upload Variable ${variable.name}.`);
+          console.log(`Upload Variable ${variable}.`);
+
           // Already start reading variable file
           const variableName = variable;
-          const requestVariable = await fs.promises.readFile(
+          const requestObject = await fs.promises.readFile(
             `${variablesDir}/${variableName}`,
             "utf8"
           );
@@ -150,14 +151,14 @@ async function uploadVariables(variableArray) {
             const response =
               await tagmanager.accounts.containers.workspaces.variables.update({
                 auth: authClient,
-                fingerprint: variable.fingerprint,
-                path: variable.path,
-                requestBody: requestVariable,
+                fingerprint: requestObject.fingerprint,
+                path: requestObject.path,
+                requestBody: requestObject,
               });
-            console.log(`Variable ${variable.name} uploaded successfully.`);
+            console.log(`Variable ${variable} uploaded successfully.`);
             console.log(response.status);
           } catch (error) {
-            console.error(`Failed to upload variable ${variable.name}.`);
+            console.error(`Failed to upload variable ${variable}.`);
             console.error(JSON.stringify(error.errors, null, 2));
             console.error(error.status);
           }
@@ -218,11 +219,11 @@ async function uploadTemplates(templateArray) {
           // Create or update each template
           const templatesDir = workspaceDir + "/templates";
 
-          console.log(`Upload Template ${template.name}.`);
+          console.log(`Upload Template ${template}.`);
 
           // Already start reading template file
           const templateName = template;
-          const requestTemplate = await fs.promises.readFile(
+          const requestObject = await fs.promises.readFile(
             `${templatesDir}/${templateName}`,
             "utf8"
           );
@@ -231,14 +232,14 @@ async function uploadTemplates(templateArray) {
             const response =
               await tagmanager.accounts.containers.workspaces.templates.update({
                 auth: authClient,
-                path: template.path,
-                fingerprint: template.fingerprint,
+                path: requestObject.path,
+                fingerprint: requestObject.fingerprint,
                 requestBody: requestTemplate,
               });
-            console.log(`Template ${template.name} uploaded successfully.`);
+            console.log(`Template ${template} uploaded successfully.`);
             console.log(response.status);
           } catch (error) {
-            console.error(`Failed to upload template ${template.name}.`);
+            console.error(`Failed to upload template ${template}.`);
             console.error(JSON.stringify(error.errors, null, 2));
             console.error(error.status);
           }
