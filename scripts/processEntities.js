@@ -139,6 +139,7 @@ export const processVariables = async (directory, enableDiff) => {
                 let fileContents = fileDiff || newFileContent;
                 fileContents = "var gtmVariable = " + fileContents;
 
+                // TODO move this to a seperate ascript so it can be reused for tags and templates
                 const getHandlebarsVariables = (str) => {
                   const regex = /\{\{([^}]+)\}\}/g;
                   let match;

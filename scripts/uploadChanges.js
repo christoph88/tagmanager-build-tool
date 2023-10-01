@@ -163,6 +163,26 @@ async function uploadVariables(variableArray) {
             "utf8"
           );
 
+          const reverseProcessHandlebarsVariables = (str) => {
+            let result = str;
+            const regex = /\/\*\s\{\{(.+?)\}\}\s\*\/\s"(.+?)"/g;
+            let match;
+
+            while ((match = regex.exec(str)) !== null) {
+              const variable = match[1].trim();
+              const replacement = `{{${variable}}}`;
+              result = result.replace(match[0], replacement);
+            }
+
+            return result;
+          };
+
+          // TODO move this to a seperate script file so it can be reused for templates and tags
+          let processedValue = reverseProcessHandlebarsVariables(
+            variableFile
+          ).replace("var gtmVariable = ", "");
+          console.log(processedValue);
+
           // Construct the variable object to match the Google variable Manager API request format
           const requestVariable = {
             path: variable.path,
@@ -182,7 +202,7 @@ async function uploadVariables(variableArray) {
             return p.type === "template" && p.key === "javascript";
           });
 
-          requestVariable.parameter[jsParameterIndex].value = variableFile;
+          requestVariable.parameter[jsParameterIndex].value = processedValue;
 
           try {
             const response =
@@ -274,7 +294,6 @@ async function uploadTemplates(templateArray) {
             )
           ).toString();
 
-          // TODO fix uploading of templates, this still gives errors
           // Construct the template object to match the Google template Manager API request format
           const requestTemplate = {
             path: template.path,
@@ -299,11 +318,9 @@ async function uploadTemplates(templateArray) {
             console.log(`Template ${template.name} uploaded successfully.`);
             console.log(response.status);
           } catch (error) {
-            console.error(JSON.stringify(error, null, 2));
             console.error(`Failed to upload template ${template.name}.`);
             console.error(JSON.stringify(error.errors, null, 2));
             console.error(error.status);
-            // TODO remove full error
           }
         }
       }
