@@ -1,6 +1,10 @@
 import fs from "fs";
 import path from "path";
 import util from "util";
+import {
+  getHandlebarsVariables,
+  processHandlebarsVariables,
+} from "./handlebars.js";
 
 const writeFile = util.promisify(fs.writeFile);
 
@@ -35,9 +39,15 @@ export const extractTags = async (directory) => {
                   "_"
                 )}.html`;
                 const filePath = path.join(tagsDir, filename);
-                const newFileContent = scriptContent;
 
-                const fileContents = newFileContent;
+                let fileContents = scriptContent;
+
+                let handlebarsVariables = getHandlebarsVariables(fileContents);
+
+                fileContents = processHandlebarsVariables(
+                  fileContents,
+                  handlebarsVariables
+                );
 
                 await writeFile(filePath, fileContents);
                 return;
@@ -88,41 +98,12 @@ export const extractVariables = async (directory) => {
                   variable.variableId
                 }__${variable.name.replace(/( |\/)/g, "_")}.js`;
                 const filePath = path.join(variablesDir, filename);
-                const newFileContent = jsParameter.value;
+                const jsContent = jsParameter.value;
 
-                let fileContents = newFileContent;
+                let fileContents = jsContent;
                 fileContents = "var gtmVariable = " + fileContents;
 
-                // TODO move this to a seperate ascript so it can be reused for tags and templates
-                const getHandlebarsVariables = (str) => {
-                  const regex = /\{\{([^}]+)\}\}/g;
-                  let match;
-                  const matches = [];
-
-                  while ((match = regex.exec(str)) !== null) {
-                    matches.push(match[1].trim());
-                  }
-
-                  return matches;
-                };
-
                 let handlebarsVariables = getHandlebarsVariables(fileContents);
-
-                const processHandlebarsVariables = (str, variables) => {
-                  let result = str;
-                  variables.forEach((variable) => {
-                    const regex = new RegExp(
-                      `\\{\\{\\s*${variable}\\s*\\}\\}`,
-                      "g"
-                    );
-                    // Adding the original handlebar variable as a comment before replacing it
-                    result = result.replace(
-                      regex,
-                      `/* {{${variable}}} */ "${variable}"`
-                    );
-                  });
-                  return result;
-                };
 
                 fileContents = processHandlebarsVariables(
                   fileContents,
@@ -172,18 +153,29 @@ export const extractTemplates = async (directory) => {
               const filename = `${template.templateId}__${template.name.replace(
                 /( |\/)/g,
                 "_"
-              )}.tpl`;
+              )}.js`;
               const filePath = path.join(templatesDir, filename);
-              const newFileContent = template.templateData;
 
-              // TODO only get the sandboxed javascript
-              // const fileContent = `...`; // Replace this with your file content
+              const templateContent = template.templateData;
 
-              // const sections = fileContent.split('___');
-              // const sandboxedJSCode = sections.find(section => section.startsWith('SANDBOXED_JS_FOR_WEB_TEMPLATE')).split('\n').slice(1).join('\n');
-              // console.log(sandboxedJSCode);
+              // Get only the sandboxed js
+              const sections = templateContent.split("___");
+              const sandboxedJSCode = sections
+                .find((section) =>
+                  section.startsWith("SANDBOXED_JS_FOR_WEB_TEMPLATE")
+                )
+                .split("\n")
+                .slice(1)
+                .join("\n");
 
-              const fileContents = newFileContent;
+              let fileContents = sandboxedJSCode;
+
+              let handlebarsVariables = getHandlebarsVariables(fileContents);
+
+              fileContents = processHandlebarsVariables(
+                fileContents,
+                handlebarsVariables
+              );
 
               await writeFile(filePath, fileContents);
               return;
