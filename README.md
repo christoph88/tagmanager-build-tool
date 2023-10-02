@@ -50,26 +50,38 @@ USER_NAME='<This name you want to display when you do uploads>'
 Run `tbt` to see help or `tbt <command>` to see the help for each command.
 
 ```
+Usage: index [options] [command]
+
+Tagmanager build tool
 
 Options:
   -V, --version   output the version number
   -h, --help      display help for command
 
 Commands:
-  pull [options]  Pull changes from Tagmanager
-  push [options]  Push changes to tagmanager. Include a comma seperated list of paths to process or omit to process
-                  all.
+  fetch           Fetch changes from Tagmanager without extracting code.
+  pull            Pull changes from Tagmanager and extract code.
+  build           Build json files so they are ready for upload.
+  push [options]  Push changes to tagmanager. Include a comma seperated list of paths to process or omit to process all.
   help [command]  display help for command
 ```
 
 ## Workflow
 
-### 1. Pull
+### Fetch
 
-Download all container data, `--enableProcessing` if you want to edit the javascript and html files in your code-editor.
+Download all container data in JSON format. This is a direct download and is mostly usefull for obtaining the latest fingerprint.
 
-### 3. Push
+### Pull
 
-Upload all or specified (by id) tags, variables or templates.
+Download all container data in JSON format and extract custom code in seperate files. Allowing you to easily modify or version code in your own code editor.
 
-> :warning: **Fingerprinting errors**: When running the update function and the fingerprints have changed e.g. somebody did a change in tagmanager the upload will fail. Download the container again, compare the changes and push again.
+### Build
+
+Build requests in json files which can be used for upload. Will contain all of your modified code.
+
+### Push
+
+Upload all or specified (by build filename) tags, variables or templates.
+
+> :warning: **Fingerprinting errors**: When running the update function and the fingerprints have changed (e.g. somebody did a change in tagmanager) the upload will fail. Run fetch to get the latest fingerprints. Build to get the new request objects and push to try again.
