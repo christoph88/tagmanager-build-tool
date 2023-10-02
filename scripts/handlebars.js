@@ -14,15 +14,14 @@ export const processHandlebarsVariables = (str, variables) => {
   let result = str;
   variables.forEach((variable) => {
     const regex = new RegExp(`\\{\\{\\s*${variable}\\s*\\}\\}`, "g");
-    // Adding the original handlebar variable as a comment before replacing it
-    result = result.replace(regex, `/* {{${variable}}} */ "${variable}"`);
+    result = result.replace(regex, `"{{${variable}}}"`);
   });
   return result;
 };
 
 export const reverseProcessHandlebarsVariables = (str) => {
   let result = str;
-  const regex = /\/\*\s\{\{(.+?)\}\}\s\*\/\s"(.+?)"/g;
+  const regex = /"\{\{(.+?)\}\}"/g;
   let match;
 
   while ((match = regex.exec(str)) !== null) {
