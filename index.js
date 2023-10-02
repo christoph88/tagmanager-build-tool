@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import readline from "readline";
 import { downloadContainer } from "./scripts/downloadContainer.js";
+import { buildChanges } from "./scripts/buildChanges.js";
 import { uploadChanges } from "./scripts/uploadChanges.js";
 import { Command } from "commander";
 const program = new Command();
@@ -14,7 +15,7 @@ const verify = (message, cb) => {
     output: process.stdout,
   });
 
-  rl.question(message + " yes/no > ", (answer) => {
+  rl.question(message + " y/n > ", (answer) => {
     if (answer.toLowerCase() === "yes" || answer.toLowerCase() === "y") {
       cb();
     } else {
@@ -24,35 +25,43 @@ const verify = (message, cb) => {
   });
 };
 
-program.version("1.1.3").description("Tagmanager build tool");
+program.version("1.2.0").description("Tagmanager build tool");
+
+program
+  .command("fetch")
+  .description("Fetch changes from Tagmanager without extracting code.")
+  .action(() => {
+    downloadContainer(false);
+  });
 
 program
   .command("pull")
-  .description("Pull changes from Tagmanager")
-  .option("-p, --enableProcessing", "Enable processing")
-  .option("-d, --enableDiff", "Enable processing")
-  .action((options) => {
-    console.log(options);
-    verify("Download entire container?", () => {
-      downloadContainer(options.enableProcessing, options.enableDiff);
-    });
+  .description("Pull changes from Tagmanager and extract code.")
+  .action(() => {
+    downloadContainer(true);
   });
 
-// program
-//   .command("build")
-//   .description("Build files and make them ready for upload.")
-//   .action((options) => {
-//     console.log(options);
-//   });
+program
+  .command("build")
+  .description("Build json files so they are ready for upload.")
+  .action(() => {
+    buildChanges();
+  });
 
 program
   .command("push")
   .description(
     "Push changes to tagmanager. Include a comma seperated list of paths to process or omit to process all."
   )
-  .option("-t, --tags [tags...]", "Ids of tags to upload")
-  .option("-v, --variables [variables...]", "Ids of variables to upload")
-  .option("-tm, --templates [templates...]", "Ids of templates to upload")
+  .option("-t, --tags [tags...]", "Build filename of tags to upload")
+  .option(
+    "-v, --variables [variables...]",
+    "Build filename of variables to upload"
+  )
+  .option(
+    "-tm, --templates [templates...]",
+    "Build filename of templates to upload"
+  )
   .option("-a, --all", "Upload all tags, variables and templates")
   .action((options) => {
     console.log(options);

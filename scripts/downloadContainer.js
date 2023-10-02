@@ -10,16 +10,16 @@ import {
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import {
-  processTags,
-  processVariables,
-  processTemplates,
-} from "./processEntities.js";
+  extractTags,
+  extractVariables,
+  extractTemplates,
+} from "./extractCode.js";
 
 const tagmanager = google.tagmanager("v2");
 
 const args = process.argv.slice(2); // remove the first two elements
 
-export const downloadContainer = async (enableProcessing, enableDiff) => {
+export const downloadContainer = async (enableExtract) => {
   const credentials = JSON.parse(readFileSync("./gcp-sa-key.json"));
   const auth = new google.auth.GoogleAuth({
     credentials,
@@ -100,15 +100,12 @@ export const downloadContainer = async (enableProcessing, enableDiff) => {
     });
     const tagsDir = join(workspaceDir, "tags");
     mkdirSync(tagsDir, { recursive: true });
-    // TODO for download write to src_tags.json
-    // TODO for upload write to dist_tags.json
-    // TODO fix this also for variables and templates
     await writeFile(
       join(tagsDir, "tags.json"),
       JSON.stringify(tags.data, null, 2)
     );
     // Process tags
-    enableProcessing && (await processTags(tagsDir, enableDiff));
+    enableExtract && (await extractTags(tagsDir));
 
     // variables
     const variables =
@@ -123,7 +120,7 @@ export const downloadContainer = async (enableProcessing, enableDiff) => {
       JSON.stringify(variables.data, null, 2)
     );
     // Process variables
-    enableProcessing && (await processVariables(variablesDir, enableDiff));
+    enableExtract && (await extractVariables(variablesDir));
 
     // templates
     const templates =
@@ -138,6 +135,6 @@ export const downloadContainer = async (enableProcessing, enableDiff) => {
       JSON.stringify(templates.data, null, 2)
     );
     // Process templates
-    enableProcessing && (await processTemplates(templatesDir, enableDiff));
+    enableExtract && (await extractTemplates(templatesDir));
   }
 };
