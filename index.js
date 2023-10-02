@@ -53,9 +53,15 @@ program
   .description(
     "Push changes to tagmanager. Include a comma seperated list of paths to process or omit to process all."
   )
-  .option("-t, --tags [tags...]", "Ids of tags to upload")
-  .option("-v, --variables [variables...]", "Ids of variables to upload")
-  .option("-tm, --templates [templates...]", "Ids of templates to upload")
+  .option("-t, --tags [tags...]", "Build filename of tags to upload")
+  .option(
+    "-v, --variables [variables...]",
+    "Build filename of variables to upload"
+  )
+  .option(
+    "-tm, --templates [templates...]",
+    "Build filename of templates to upload"
+  )
   .option("-a, --all", "Upload all tags, variables and templates")
   .action((options) => {
     console.log(options);
