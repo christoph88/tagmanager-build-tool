@@ -58,10 +58,12 @@ async function uploadTags(tagArray) {
 
           // Already start reading tag file
           const tagName = tag;
-          const requestObject = await fs.promises.readFile(
+          const requestFile = await fs.promises.readFile(
             `${tagsDir}/${tagName}`,
             "utf8"
           );
+
+          const requestObject = JSON.parse(requestFile);
 
           try {
             const response =
@@ -138,10 +140,12 @@ async function uploadVariables(variableArray) {
 
           // Already start reading variable file
           const variableName = variable;
-          const requestObject = await fs.promises.readFile(
+          const requestFile = await fs.promises.readFile(
             `${variablesDir}/${variableName}`,
             "utf8"
           );
+
+          const requestObject = JSON.parse(requestFile);
 
           try {
             const response =
@@ -219,10 +223,20 @@ async function uploadTemplates(templateArray) {
 
           // Already start reading template file
           const templateName = template;
-          const requestObject = await fs.promises.readFile(
+          const requestFile = await fs.promises.readFile(
             `${templatesDir}/${templateName}`,
             "utf8"
           );
+
+          const requestObject = JSON.parse(requestFile);
+
+          // TODO remove
+          console.log("requestObject", {
+            auth: authClient,
+            path: requestObject.path,
+            fingerprint: requestObject.fingerprint,
+            requestBody: requestObject,
+          });
 
           try {
             const response =
@@ -230,7 +244,7 @@ async function uploadTemplates(templateArray) {
                 auth: authClient,
                 path: requestObject.path,
                 fingerprint: requestObject.fingerprint,
-                requestBody: requestTemplate,
+                requestBody: requestObject,
               });
             console.log(`Template ${template} uploaded successfully.`);
             console.log(response.status);
