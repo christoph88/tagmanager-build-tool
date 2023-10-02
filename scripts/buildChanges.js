@@ -205,6 +205,36 @@ async function buildTemplates() {
 
           let processedValue = reverseProcessHandlebarsVariables(templateFile);
 
+          function replaceSandboxedJS(templateContent, newCode) {
+            const sections = templateContent.split("___");
+            const sandboxedJSStartIndex = sections.findIndex((section) =>
+              section.startsWith("SANDBOXED_JS_FOR_WEB_TEMPLATE")
+            );
+            const sandboxedJSEndIndex = sections.findIndex((section) =>
+              section.startsWith("WEB_PERMISSIONS")
+            );
+
+            if (sandboxedJSStartIndex === -1 || sandboxedJSEndIndex === -1) {
+              throw new Error(
+                "Could not find sandboxed JS or web permissions section"
+              );
+            }
+
+            // Replace the sandboxed JS code with the new code
+            sections.splice(
+              sandboxedJSStartIndex + 1,
+              sandboxedJSEndIndex - sandboxedJSStartIndex - 1,
+              "\n\n" + newCode + "\n"
+            );
+
+            return sections.join("___");
+          }
+
+          const templateData = replaceSandboxedJS(
+            template.templateData,
+            processedValue
+          );
+
           // Construct the template object to match the Google template Manager API request format
           const requestObject = {
             path: template.path,
@@ -213,11 +243,9 @@ async function buildTemplates() {
             workspaceId: template.workspaceId,
             templateId: template.templateId,
             name: template.name,
-            templateData: template.templateData,
+            templateData: templateData,
             fingerprint: template.fingerprint,
           };
-
-          requestObject.templateData = processedValue;
 
           const outputDir = path.dirname(
             `dist/${templatesDir}/${templateName}.json`

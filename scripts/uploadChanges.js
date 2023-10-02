@@ -39,12 +39,11 @@ async function uploadTags(tagArray) {
         console.log(tags);
       }
 
-      // TODO fix this because tagsfiles are only filenames
       // if paths or filenames are passed use those
       if (Array.isArray(tagsFiles) && Array.isArray(tagArray)) {
         console.log(`Upload selected tags: ${tagArray.join(", ")}`);
-        tags = tagsFiles.filter((tag) => {
-          return tagArray.includes(tag.tagId);
+        tags = tagsFiles.filter((tagsFile) => {
+          return tagArray.includes(tagsFile);
         });
       }
 
@@ -122,12 +121,11 @@ async function uploadVariables(variableArray) {
         console.log(variables);
       }
 
-      // TODO fix this with filenames
       // if paths or filenames are passed use those
       if (Array.isArray(variablesFiles) && Array.isArray(variableArray)) {
         console.log(`Upload selected variables: ${variableArray.join(", ")}`);
-        variables = variablesFiles.filter((variable) => {
-          return variableArray.includes(variable.variableId);
+        variables = variablesFiles.filter((variableFile) => {
+          return variableArray.includes(variableFile);
         });
       }
 
@@ -204,12 +202,11 @@ async function uploadTemplates(templateArray) {
         console.log(templates);
       }
 
-      // TODO fix
       // if paths or filenames are passed use those
       if (Array.isArray(templatesFiles) && Array.isArray(templateArray)) {
         console.log(`Upload selected templates: ${templateArray.join(", ")}`);
-        templates = templatesFiles.filter((template) => {
-          return templateArray.includes(template.templateId);
+        templates = templatesFiles.filter((templateFile) => {
+          return templateArray.includes(templateFile);
         });
       }
 
@@ -229,14 +226,6 @@ async function uploadTemplates(templateArray) {
           );
 
           const requestObject = JSON.parse(requestFile);
-
-          // TODO remove
-          console.log("requestObject", {
-            auth: authClient,
-            path: requestObject.path,
-            fingerprint: requestObject.fingerprint,
-            requestBody: requestObject,
-          });
 
           try {
             const response =
