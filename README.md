@@ -1,29 +1,9 @@
 # TBT - Tagmanager build tool
 
-## TODO Remove these TODO's
-
-## TODO
-
-- pull src
-- pull and extract
-- build dist
-  - build and transpile
-  - build and test
-- build and push dist
-- push dist
-- push src
-
 ## Description
 
 Tagmanager build tool is a unofficial tool which downloads and uploads your Tagmanager tags, variables and templates.
 This will enable you to work in a code editor of choice and version your code.
-
-## Roadmap
-
-Following ideas I am toying with but their is no strict timeline:
-
-1. Enable transpiling of ES6 to ES5 which enables you to write tag, variables and templates in a modern vesion of javascript.
-1. Test suite: enable automated testing of your code.
 
 ## Installation
 
