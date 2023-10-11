@@ -1,4 +1,4 @@
-gcp-sa-key.json
+gcp-sa-key*.json
 workspaces
 
 # Logs
