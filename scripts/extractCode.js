@@ -161,10 +161,10 @@ export const extractTemplates = async (directory) => {
               function getSandboxedJS(templateContent) {
                 const sections = templateContent.split("___");
                 const sandboxedJSStartIndex = sections.findIndex((section) =>
-                  section.startsWith("SANDBOXED_JS_FOR_WEB_TEMPLATE")
+                  section.startsWith("SANDBOXED_JS_FOR")
                 );
                 const sandboxedJSEndIndex = sections.findIndex((section) =>
-                  section.startsWith("WEB_PERMISSIONS")
+                  section.startsWith("___")
                 );
 
                 if (
