@@ -166,6 +166,7 @@ export const extractTemplates = async (directory) => {
                 const sandboxedJSEndIndex = sections.findIndex(
                   (section) =>
                     section.startsWith("WEB_PERMISSIONS") ||
+                    section.startsWith("SERVER_PERMISSIONS") ||
                     section.startsWith("TESTS")
                 );
 
