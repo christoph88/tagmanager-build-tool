@@ -171,9 +171,8 @@ export const extractTemplates = async (directory) => {
                   sandboxedJSStartIndex === -1 ||
                   sandboxedJSEndIndex === -1
                 ) {
-                  throw new Error(
-                    "Could not find sandboxed JS or web permissions section"
-                  );
+                  // Could not find sandboxed JS or web permissions section
+                  return templateContent;
                 }
 
                 const sandboxedJSCode = sections
