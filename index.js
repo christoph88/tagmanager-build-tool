@@ -25,7 +25,7 @@ const verify = (message, cb) => {
   });
 };
 
-program.version("1.2.7").description("Tagmanager build tool");
+program.version("1.2.8").description("Tagmanager build tool");
 
 program
   .command("fetch")

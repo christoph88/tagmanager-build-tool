@@ -208,16 +208,17 @@ async function buildTemplates() {
           function replaceSandboxedJS(templateContent, newCode) {
             const sections = templateContent.split("___");
             const sandboxedJSStartIndex = sections.findIndex((section) =>
-              section.startsWith("SANDBOXED_JS_FOR_WEB_TEMPLATE")
+              section.startsWith("SANDBOXED_JS_FOR_")
             );
-            const sandboxedJSEndIndex = sections.findIndex((section) =>
-              section.startsWith("WEB_PERMISSIONS")
+            const sandboxedJSEndIndex = sections.findIndex(
+              (section) =>
+                section.startsWith("WEB_PERMISSIONS") ||
+                section.startsWith("SERVER_PERMISSIONS") ||
+                section.startsWith("TESTS")
             );
 
             if (sandboxedJSStartIndex === -1 || sandboxedJSEndIndex === -1) {
-              throw new Error(
-                "Could not find sandboxed JS or web permissions section"
-              );
+              return templateContent;
             }
 
             // Replace the sandboxed JS code with the new code
