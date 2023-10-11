@@ -1,6 +1,6 @@
 {
   "name": "tagmanager-build-tool",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "A tool to build tagmanager html, javascript and tpl entities.",
   "main": "index.js",
   "type": "module",
